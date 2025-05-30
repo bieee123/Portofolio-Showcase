@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Password Hasher</title>
+    <link href="hashing.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script defer src="hashing.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="/simulations.html#simulation-2" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to homepage
+        </a>
+        <h2>Password Strength & Hashing</h2>
+
+        <div class="simulation-box">
+            <div class="input-group password-container">
+                <input type="password" id="password" placeholder="Enter your password">
+                <span class="toggle-password" onclick="togglePasswordVisibility()">
+                    <i class="fa-solid fa-eye"></i>
+                </span>
+            </div>            
+
+            <div class="strength-bar">
+                <div id="strengthMeter"></div>
+            </div>
+            <p id="passwordFeedback">Enter a password to see strength</p>
+        </div>
+
+        <div class="simulation-box">
+            <label for="algorithm">Select Hash Algorithm:</label>
+            <select id="algorithm">
+                <option value="SHA-256">SHA-256</option>
+                <option value="SHA-384">SHA-384</option>
+                <option value="SHA-512">SHA-512</option>
+            </select>
+
+            <div class="btn-group">
+                <button onclick="hashPassword()" id="hashBtn">Hash Password</button>
+                <button onclick="" id="resetBtn" class="reset-btn">Reset</button>
+            </div>            
+
+            <div class="output-panel">
+                <p><strong>Hashed Output:</strong></p>
+                <p id="hashResult" class="empty">No hash generated yet</p>
+                <button id="copyButton" class="copy-btn" onclick="copyToClipboard()" style="display: none;">Copy Hash</button>
+            </div>
+        </div>
+
+        <h3>Hash History</h3>
+        <div id="historyBox" class="simulation-box">
+            <p style="text-align: center; color: #aaa;">No recent hashes</p>
+        </div>
+    </div>
+    
+    <!-- Notification element -->
+    <div id="notification" class="notification"></div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Encryption Tool</title>
+    <link href="encryption.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="encryption.js"></script>
+</head>
+<body>
+    <section class="simulation-section">
+        <a href="/simulations.html#simulation-1" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to homepage
+        </a>
+        <h2>Advanced Encryption Tool (AES-256 GCM)</h2>
+        <div class="options-panel">
+            <div class="option-group">
+                <div class="option-title">Encryption Mode</div>
+                <div class="key-display">AES-GCM (Recommended)</div>
+            </div>
+            
+            <div class="option-group">
+                <div class="option-title">Key Management</div>
+                <div class="key-display">Auto-generate Key</div>
+            </div>
+            
+            <div class="option-group">
+                <div class="option-title">Current Key (Base64)</div>
+                <div class="key-container">
+                    <div class="key-display" id="key-display">Generating...</div>
+                    <button id="copy-key-btn" class="copy-key-btn" onclick="copyToClipboard('key-display')">Copy</button>
+                </div>
+            </div>            
+        </div>
+        
+        <div class="simulation-box">
+            <div class="input-group">
+                <textarea id="data" placeholder="Enter text to encrypt or decrypt"></textarea>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-encrypt" onclick="encryptData()">
+                    🔒 Encrypt
+                </button>
+                <button class="btn-decrypt" onclick="decryptData()">
+                    🔓 Decrypt
+                </button>
+                <button class="btn-reset" onclick="resetAll()">
+                    🗑️ Reset All
+                </button>
+            </div>
+            
+            <div class="status" id="status"></div>
+            
+            <div>
+                <div class="output-label">Encrypted Output:</div>
+                <div class="output-panel">
+                    <span id="encrypted-text">No encrypted data yet</span>
+                    <button class="copy-btn" onclick="copyToClipboard('encrypted-text')">Copy</button>
+                </div>
+            </div>
+            
+            <div>
+                <div class="output-label">Decrypted Output:</div>
+                <div class="output-panel">
+                    <span id="decrypted-text">No decrypted data yet</span>
+                    <button class="copy-btn" onclick="copyToClipboard('decrypted-text')">Copy</button>
+                </div>
+            </div>            
+        </div>
+    </section>
+</body>
+</html>

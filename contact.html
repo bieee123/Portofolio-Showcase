@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Showcase - Contact</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .form-focus:focus { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-envelope mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-gray-800">Get in Touch</h1>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-20">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="mb-8">
+                        <i class="fas fa-paper-plane text-6xl opacity-20 mb-6"></i>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Let's Connect</h2>
+                    <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed max-w-3xl mx-auto">
+                        Ready to collaborate on cybersecurity projects, discuss bug bounty findings, or explore innovative security solutions? I'd love to hear from you.
+                    </p>
+                    <div class="flex justify-center space-x-8 text-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Quick Response</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            <span>Security Focused</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-handshake mr-2"></i>
+                            <span>Open to Collaboration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Form & Info Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
+                    <!-- Contact Form -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-800 mb-4">Send a Message</h3>
+                            <p class="text-gray-600 text-lg">Fill out the form below and I'll get back to you within 24 hours.</p>
+                        </div>
+                        
+                        <form class="space-y-6" id="contactForm">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-focus transition-all duration-200">
+                                </div>
+                                <div>
+                                    <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-focus transition-all duration-200">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" required
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-focus transition-all duration-200">
+                            </div>
+                            
+                            <div>
+                                <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">Subject *</label>
+                                <select id="subject" name="subject" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-focus transition-all duration-200">
+                                    <option value="">Select a topic...</option>
+                                    <option value="collaboration">Project Collaboration</option>
+                                    <option value="bug-bounty">Bug Bounty Discussion</option>
+                                    <option value="consultation">Security Consultation</option>
+                                    <option value="speaking">Speaking Opportunity</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Message *</label>
+                                <textarea id="message" name="message" rows="6" required
+                                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-focus transition-all duration-200 resize-vertical"
+                                          placeholder="Tell me about your project, question, or how we can work together..."></textarea>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <input type="checkbox" id="privacy" name="privacy" required
+                                       class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="privacy" class="ml-3 text-sm text-gray-600">
+                                    I agree to the privacy policy and consent to having my information stored and processed for the purpose of this inquiry. *
+                                </label>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-8 rounded-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-800 mb-4">Contact Information</h3>
+                            <p class="text-gray-600 text-lg">Prefer to reach out directly? Here are the best ways to connect with me.</p>
+                        </div>
+                        
+                        <!-- Contact Methods -->
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-1">Email</h4>
+                                    <p class="text-gray-600 mb-2">For general inquiries and collaboration</p>
+                                    <a href="mailto:contact@example.com" class="text-blue-600 hover:text-blue-800 font-medium">
+                                        contact@example.com
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <i class="fab fa-linkedin text-green-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-1">LinkedIn</h4>
+                                    <p class="text-gray-600 mb-2">Professional networking and opportunities</p>
+                                    <a href="#" class="text-green-600 hover:text-green-800 font-medium">
+                                        linkedin.com/in/yourprofile
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <i class="fab fa-github text-purple-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-1">GitHub</h4>
+                                    <p class="text-gray-600 mb-2">Open source projects and code collaboration</p>
+                                    <a href="#" class="text-purple-600 hover:text-purple-800 font-medium">
+                                        github.com/yourusername
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Availability -->
+                        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-2xl mr-3"></i>
+                                <h4 class="text-lg font-semibold">Current Availability</h4>
+                            </div>
+                            <p class="mb-4 opacity-90">I'm currently available for new projects and collaborations. Feel free to reach out!</p>
+                            <div class="flex items-center text-sm">
+                                <div class="w-3 h-3 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                                <span>Available for new opportunities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h3>
+                    <p class="text-gray-600 text-lg">Quick answers to common questions about working with me.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <button class="faq-question w-full flex justify-between items-center text-left text-lg font-semibold text-gray-800 mb-3 focus:outline-none">
+                        What types of projects do you work on?
+                        <span class="faq-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <p class="faq-answer text-gray-600 hidden">
+                        I specialize in cybersecurity projects including penetration testing, vulnerability assessments, secure web application development, and security tool creation. I also enjoy collaborating on educational cybersecurity content and research.
+                    </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <button class="faq-question w-full flex justify-between items-center text-left text-lg font-semibold text-gray-800 mb-3 focus:outline-none">
+                        Do you offer security consultations?
+                        <span class="faq-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <p class="faq-answer text-gray-600 hidden">
+                        Yes, I provide security consultations for businesses looking to improve their security posture. This includes security audits, policy development, and implementation guidance for security best practices.
+                    </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <button class="faq-question w-full flex justify-between items-center text-left text-lg font-semibold text-gray-800 mb-3 focus:outline-none">
+                        Are you available for speaking engagements?
+                        <span class="faq-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <p class="faq-answer text-gray-600 hidden">
+                        I'm always interested in sharing knowledge at conferences, workshops, and educational events. Topics I cover include cybersecurity trends, bug bounty hunting, and secure development practices.
+                    </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <button class="faq-question w-full flex justify-between items-center text-left text-lg font-semibold text-gray-800 mb-3 focus:outline-none">
+                        How do you handle confidential projects?
+                        <span class="faq-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <p class="faq-answer text-gray-600 hidden">
+                        I take confidentiality seriously and am happy to sign NDAs for sensitive projects. All client information and project details are kept strictly confidential and secure.
+                    </p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section> 
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Professional Showcase. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+                        <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.getElementById('mainContent');
+        
+        function toggleSidebar() {
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+        
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar when clicking on navigation links on mobile
+        const navLinks = document.querySelectorAll('#sidebar nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    toggleSidebar();
+                }
+            });
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        });
+        
+        // Contact form handling
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            // Simple validation
+            if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message || !data.privacy) {
+                alert('Please fill in all required fields and accept the privacy policy.');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+            submitButton.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! I will get back to you within 24 hours.');
+                contactForm.reset();
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }, 2000);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ Answer
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+            const currentAnswer = button.nextElementSibling;
+            const currentIcon = button.querySelector('.faq-icon');
+
+            document.querySelectorAll('.faq-answer').forEach(answer => {
+                if (answer !== currentAnswer) {
+                answer.classList.add('hidden');
+                }
+            });
+
+            document.querySelectorAll('.faq-icon').forEach(icon => {
+                if (icon !== currentIcon) {
+                icon.classList.remove('rotate-180');
+                }
+            });
+
+            currentAnswer.classList.toggle('hidden');
+            currentIcon.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+</body>
+</html>

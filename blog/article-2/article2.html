@@ -1,0 +1,175 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI in Cyber Security - RootReaper</title>
+    <link href="article2.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <main class="article-container">
+      <article class="article-content">
+        <header class="article-header">
+          <a href="/blog.html#article-2" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Blog
+          </a>
+          <div class="article-meta">
+            <span class="article-date">December 20, 2024</span>
+            <span class="article-read-time">10 min read</span>
+          </div>
+          <h1>Reflected Cross-Site Scripting (XSS) in cx.apps.binus.ac.id</h1>
+          <div class="article-author">
+            <div class="author-info">
+              <span class="author-name">Security Researcher</span>
+              <span class="author-role">Cybersecurity Analyst</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="article-body">
+          <p>
+            Cross-Site Scripting (XSS) is a common web application vulnerability
+            that allows attackers to inject malicious scripts into webpages.
+            This article discusses a reflected XSS vulnerability identified in
+            <strong>cx.apps.binus.ac.id</strong>.
+          </p>
+
+          <h2>Vulnerability Overview</h2>
+          <p>
+            The vulnerability was discovered in the login endpoint of the
+            cx.apps.binus.ac.id domain. It allows attackers to execute arbitrary
+            JavaScript in the context of a user's browser, potentially leading
+            to session hijacking, data theft, or phishing attacks.
+          </p>
+
+          <h2>Severity Level</h2>
+          <p>
+            The severity of this vulnerability is rated as
+            <strong>High</strong> due to the potential impact on user security
+            and data privacy.
+          </p>
+
+          <h2>Steps to Reproduce</h2>
+          <ol>
+            <li>
+              Navigate to the affected endpoint at
+              <code>https://cx.apps.binus.ac.id/login</code>.
+            </li>
+            <li>
+              Inject a malicious payload into the input field, such as:
+              <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code>.
+            </li>
+            <li>Observe the execution of the script in the browser.</li>
+          </ol>
+
+          <h2>Proof of Concept</h2>
+          <p>
+            Below is an example of a crafted URL exploiting the XSS
+            vulnerability:
+          </p>
+          <blockquote class="article-quote">
+            <code
+              >https://cx.apps.binus.ac.id/login?redirect=%3Cscript%3Ealert('XSS')%3C/script%3E</code
+            >
+          </blockquote>
+          <p>
+            When the victim clicks this link, the script executes, demonstrating
+            the vulnerability.
+          </p>
+          <div class="proof-image-container">
+            <h3>Proof of Concept Image</h3>
+            <img
+              id="proof-image"
+              src="asset/PoC Binus.png"
+              alt="Proof of Concept Image"
+              style="max-width: 100%; margin-top: 10px"
+            />
+          </div>
+
+          <h2>Recommended Fixes</h2>
+          <p>To mitigate this issue, developers should:</p>
+          <ul>
+            <li>Implement input validation to sanitize user inputs.</li>
+            <li>Use proper output encoding to prevent script execution.</li>
+            <li>
+              Adopt Content Security Policies (CSP) to limit the execution of
+              unauthorized scripts.
+            </li>
+          </ul>
+
+          <h2>Conclusion</h2>
+          <p>
+            Reflected XSS vulnerabilities pose significant risks to web
+            applications and their users. It is essential to address these
+            vulnerabilities promptly to maintain secure digital environments.
+          </p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-tags">
+            <span class="tag">Cybersecurity</span>
+            <span class="tag">XSS</span>
+            <span class="tag">Web Security</span>
+          </div>
+          <div class="article-share">
+            <span>Share this article:</span>
+            <a href="#" class="share-button"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="share-button"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="share-button"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="share-button"><i class="fab fa-Medium"></i></a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="logo">RootReaper</div>
+        <p class="footer-description">Connect with me:</p>
+        <ul class="social-links">
+          <li>
+            <a href="mailto:gabriellelintong01@gmail.com" class="social-icon"
+              ><i class="fa-solid fa-envelope"></i
+            ></a>
+          </li>
+          <li>
+            <a href="https://github.com" target="_blank" class="social-icon"
+              ><i class="fa-brands fa-github"></i
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://www.instagram.com/bielintong?igsh=cTM4amdxeG40bXhi"
+              target="_blank"
+              class="social-icon"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/in/gabrielle-lintong"
+              target="_blank"
+              class="social-icon"
+              ><i class="fa-brands fa-linkedin"></i
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://discord.gg/CW3tjeDG"
+              target="_blank"
+              class="social-icon"
+              ><i class="fa-brands fa-discord"></i
+            ></a>
+          </li>
+        </ul>
+        <p class="footer-copyright">
+          &copy; 2024 Gabrielle Briliant Lintong. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

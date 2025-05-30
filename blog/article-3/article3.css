@@ -1,0 +1,210 @@
+/* Root Variables */
+:root {
+--bg-primary: #f4f4f6;
+--text-primary: #1a1a2e;
+--accent-color: #4a4a6a;
+--highlight-color: #2e31ff;
+}
+
+/* General Reset */
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background-color: var(--bg-primary);
+color: var(--text-primary);
+margin-top: 4rem;
+}
+
+/* Article Container Section */
+.article-container {
+padding: 2rem 1.5rem;
+max-width: 800px;
+margin: 0 auto;
+background-color: var(--bg-primary);
+}
+
+/* Article Header Section */
+.article-header .back-link {
+text-decoration: none;
+color: var(--highlight-color);
+display: flex;
+align-items: center;
+gap: 0.5rem;
+font-size: 0.9rem;
+margin-bottom: 1rem;
+transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.article-header .back-link:hover {
+color: var(--accent-color);
+transform: translateX(-5px);
+}
+
+.article-meta {
+font-size: 0.9rem;
+color: var(--accent-color);
+margin-bottom: 1rem;
+}
+
+.article-header h1 {
+font-size: 2rem;
+margin-bottom: 1rem;
+color: var(--text-primary);
+}
+
+.article-author {
+display: flex;
+align-items: center;
+margin-top: 1rem;
+}
+
+.author-info .author-name {
+font-weight: bold;
+color: var(--text-primary);
+}
+
+.author-info .author-role {
+font-size: 0.9rem;
+color: var(--accent-color);
+}
+
+/* Article Body Section */
+.article-body h2 {
+color: var(--highlight-color);
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+
+.article-body h3 {
+color: var(--accent-color);
+margin-top: 1.5rem;
+margin-bottom: 1rem;
+}
+
+.article-body p {
+line-height: 1.6;
+margin-bottom: 1rem;
+}
+
+.article-body ul {
+padding-left: 1.5rem;
+margin-bottom: 1rem;
+}
+
+.article-body li {
+margin-bottom: 0.5rem;
+}
+
+/* Footer Styles */
+.footer {
+background-color: #f9f9f9; /* Warna background footer */
+padding: 2.5rem 1rem;
+text-align: center;
+border-top: 1px solid #e4e4e7;
+}
+
+.footer-container {
+max-width: 1200px;
+margin: 0 auto;
+margin-top: -1rem;
+margin-bottom: -2rem;
+}
+
+.footer-logo {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.75rem;
+margin-bottom: 1rem;
+}
+
+.footer-title {
+font-size: 1.5rem;
+color: #2f3e50;
+font-weight: 700;
+}
+
+.footer-description {
+font-size: 1rem;
+color: #2f3e50;
+margin-bottom: 1rem;
+}
+
+.social-links {
+list-style: none;
+display: flex;
+justify-content: center;
+gap: 1rem;
+margin: 1rem 0;
+padding: 0;
+}
+
+.social-links li {
+display: inline;
+}
+
+.social-icon {
+display: inline-block;
+width: 50px; /* Ukuran lingkaran lebih kecil */
+height: 50px; /* Ukuran lingkaran lebih kecil */
+border-radius: 50%;
+background: linear-gradient(45deg, #4c51bf, var(--highlight-color)); /* Gradasi warna */
+color: #ffffff;
+font-size: 1.2rem; /* Ukuran ikon juga disesuaikan */
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+transition: all 0.3s ease;
+box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+position: relative;
+overflow: hidden;
+}
+
+.social-icon::before {
+content: "";
+position: absolute;
+top: -100%;
+left: -100%;
+width: 200%;
+height: 200%;
+background: rgba(255, 255, 255, 0.15); /* Efek kilauan */
+border-radius: 50%;
+transform: scale(0);
+transition: transform 0.3s ease;
+}
+
+.social-icon:hover::before {
+transform: scale(1);
+}
+
+.social-icon:hover {
+transform: translateY(-2px) scale(1.05); /* Efek naik sedikit */
+box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.social-icon i {
+z-index: 1; /* Pastikan ikon tetap terlihat di atas */
+}
+
+.footer-copyright {
+font-size: 0.9rem;
+color: #6c757d;
+margin-top: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.testimonials-grid,
+.blog-grid {
+    grid-template-columns: 1fr;
+}
+
+.container {
+    padding: 0 1.5rem;
+}
+
+.skills-container {
+    padding: 0 1rem;
+}
+}
