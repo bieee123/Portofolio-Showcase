@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission in Progress - Building the Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .orbitron { font-family: 'Orbitron', monospace; }
+        
+        .cosmic-bg {
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 40%, rgba(120, 255, 198, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0f0a29 0%, #1e1b4b 25%, #312e81 50%, #1e1b4b 75%, #0f0a29 100%);
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
+                radial-gradient(1px 1px at 200px 120px, rgba(255,255,255,0.9), transparent);
+            background-repeat: repeat;
+            background-size: 250px 150px;
+            animation: sparkle 4s linear infinite;
+        }
+        
+        .stars::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 50px 80px, rgba(139, 92, 246, 0.8), transparent),
+                radial-gradient(1px 1px at 150px 40px, rgba(168, 85, 247, 0.6), transparent),
+                radial-gradient(2px 2px at 100px 120px, rgba(192, 132, 252, 0.7), transparent);
+            background-repeat: repeat;
+            background-size: 200px 120px;
+            animation: sparkle 6s linear infinite reverse;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-150px); }
+        }
+        
+        .floating-planets {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+        
+        .planet-1 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b, #d97706);
+            top: 10%;
+            right: 10%;
+            animation-duration: 25s;
+        }
+        
+        .planet-2 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 40% 30%, #3b82f6, #1d4ed8, #1e40af);
+            bottom: 15%;
+            left: 15%;
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+        
+        .planet-3 {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 35% 35%, #ef4444, #dc2626, #b91c1c);
+            top: 60%;
+            right: 20%;
+            animation-duration: 20s;
+        }
+        
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+        
+        .rocket {
+            animation: rocket-float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+        }
+        
+        @keyframes rocket-float {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            33% { transform: translateY(-10px) rotate(2deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
+        }
+        
+        .glow-card {
+            background: linear-gradient(135deg, 
+                rgba(139, 92, 246, 0.1) 0%,
+                rgba(168, 85, 247, 0.05) 25%,
+                rgba(192, 132, 252, 0.1) 50%,
+                rgba(168, 85, 247, 0.05) 75%,
+                rgba(139, 92, 246, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 5px rgba(168, 85, 247, 0.8),
+                0 0 10px rgba(168, 85, 247, 0.6),
+                0 0 15px rgba(168, 85, 247, 0.4),
+                0 0 20px rgba(168, 85, 247, 0.2);
+        }
+        
+        .hologram {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hologram::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(168, 85, 247, 0.4), 
+                transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-circle {
+            stroke-dasharray: 251.32;
+            stroke-dashoffset: 251.32;
+            animation: progress-fill 3s ease-out forwards;
+        }
+        
+        @keyframes progress-fill {
+            0% { stroke-dashoffset: 251.32; }
+            100% { stroke-dashoffset: 62.83; }
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid rgba(168, 85, 247, 0.8);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(168, 85, 247, 0.8); }
+        }
+        
+        .grid-animation {
+            background-image: 
+                linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: grid-move 10s linear infinite;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+        
+        .command-line {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .terminal-text {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        
+        .satellite {
+            animation: satellite-orbit 15s linear infinite;
+        }
+        
+        @keyframes satellite-orbit {
+            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+        
+        .data-stream {
+            animation: data-flow 2s linear infinite;
+        }
+        
+        @keyframes data-flow {
+            0% { opacity: 0; transform: translateY(20px); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="cosmic-bg p-4 py-8">
+    <!-- Animated Stars Background -->
+    <div class="stars"></div>
+    
+    <!-- Floating Planets -->
+    <div class="floating-planets">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-6xl w-full mx-auto">
+        
+        <!-- Mission Control Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block relative">
+                <div class="satellite absolute -top-8 -right-8">
+                    <div class="w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded transform rotate-45"></div>
+                </div>
+                <h1 class="orbitron text-lg font-bold text-purple-300 mb-2 tracking-wider">
+                    MISSION CONTROL CENTER
+                </h1>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
+            </div>
+        </div>
+
+        <!-- Main Command Center -->
+        <div class="glow-card rounded-3xl p-8 md:p-12 mb-8 hologram">
+            <div class="text-center mb-12">
+                <!-- Rocket Ship with Enhanced Animation -->
+                <div class="rocket inline-block mb-8">
+                    <svg class="w-40 h-40 mx-auto text-purple-400" viewBox="0 0 100 100" fill="currentColor">
+                        <defs>
+                            <linearGradient id="rocketGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8b5cf6"/>
+                                <stop offset="50%" style="stop-color:#a855f7"/>
+                                <stop offset="100%" style="stop-color:#c084fc"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 5c-6 0-12 18-12 30v25c0 6 3 10 6 12l6 6v18c0 3 1 4 4 4h4c3 0 4-1 4-4V78l6-6c3-2 6-6 6-12V35c0-12-6-30-12-30z" fill="url(#rocketGradient)"/>
+                        <circle cx="50" cy="25" r="4" fill="#fbbf24"/>
+                        <circle cx="45" cy="20" r="1.5" fill="#ffffff" opacity="0.8"/>
+                        <path d="M42 78v12c0 2 1 3 3 3h10c2 0 3-1 3-3V78" fill="#ef4444"/>
+                        <path d="M38 78v10c0 2 1 3 3 3h4v-13" fill="#f97316"/>
+                        <path d="M55 78v13h4c2 0 3-1 3-3V78" fill="#f97316"/>
+                    </svg>
+                </div>
+
+                <!-- Dynamic Title -->
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="neon-text text-white orbitron">LAUNCHING</span><br>
+                    <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-600 bg-clip-text text-transparent">
+                        THE FUTURE
+                    </span>
+                </h1>
+
+                <!-- Typing Animation Subtitle -->
+                <div class="h-16 flex items-center justify-center mb-8">
+                    <p class="typing-animation text-xl md:text-2xl text-purple-200 max-w-4xl">
+                        Initializing quantum processors and loading next-gen experience...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mission Progress Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- System Status -->
+                <div class="glow-card rounded-2xl p-6 text-center border border-green-400/30">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <svg class="progress-ring w-full h-full" viewBox="0 0 84 84">
+                            <circle cx="42" cy="42" r="40" stroke="rgba(34, 197, 94, 0.2)" stroke-width="4" fill="none"/>
+                            <circle cx="42" cy="42" r="40" stroke="#22c55e" stroke-width="4" fill="none" 
+                                    class="progress-circle" style="animation-delay: 0s"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-green-400 font-bold text-sm">75%</span>
+                        </div>
+                    </div>
+                    <h3 class="text-green-300 font-semibold mb-2 orbitron">SYSTEMS</h3>
+                    <p class="text-green-200/80 text-sm">Online</p>
+                </div>
+
+                <!-- Development Status -->
+                <div class="glow-card rounded-2xl p-6 text-center border border-yellow-400/30">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <svg class="progress-ring w-full h-full" viewBox="0 0 84 84">
+                            <circle cx="42" cy="42" r="40" stroke="rgba(251, 191, 36, 0.2)" stroke-width="4" fill="none"/>
+                            <circle cx="42" cy="42" r="40" stroke="#fbbf24" stroke-width="4" fill="none"
+                                    class="progress-circle" style="animation-delay: 1s"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-yellow-400 font-bold text-sm">89%</span>
+                        </div>
+                    </div>
+                    <h3 class="text-yellow-300 font-semibold mb-2 orbitron">BUILD</h3>
+                    <p class="text-yellow-200/80 text-sm">Processing</p>
+                </div>
+
+                <!-- Testing Status -->
+                <div class="glow-card rounded-2xl p-6 text-center border border-blue-400/30">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <svg class="progress-ring w-full h-full" viewBox="0 0 84 84">
+                            <circle cx="42" cy="42" r="40" stroke="rgba(59, 130, 246, 0.2)" stroke-width="4" fill="none"/>
+                            <circle cx="42" cy="42" r="40" stroke="#3b82f6" stroke-width="4" fill="none"
+                                    class="progress-circle" style="animation-delay: 2s"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-blue-400 font-bold text-sm">43%</span>
+                        </div>
+                    </div>
+                    <h3 class="text-blue-300 font-semibold mb-2 orbitron">TESTS</h3>
+                    <p class="text-blue-200/80 text-sm">Running</p>
+                </div>
+
+                <!-- Deployment Status -->
+                <div class="glow-card rounded-2xl p-6 text-center border border-purple-400/30">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <svg class="progress-ring w-full h-full" viewBox="0 0 84 84">
+                            <circle cx="42" cy="42" r="40" stroke="rgba(168, 85, 247, 0.2)" stroke-width="4" fill="none"/>
+                            <circle cx="42" cy="42" r="40" stroke="#a855f7" stroke-width="4" fill="none"
+                                    class="progress-circle" style="animation-delay: 3s"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-purple-400 font-bold text-sm">12%</span>
+                        </div>
+                    </div>
+                    <h3 class="text-purple-300 font-semibold mb-2 orbitron">DEPLOY</h3>
+                    <p class="text-purple-200/80 text-sm">Standby</p>
+                </div>
+            </div>
+
+            <!-- Command Terminal -->
+            <div class="command-line rounded-2xl p-6 mb-8 grid-animation">
+                <div class="flex items-center mb-4">
+                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                    <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                    <span class="terminal-text text-sm ml-4 orbitron">MISSION_CONTROL_TERMINAL_v2.1</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="terminal-text text-sm">
+                        <span class="text-purple-400">root@mission-control:~$</span> initialize_launch_sequence
+                    </div>
+                    <div class="terminal-text text-sm data-stream" style="animation-delay: 0.5s">
+                        → Loading quantum modules... ████████████░░░░ 75%
+                    </div>
+                    <div class="terminal-text text-sm data-stream" style="animation-delay: 1s">
+                        → Synchronizing satellite network... ████████████████ 100%
+                    </div>
+                    <div class="terminal-text text-sm data-stream" style="animation-delay: 1.5s">
+                        → Calibrating warp drives... ██████░░░░░░░░░░ 40%
+                    </div>
+                    <div class="terminal-text text-sm">
+                        <span class="text-purple-400">root@mission-control:~$</span> <span class="animate-pulse">▊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission Timeline -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- ETA Card -->
+            <div class="glow-card rounded-2xl p-8">
+                <h3 class="orbitron text-2xl font-bold text-white mb-6 flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                    </svg>
+                    MISSION ETA
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-4 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-400/30">
+                        <span class="text-indigo-300">Next Milestone</span>
+                        <span class="text-white font-bold orbitron" id="milestone-time">12h</span>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl border border-purple-400/30">
+                        <span class="text-purple-300">Full Launch</span>
+                        <span class="text-white font-bold orbitron" id="launch-countdown">Today</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission Status -->
+            <div class="glow-card rounded-2xl p-8">
+                <h3 class="orbitron text-2xl font-bold text-white mb-6 flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    STATUS LOG
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span class="text-green-300 text-sm">Database optimization complete</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                        <span class="text-yellow-300 text-sm">UI components rendering...</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                        <span class="text-blue-300 text-sm">Security protocols updating</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                        <span class="text-purple-300 text-sm">Final system checks initiated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Mission Control -->
+        <div class="glow-card rounded-3xl p-8 md:p-12 text-center">
+            <h2 class="orbitron text-3xl font-bold text-white mb-6">
+                CONTACT MISSION CONTROL
+            </h2>
+            <p class="text-purple-200 mb-8 text-lg">
+                Need to reach our space station? Our crew is standing by.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center mb-8">
+                <a href="mailto:control@mission.space" 
+                   class="group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-3">
+                    <svg class="w-6 h-6 group-hover:animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                    </svg>
+                    <span class="orbitron">SEND TRANSMISSION</span>
+                </a>
+                <a href="#" 
+                   class="group border-2 border-purple-400 text-purple-300 hover:bg-purple-400 hover:text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-3">
+                    <svg class="w-6 h-6 group-hover:animate-spin" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="orbitron">EMERGENCY CHANNEL</span>
+                </a>
+            </div>
+
+            <!-- Social Links -->
+            <div class="border-t border-purple-500/30 pt-8">
+                <p class="text-purple-300 mb-6 orbitron text-sm">FOLLOW MISSION UPDATES</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="w-12 h-12 glow-card rounded-full flex items-center justify-center text-purple-300 hover:text-white hover:scale-110 transition-all duration-300 group">
+                        <svg class="w-6 h-6 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-12 h-12 glow-card rounded-full flex items-center justify-center text-purple-300 hover:text-white hover:scale-110 transition-all duration-300 group">
+                        <svg class="w-6 h-6 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.196 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.888-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.357-.631-2.751-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-12 h-12 glow-card rounded-full flex items-center justify-center text-purple-300 hover:text-white hover:scale-110 transition-all duration-300 group">
+                        <svg class="w-6 h-6 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-12 h-12 glow-card rounded-full flex items-center justify-center text-purple-300 hover:text-white hover:scale-110 transition-all duration-300 group">
+                        <svg class="w-6 h-6 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.5 0C5.596 0 0 5.596 0 12.5S5.596 25 12.5 25 25 19.404 25 12.5 19.404 0 12.5 0zm5.169 8.707l-5.972 5.972a.469.469 0 0 1-.665 0l-2.845-2.845a.469.469 0 0 1 0-.665l.665-.665a.469.469 0 0 1 .665 0l1.848 1.848 4.975-4.975a.469.469 0 0 1 .665 0l.665.665a.469.469 0 0 1-.001.665z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-12 h-12 glow-card rounded-full flex items-center justify-center text-purple-300 hover:text-white hover:scale-110 transition-all duration-300 group">
+                        <svg class="w-6 h-6 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0zm5.568 8.16c-.084.142-.27.233-.44.233-.062 0-.125-.01-.187-.032l-1.956-.67c-.262-.09-.4-.376-.308-.638.09-.263.377-.402.638-.31l1.956.67c.262.09.4.376.308.638zm-.998 1.998c-.084.142-.27.233-.44.233-.062 0-.125-.01-.187-.032l-1.956-.67c-.262-.09-.4-.376-.308-.638.09-.263.377-.402.638-.31l1.956.67c.262.09.4.376.308.638z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission Footer -->
+        <div class="text-center pt-8 border-t border-purple-500/20">
+            <div class="mb-6">
+                <div class="inline-flex items-center space-x-4 px-6 py-3 glow-card rounded-full">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="orbitron text-sm text-purple-300">MISSION STATUS: ACTIVE</span>
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+            </div>
+            
+            <p class="text-purple-400/80 text-sm mb-4 orbitron">
+                CLASSIFIED PROJECT - SECURITY CLEARANCE REQUIRED
+            </p>
+            
+            <div class="flex justify-center items-center space-x-6 text-xs text-purple-500/60">
+                <span>© 2025 MISSION CONTROL</span>
+                <span>•</span>
+                <span>GALACTIC STANDARD TIME: <span id="gst-time" class="font-mono">00:00:00</span></span>
+                <span>•</span>
+                <span>SECTOR 7G-ALPHA</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Enhanced Interactivity -->
+    <script>
+        // Galactic Standard Time
+        function updateGST() {
+            const now = new Date();
+            const gst = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                timeZone: 'Asia/Jakarta'
+            });
+            const gstElement = document.getElementById('gst-time');
+            if (gstElement) {
+                gstElement.textContent = gst;
+            }
+        }
+        
+        // Update time every second
+        setInterval(updateGST, 1000);
+        updateGST();
+
+        // Dynamic countdown timers
+        function updateCountdowns() {
+            const milestoneElement = document.getElementById('milestone-time');
+            const launchElement = document.getElementById('launch-countdown');
+            
+            if (milestoneElement && launchElement) {
+                // Simulate countdown
+                const currentMilestone = milestoneElement.textContent;
+                const [hours, minutes] = currentMilestone.split('h ')[0] !== currentMilestone 
+                    ? [parseInt(currentMilestone.split('h ')[0]), parseInt(currentMilestone.split('h ')[1].replace('m', ''))]
+                    : [0, parseInt(currentMilestone.replace('m', ''))];
+                
+                let totalMinutes = hours * 60 + minutes;
+                if (totalMinutes > 0) {
+                    totalMinutes--;
+                    const newHours = Math.floor(totalMinutes / 60);
+                    const newMinutes = totalMinutes % 60;
+                    
+                    if (newHours > 0) {
+                        milestoneElement.textContent = `${newHours}h ${newMinutes}m`;
+                    } else {
+                        milestoneElement.textContent = `${newMinutes}m`;
+                    }
+                }
+            }
+        }
+
+        // Update countdowns every minute
+        setInterval(updateCountdowns, 60000);
+
+        // Add hover effects to progress rings
+        document.querySelectorAll('.progress-circle').forEach(circle => {
+            circle.addEventListener('mouseenter', () => {
+                circle.style.filter = 'drop-shadow(0 0 10px currentColor)';
+            });
+            
+            circle.addEventListener('mouseleave', () => {
+                circle.style.filter = 'none';
+            });
+        });
+
+        // Enhanced rocket animation on click
+        document.querySelector('.rocket').addEventListener('click', () => {
+            const rocket = document.querySelector('.rocket svg');
+            rocket.style.transform = 'translateY(-20px) scale(1.1) rotate(5deg)';
+            rocket.style.filter = 'drop-shadow(0 0 30px rgba(168, 85, 247, 0.8))';
+            
+            setTimeout(() => {
+                rocket.style.transform = '';
+                rocket.style.filter = 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.6))';
+            }, 500);
+        });
+
+        // Terminal typing effect enhancement
+        function addRandomCommands() {
+            const terminal = document.querySelector('.command-line .space-y-2');
+            const commands = [
+                '→ Quantum entanglement established... ████████████████ 100%',
+                '→ Neural network optimization... ██████████░░░░░░ 62%',
+                '→ Holographic interface calibration... ████████░░░░░░░░ 50%',
+                '→ Time-space continuum stabilized... ████████████████ 100%'
+            ];
+            
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% chance every 5 seconds
+                    const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+                    const newLine = document.createElement('div');
+                    newLine.className = 'terminal-text text-sm data-stream';
+                    newLine.textContent = randomCommand;
+                    
+                    const lastCommand = terminal.querySelector('.terminal-text:last-child');
+                    terminal.insertBefore(newLine, lastCommand);
+                    
+                    // Remove old lines to prevent overflow
+                    const lines = terminal.querySelectorAll('.data-stream');
+                    if (lines.length > 6) {
+                        lines[0].remove();
+                    }
+                }
+            }, 5000);
+        }
+
+        // Initialize random commands
+        addRandomCommands();
+
+        // Add particle effects on button hover
+        document.querySelectorAll('a[href^="#"], a[href^="mailto:"]').forEach(button => {
+            button.addEventListener('mouseenter', (e) => {
+                createParticles(e.target);
+            });
+        });
+
+        function createParticles(element) {
+            for (let i = 0; i < 3; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'absolute w-1 h-1 bg-purple-400 rounded-full pointer-events-none';
+                particle.style.left = Math.random() * element.offsetWidth + 'px';
+                particle.style.top = Math.random() * element.offsetHeight + 'px';
+                particle.style.animation = 'particle-float 1s ease-out forwards';
+                
+                element.style.position = 'relative';
+                element.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // Add particle animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes particle-float {
+                0% { 
+                    opacity: 1; 
+                    transform: translateY(0) scale(1); 
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: translateY(-20px) scale(0); 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Console easter egg
+        console.log(`
+    ╔══════════════════════════════════════╗
+    ║        🚀 MISSION CONTROL 🚀        ║
+    ║                                      ║
+    ║     Welcome to the command center!   ║
+    ║                                      ║
+    ║  Status: All systems operational     ║
+    ║  Clearance: Level 7G-Alpha           ║
+    ║                                      ║
+    ╚══════════════════════════════════════╝
+        `);
+    </script>
+</body>
+</html>
