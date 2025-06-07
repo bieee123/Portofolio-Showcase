@@ -1,2 +1,2 @@
 # Portofolio-Showcase
-Show
+Showcase Wesbite Gabrielle Lintong
