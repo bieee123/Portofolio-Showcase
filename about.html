@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Gabrielle B. Lintong</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .progress-bar {
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .achievement-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* YouTube-style backdrop blur when sidebar is open */
+        .backdrop-blur-active {
+            backdrop-filter: blur(4px);
+            transition: backdrop-filter 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Overlay for sidebar (all screen sizes) -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden backdrop-blur-active"></div>
+    
+    <!-- YouTube-Style Hidden Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+                <button id="sidebarClose" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-times text-gray-600"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-user mr-3 text-blue-600"></i>
+                    <span class="font-semibold">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content - Full Width (YouTube Style) -->
+    <div class="min-h-screen w-full">
+        <!-- Top Header with Hamburger Menu -->
+        <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 py-3">
+                <div class="flex items-center space-x-4">
+                    <!-- YouTube-style Hamburger Menu -->
+                    <button id="sidebarToggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        <i class="fas fa-bars text-xl text-gray-700"></i>
+                    </button>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-800">About Me</h1>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="flex space-x-2">
+                    <a href="https://github.com/bieee123" class="p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i class="fab fa-github text-lg"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i class="fab fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="https://x.com/bielintong0?s=11" class="p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i class="fab fa-twitter text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Container -->
+        <div class="flex flex-col lg:flex-row min-h-screen">
+            <!-- Personal Info Aside (30%) -->
+            <aside class="lg:w-[30%] bg-white border-r border-gray-200 p-6">
+                <div class="sticky top-24">
+                    <!-- Profile Card -->
+                    <div class="text-center mb-8">
+                        <div class="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
+                            <img src="/assets/img/Me.jpg" alt="Gabrielle B. Lintong" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-600 rounded-full items-center justify-center text-white text-2xl font-bold hidden">
+                                GB
+                            </div>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Gabrielle B. Lintong</h2>
+                        <p class="text-blue-600 font-medium bg-blue-50 px-4 py-2 rounded-full inline-block text-sm">
+                            Cyber Security Researcher
+                        </p>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fab fa-linkedin-in text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">LinkedIn</p>
+                                <a href="https://www.linkedin.com/in/gabrielle-lintong" target="_blank" class="text-sm text-gray-800 hover:text-blue-600 transition-colors">
+                                    linkedin.com/in/gabrielle-lintong
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-envelope text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Email</p>
+                                <a href="mailto:gabriellelintong01@gmail.com" class="text-sm text-gray-800 hover:text-blue-600 transition-colors">
+                                    gabriellelintong01@gmail.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-phone text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Phone</p>
+                                <a href="tel:+6281292412117" class="text-sm text-gray-800 hover:text-green-600 transition-colors">
+                                    +62 812-9241-2117
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-calendar text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Birthday</p>
+                                <time datetime="2006-09-01" class="text-sm text-gray-800">September 1, 2006</time>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Location</p>
+                                <address class="text-sm text-gray-800 not-italic">Cikarang, Jawa Barat, Indonesia</address>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="flex justify-center gap-3">
+                        <a href="https://www.facebook.com/share/1XbCz7FQnP/?mibextid=wwXIfr" class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://medium.com/@bielintong" class="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
+                            <i class="fab fa-medium"></i>
+                        </a>
+                        <a href="https://www.instagram.com/bielintong" class="w-10 h-10 bg-pink-600 text-white rounded-lg flex items-center justify-center hover:bg-pink-700 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content (70%) -->
+            <main class="lg:w-[70%] p-6 overflow-y-auto">
+                <!-- Hero Section -->
+                <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-2xl p-8 mb-8">
+                    <div class="max-w-4xl">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Cybersecurity Professional</h1>
+                        <p class="text-xl mb-8 leading-relaxed opacity-90">
+                            Passionate about securing digital landscapes through innovative solutions, continuous learning, 
+                            and hands-on experience in penetration testing, web development, and security research.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold border border-white/30">
+                                Penetration Testing
+                            </span>
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold border border-white/30">
+                                Web Security
+                            </span>
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold border border-white/30">
+                                Bug Bounty
+                            </span>
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold border border-white/30">
+                                Full Stack Development
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Story Section -->
+                <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user text-blue-600"></i>
+                        </div>
+                        My Story
+                    </h2>
+                    <div class="prose prose-lg max-w-none text-gray-600 space-y-6 leading-relaxed">
+                        <p>
+                            My journey into cybersecurity began with a curiosity about how things work under the hood. 
+                            What started as tinkering with websites and applications evolved into a deep passion for 
+                            understanding security vulnerabilities and building robust defense mechanisms.
+                        </p>
+                        <p>
+                            Over the years, I've specialized in web application security, penetration testing, and 
+                            security research. My approach combines technical expertise with creative problem-solving, 
+                            allowing me to identify vulnerabilities that others might miss and develop innovative 
+                            solutions to complex security challenges.
+                        </p>
+                        <p>
+                            When I'm not hunting for bugs or building secure applications, I enjoy sharing knowledge 
+                            through blog posts, creating educational simulations, and contributing to the security 
+                            community through responsible disclosure and open-source projects.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Skills & Experience Grid -->
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <!-- Technical Skills -->
+                    <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                            <div class="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cogs text-blue-600 text-sm"></i>
+                            </div>
+                            Technical Skills
+                        </h3>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Web Security</span>
+                                    <span class="text-sm text-gray-500 font-semibold">80%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="progress-bar bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Penetration Testing</span>
+                                    <span class="text-sm text-gray-500 font-semibold">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="progress-bar bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Full Stack Development</span>
+                                    <span class="text-sm text-gray-500 font-semibold">75%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="progress-bar bg-gradient-to-r from-purple-500 to-purple-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Python/JavaScript</span>
+                                    <span class="text-sm text-gray-500 font-semibold">80%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="progress-bar bg-gradient-to-r from-yellow-500 to-yellow-600 h-2.5 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Security Research</span>
+                                    <span class="text-sm text-gray-500 font-semibold">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="progress-bar bg-gradient-to-r from-red-500 to-red-600 h-2.5 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Achievements -->
+                    <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                            <div class="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-trophy text-purple-600 text-sm"></i>
+                            </div>
+                            Achievements
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="achievement-card text-center p-4 bg-blue-50 rounded-xl">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">10+</div>
+                                <div class="text-sm text-gray-600 font-medium">Bugs Found</div>
+                            </div>
+                            <div class="achievement-card text-center p-4 bg-green-50 rounded-xl">
+                                <div class="text-3xl font-bold text-green-600 mb-2">$100+</div>
+                                <div class="text-sm text-gray-600 font-medium">Bounty Earned</div>
+                            </div>
+                            <div class="achievement-card text-center p-4 bg-purple-50 rounded-xl">
+                                <div class="text-3xl font-bold text-purple-600 mb-2">11+</div>
+                                <div class="text-sm text-gray-600 font-medium">Projects Built</div>
+                            </div>
+                            <div class="achievement-card text-center p-4 bg-red-50 rounded-xl">
+                                <div class="text-3xl font-bold text-red-600 mb-2">1+</div>
+                                <div class="text-sm text-gray-600 font-medium">Years Experience</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Experience Timeline -->
+                <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-briefcase text-green-600"></i>
+                        </div>
+                        Experience
+                    </h3>
+                    <div class="space-y-8">
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                    <i class="fas fa-shield-alt text-blue-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Security Researcher</h4>
+                                <p class="text-blue-600 font-medium mb-3 flex items-center gap-2">
+                                    <i class="fas fa-calendar-alt text-sm"></i>
+                                    2023 - Present
+                                </p>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Conducting security research and vulnerability assessments for various organizations. 
+                                    Specializing in web application security and API testing.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-code text-green-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Web Development</h4>
+                                <p class="text-green-600 font-medium mb-3 flex items-center gap-2">
+                                    <i class="fas fa-calendar-alt text-sm"></i>
+                                    2022 - 2023
+                                </p>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Experienced in full stack web development and cybersecurity. Passionate about building 
+                                    secure, user-friendly applications and actively researching vulnerabilities in web applications and APIs.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                                    <i class="fas fa-bug text-purple-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Bug Bounty Hunter</h4>
+                                <p class="text-purple-600 font-medium mb-3 flex items-center gap-2">
+                                    <i class="fas fa-calendar-alt text-sm"></i>
+                                    2021 - Present
+                                </p>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Active participant in various bug bounty programs. Successfully identified and 
+                                    reported critical vulnerabilities in web applications and APIs.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA Section -->
+                <section class="py-12 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl text-center">
+                    <h3 class="text-3xl font-bold mb-4">Let's Work Together</h3>
+                    <p class="text-lg mb-8 max-w-2xl mx-auto leading-relaxed opacity-90">
+                        Interested in collaborating on security projects or discussing opportunities? I'd love to hear from you.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="contact.html" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            Get in Touch
+                        </a>
+                        <a href="projects.html" class="border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
+                            <i class="fas fa-folder"></i>
+                            View My Work
+                        </a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="assets/js/sidebar-about.js"></script>
+</body>
+</html>

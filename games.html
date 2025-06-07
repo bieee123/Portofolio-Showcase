@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Professional Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .game-card-inactive {
+            filter: grayscale(50%);
+            opacity: 0.7;
+        }
+        .game-card-active:hover {
+            transform: translateY(-4px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-gamepad mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-gray-800">Educational Games</h1>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-purple-600 to-pink-700 text-white py-16">
+            <div class="container mx-auto px-6 text-center">
+                <div class="flex justify-center mb-6">
+                    <i class="fas fa-gamepad text-6xl text-white opacity-90"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Interactive Learning Games</h2>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                    Learn cybersecurity concepts through engaging, interactive games designed to enhance your understanding and skills.
+                </p>
+                <div class="flex items-center justify-center space-x-2 text-lg">
+                    <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">4 Active</span>
+                    <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">1 Coming Soon</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Games Grid -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Available Games</h3>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Challenge yourself with these interactive cybersecurity games. Click on available games to start playing!
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Active Game 1 -->
+                    <div id="game-1" class="game-card-active bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-blue-300">
+                        <div class="text-center">
+                            <div class="bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-chess text-2xl"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4">Security Chess</h4>
+                            <p class="text-gray-600 mb-6">
+                                Cyber chess game where attackers vs defenders battle, learning firewalls, exploits, encryption through immersive strategy gameplay.
+                            </p>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>10-15 minutes</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-signal mr-2"></i>
+                                    <span>Intermediate</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-gamepad mr-2"></i>
+                                    <span>Cybersecurity Strategy</span>
+                                </div>
+                            </div>
+                            <button class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition w-full">
+                                <i class="fas fa-play mr-2"></i>
+                                Play Now
+                            </button>
+                            <div class="mt-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle text-green-500 mr-1 text-xs"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Game 2 -->
+                    <div id="game-2" class="game-card-active bg-gradient-to-br from-green-100 to-teal-100 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-green-300">
+                        <div class="text-center">
+                            <div class="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-th text-2xl"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4">Tic Tac Toe</h4>
+                            <p class="text-gray-600 mb-6">
+                                Classic X and O game reimagined. Play against the computer or challenge a friend in this timeless strategy battle.
+                            </p>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>2-5 minutes</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-signal mr-2"></i>
+                                    <span>Beginner Friendly</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-brain mr-2"></i>
+                                    <span>Quick strategy</span>
+                                </div>
+                            </div>
+                            <button class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition w-full">
+                                <i class="fas fa-play mr-2"></i>
+                                Play Now
+                            </button>
+                            <div class="mt-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle text-green-500 mr-1 text-xs"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Game 3 -->
+                    <div id="game-3" class="game-card-active bg-gradient-to-br from-pink-100 to-red-100 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-pink-300">
+                        <div class="text-center">
+                            <div class="bg-pink-500 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-fire text-2xl"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4">Lava Game</h4>
+                            <p class="text-gray-600 mb-6">
+                                Don’t touch the lava! Jump and dodge your way through fiery levels in this action-packed survival game.
+                            </p>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>10-15 minutes</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-signal mr-2"></i>
+                                    <span>Intermediate</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-running mr-2"></i>
+                                    <span>Reaction & timing</span>
+                                </div>
+                            </div>
+                            <button class="bg-pink-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-700 transition w-full">
+                                <i class="fas fa-play mr-2"></i>
+                                Play Now
+                            </button>
+                            <div class="mt-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle text-green-500 mr-1 text-xs"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Game 4 -->
+                    <div id="game-4" class="game-card-active bg-gradient-to-br from-indigo-100 to-blue-100 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-indigo-300">
+                        <div class="text-center">
+                            <div class="bg-indigo-500 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-puzzle-piece text-2xl"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4">Firewall: Blackout Puzzles</h4>
+                            <p class="text-gray-600 mb-6">
+                                Decrypt codes, trace hackers, and secure networks in this thrilling cybersecurity puzzle game. Outsmart threats before time runs out!
+                            </p>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>7-10 minutes</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-signal mr-2"></i>
+                                    <span>Intermediate - Advanced</span>
+                                </div>
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="fas fa-chess-knight mr-2"></i>
+                                    <span>Strategic thinking</span>
+                                </div>
+                            </div>
+                            <button class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition w-full">
+                                <i class="fas fa-play mr-2"></i>
+                                Play Now
+                            </button>
+                            <div class="mt-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle text-green-500 mr-1 text-xs"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </section>
+        
+        <!-- Game Features Section -->
+        <section class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Why Play Our Games?</h3>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Our educational games are designed to make learning cybersecurity concepts engaging and memorable.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-brain text-2xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Learn by Doing</h4>
+                        <p class="text-gray-600">Hands-on interactive experiences that reinforce cybersecurity concepts through practical application.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-trophy text-2xl text-green-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Track Progress</h4>
+                        <p class="text-gray-600">Monitor your learning journey with scoring systems and achievement tracking.</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-2xl text-purple-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Skill Building</h4>
+                        <p class="text-gray-600">Develop critical thinking and problem-solving skills essential for cybersecurity professionals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-16 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-4">Ready to Start Learning?</h3>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Jump into our available games or explore other learning resources on the platform.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="scrollToGames()" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        Start Playing
+                    </button>
+                    <a href="simulations.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition">
+                        Try Simulations
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Professional Showcase. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="https://github.com/bieee123" class="hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabrielle-lintong" class="hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/bielintong0?s=11" class="hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/bielintong" class="hover:text-blue-400 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.getElementById('mainContent');
+        
+        function toggleSidebar() {
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+        
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar when clicking on navigation links on mobile
+        const navLinks = document.querySelectorAll('#sidebar nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    toggleSidebar();
+                }
+            });
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        });
+        
+        // Scroll to games section
+        function scrollToGames() {
+            const gamesSection = document.querySelector('.grid.md\\:grid-cols-2');
+            if (gamesSection) {
+                gamesSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+        
+        // Game click handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const activeGameCards = document.querySelectorAll('.game-card-active');
+            
+            activeGameCards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    // Add your game URLs here when ready
+                    const gameUrls = [
+                        '/games/security-chess/index.html', 
+                        '/games/Tic-Tac-Toe/index.html', 
+                        '/games/lava-game/index.html',
+                        '/games/security-puzzle/puzzle.html'
+                    ];
+                    
+                    if (gameUrls[index] !== '#') {
+                        window.location.href = gameUrls[index];
+                    } else {
+                        // Placeholder action for demo
+                        alert(`Launching ${this.querySelector('h4').textContent}...`);
+                    }
+                });
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

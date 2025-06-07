@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflected Cross-Site Scripting (XSS) in cx.apps.binus.ac.id - Modern Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Serif+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Source Serif Pro', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white font-body text-gray-900 leading-relaxed">
+    
+    <!-- Article Container -->
+    <main class="py-8 md:py-16">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            <!-- Back Link -->
+            <div class="mb-12">
+                <a href="/blog.html#article-2" class="inline-flex items-center text-gray-500 hover:text-gray-900 transition-all duration-300 text-sm font-medium tracking-wide group">
+                    <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to blog
+                </a>
+            </div>
+
+            <!-- Article Header -->
+            <header class="mb-16">
+                <div class="mb-6">
+                    <span class="text-xs font-medium tracking-widest text-gray-500 uppercase">Web Security • December 20, 2024</span>
+                </div>
+                
+                <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 leading-tight mb-8">
+                    Reflected Cross-Site Scripting (XSS) in cx.apps.binus.ac.id
+                </h1>
+                
+                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-medium text-gray-900">Security Researcher</p>
+                            <p class="text-gray-500">Cybersecurity Analyst</p>
+                        </div>
+                    </div>
+                    <span class="text-gray-300">•</span>
+                    <span>10 min read</span>
+                </div>
+            </header>
+
+            <!-- Article Body -->
+            <article class="prose prose-lg max-w-none">
+                <div class="font-body text-lg leading-relaxed text-gray-700">
+                    
+                    <p class="text-xl leading-relaxed text-gray-800 mb-8 font-light">
+                        Cross-Site Scripting (XSS) is a common web application vulnerability that allows attackers to inject malicious scripts into webpages. This article discusses a reflected XSS vulnerability identified in <strong>cx.apps.binus.ac.id</strong>.
+                    </p>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        Vulnerability Overview
+                    </h2>
+                    
+                    <p class="mb-6">
+                        The vulnerability was discovered in the login endpoint of the cx.apps.binus.ac.id domain. It allows attackers to execute arbitrary JavaScript in the context of a user's browser, potentially leading to session hijacking, data theft, or phishing attacks.
+                    </p>
+
+                    <div class="bg-red-50 border-l-4 border-red-400 p-6 mb-8 rounded-r-lg">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            <h3 class="font-semibold text-red-800">High Severity Alert</h3>
+                        </div>
+                        <p class="text-red-700">
+                            The severity of this vulnerability is rated as <strong>High</strong> due to the potential impact on user security and data privacy.
+                        </p>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        Steps to Reproduce
+                    </h2>
+                    
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-8 mb-8">
+                        <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="font-semibold text-gray-900 mr-2">1.</span>
+                                <span>Navigate to the affected endpoint at <code class="bg-gray-200 px-2 py-1 rounded text-sm font-mono">https://cx.apps.binus.ac.id/login</code>.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="font-semibold text-gray-900 mr-2">2.</span>
+                                <span>Inject a malicious payload into the input field, such as: <code class="bg-gray-200 px-2 py-1 rounded text-sm font-mono">&lt;script&gt;alert('XSS')&lt;/script&gt;</code>.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="font-semibold text-gray-900 mr-2">3.</span>
+                                <span>Observe the execution of the script in the browser.</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        Proof of Concept
+                    </h2>
+                    
+                    <p class="mb-6">
+                        Below is an example of a crafted URL exploiting the XSS vulnerability:
+                    </p>
+                    
+                    <div class="bg-gray-900 text-green-400 p-6 rounded-lg mb-8 font-mono text-sm overflow-x-auto">
+                        <code>https://cx.apps.binus.ac.id/login?redirect=%3Cscript%3Ealert('XSS')%3C/script%3E</code>
+                    </div>
+                    
+                    <p class="mb-8">
+                        When the victim clicks this link, the script executes, demonstrating the vulnerability.
+                    </p>
+
+                    <div class="border border-gray-200 rounded-lg p-6 mb-8 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-image mr-2"></i>
+                            Proof of Concept Screenshot
+                        </h3>
+                        <div class="bg-white border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                            <i class="fas fa-camera text-gray-400 text-3xl mb-4"></i>
+                            <p class="text-gray-500">Screenshot showing XSS vulnerability execution</p>
+                            <p class="text-sm text-gray-400 mt-2">(Image placeholder - actual PoC image would be displayed here)</p>
+                        </div>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        Recommended Fixes
+                    </h2>
+                    
+                    <p class="mb-6">To mitigate this issue, developers should:</p>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="border-l-4 border-blue-400 pl-6 bg-blue-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-blue-900 mb-2">
+                                <i class="fas fa-shield-alt mr-2"></i>
+                                Input Validation
+                            </h3>
+                            <p class="text-blue-800">Implement input validation to sanitize user inputs before processing.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-400 pl-6 bg-green-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-green-900 mb-2">
+                                <i class="fas fa-code mr-2"></i>
+                                Output Encoding
+                            </h3>
+                            <p class="text-green-800">Use proper output encoding to prevent script execution in web pages.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-400 pl-6 bg-purple-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-purple-900 mb-2">
+                                <i class="fas fa-lock mr-2"></i>
+                                Content Security Policy
+                            </h3>
+                            <p class="text-purple-800">Adopt Content Security Policies (CSP) to limit the execution of unauthorized scripts.</p>
+                        </div>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        Conclusion
+                    </h2>
+                    
+                    <blockquote class="border-l-4 border-gray-900 pl-6 py-4 my-8 bg-gray-50 italic text-gray-800">
+                        Reflected XSS vulnerabilities pose significant risks to web applications and their users. It is essential to address these vulnerabilities promptly to maintain secure digital environments.
+                    </blockquote>
+                    
+                    <!-- Tags -->
+                    <div class="pt-8 mt-12 border-t border-gray-200">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Cybersecurity</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">XSS</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Web Security</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Vulnerability Assessment</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Share Section -->
+                    <div class="pt-8 mt-8 border-t border-gray-200">
+                        <p class="text-sm text-gray-500 mb-4 tracking-wide">SHARE THIS ARTICLE</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-twitter text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-linkedin text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-facebook text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-medium text-gray-600"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </article>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Showcase - Bug Bounty Writeups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .filter-transition { transition: all 0.3s ease-in-out; }
+        .writeup-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .writeup-card:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-shield mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl text-red-600 mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">Bug Bounty Writeups</h1>
+                </div>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-red-600 to-orange-600 text-white py-12">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Security Research & Discoveries</h2>
+                <p class="text-lg md:text-xl mb-6 max-w-3xl mx-auto">
+                    Detailed writeups of security vulnerabilities discovered through bug bounty programs and responsible disclosure processes.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-2 justify-center text-sm">
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-lg">
+                        <span class="font-semibold">0</span> Vulnerabilities Found
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-lg">
+                        <span class="font-semibold">$0</span> Total Bounties
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-lg">
+                        <span class="font-semibold">0</span> Hall of Fame
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Filter Section -->
+        <section class="bg-white py-6 border-b border-gray-200">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <!-- Search Bar -->
+                    <div class="relative flex-1 max-w-md">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Search writeups..." 
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        >
+                    </div>
+                    
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-btn active bg-red-600 text-white px-4 py-2 rounded-lg font-medium filter-transition" data-filter="all">
+                            All
+                        </button>
+                        <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 filter-transition" data-filter="critical">
+                            Critical
+                        </button>
+                        <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 filter-transition" data-filter="high">
+                            High
+                        </button>
+                        <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 filter-transition" data-filter="medium">
+                            Medium
+                        </button>
+                        <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 filter-transition" data-filter="low">
+                            Low
+                        </button>
+                    </div>
+                    
+                    <!-- Sort Dropdown -->
+                    <select id="sortSelect" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="date-desc">Latest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="bounty-desc">Highest Bounty</option>
+                        <option value="bounty-asc">Lowest Bounty</option>
+                        <option value="severity-desc">Highest Severity</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Writeups Grid -->
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <div id="writeupGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- for the writeups can be filled in here. -->
+
+                </div>
+                
+                <!-- Load More Button -->
+                <div class="text-center mt-12">
+                    <button id="loadMoreBtn" class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                        Load More Writeups
+                    </button>
+                </div>
+
+                <!-- No Writeups Message -->
+                <div id="noWriteups" class="text-center py-12 hidden">
+                    <i class="fas fa-bug text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Vulnerability Writeups</h3>
+                    <p class="text-gray-500">Try adjusting the filters or check back later for new writeups.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stats Section -->
+        <section class="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-4">Bug Bounty Statistics</h3>
+                    <p class="text-xl max-w-2xl mx-auto">A summary of my security research activities and achievements</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="bg-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bug text-2xl"></i>
+                        </div>
+                        <h4 class="text-3xl font-bold mb-2">0</h4>
+                        <p class="text-gray-300">Vulnerabilities Found</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-dollar-sign text-2xl"></i>
+                        </div>
+                        <h4 class="text-3xl font-bold mb-2">$0</h4>
+                        <p class="text-gray-300">Total Bounties Earned</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-trophy text-2xl"></i>
+                        </div>
+                        <h4 class="text-3xl font-bold mb-2">0</h4>
+                        <p class="text-gray-300">Hall of Fame Entries</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-star text-2xl"></i>
+                        </div>
+                        <h4 class="text-3xl font-bold mb-2">0</h4>
+                        <p class="text-gray-300">Companies Tested</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Hall of Fame Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Hall of Fame</h3>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">Recognition from companies for responsible disclosure of security vulnerabilities</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- for the hall of fame can be filled in here.-->
+
+                </div>
+
+                <!-- No Hall of Fame Message -->
+                <div id="noHallOfFame" class="text-center py-12 hidden">
+                    <i class="fas fa-trophy text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Hall of Fame Entries</h3>
+                    <p class="text-gray-500">You haven’t been recognized yet — keep hacking responsibly!</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <section class="py-16 bg-gradient-to-r from-red-600 to-orange-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-4">Interested in Security Research?</h3>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Learn about responsible disclosure and ethical hacking through detailed writeups and methodologies.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        Contact Me
+                    </a>
+                    <a href="blog.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition">
+                        Read Blog Posts
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <i class="fas fa-shield-alt text-2xl text-red-600 mr-3"></i>
+                        <span class="text-xl font-bold">Security Research Portfolio</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/bieee123" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://x.com/bielintong0?s=11" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/bielintong" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                    <p>&copy; 2025 Security Research Portfolio. All rights reserved.</p>
+                    <p class="text-sm mt-2">Responsible disclosure and ethical hacking practices.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const mainContent = document.getElementById('mainContent');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+        
+        // Filter and Search Functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const writeupCards = document.querySelectorAll('.writeup-card');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        let currentFilter = 'all';
+        let visibleCards = 6;
+        
+        // Initialize display
+        updateDisplay();
+        
+        // Filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-red-600', 'text-white');
+                    b.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                btn.classList.add('active', 'bg-red-600', 'text-white');
+                btn.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                currentFilter = btn.dataset.filter;
+                visibleCards = 6;
+                updateDisplay();
+            });
+        });
+        
+        // Search input
+        searchInput.addEventListener('input', () => {
+            visibleCards = 6;
+            updateDisplay();
+        });
+        
+        // Sort select
+        sortSelect.addEventListener('change', () => {
+            updateDisplay();
+        });
+        
+        // Load more button
+        loadMoreBtn.addEventListener('click', () => {
+            visibleCards += 3;
+            updateDisplay();
+        });
+        
+        function updateDisplay() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const sortBy = sortSelect.value;
+            
+            // Get filtered cards
+            let filteredCards = Array.from(writeupCards).filter(card => {
+                const severity = card.dataset.severity;
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                const matchesFilter = currentFilter === 'all' || severity === currentFilter;
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                
+                return matchesFilter && matchesSearch;
+            });
+            
+            // Sort cards
+            filteredCards.sort((a, b) => {
+                switch (sortBy) {
+                    case 'date-desc':
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    case 'date-asc':
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    case 'bounty-desc':
+                        return parseInt(b.dataset.bounty) - parseInt(a.dataset.bounty);
+                    case 'bounty-asc':
+                        return parseInt(a.dataset.bounty) - parseInt(b.dataset.bounty);
+                    case 'severity-desc':
+                        const severityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+                        return severityOrder[b.dataset.severity] - severityOrder[a.dataset.severity];
+                    default:
+                        return 0;
+                }
+            });
+            
+            // Hide all cards first
+            writeupCards.forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // Show visible cards
+            filteredCards.slice(0, visibleCards).forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            // Update load more button
+            if (filteredCards.length <= visibleCards) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+            
+            // Reorder cards in DOM
+            const grid = document.getElementById('writeupGrid');
+            filteredCards.forEach(card => {
+                grid.appendChild(card);
+            });
+        }
+        
+        // Mobile menu close on link click
+        document.querySelectorAll('#sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Responsive sidebar handling
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+    </script>
+</body>
+</html>

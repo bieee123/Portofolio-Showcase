@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Portfolio Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for chat area */
+        #chat-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        #chat-area::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #chat-area::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        #chat-area::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Improved positioning for different screen sizes */
+        #chatbot-popup {
+            bottom: 6rem; /* 96px - more space from button */
+            right: 1.5rem; /* 24px - same as button */
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            #chatbot-popup {
+                bottom: 5rem; /* 80px on mobile */
+                right: 1rem; /* 16px on mobile */
+                left: 1rem; /* Full width with margins on mobile */
+                width: auto;
+            }
+            
+            #chatbot-button {
+                bottom: 1rem; /* 16px on mobile */
+                right: 1rem; /* 16px on mobile */
+            }
+        }
+        
+        /* Ensure proper viewport handling */
+        @media (max-height: 600px) {
+            #chatbot-popup {
+                height: 400px !important;
+                max-height: 70vh !important;
+                bottom: 5rem !important; /* Less space on short screens */
+            }
+        }
+        
+        @media (max-height: 500px) {
+            #chatbot-popup {
+                height: 350px !important;
+                max-height: 65vh !important;
+                bottom: 4.5rem !important; /* Even less space on very short screens */
+            }
+        }
+        
+        /* Large screen adjustments */
+        @media (min-width: 1024px) {
+            #chatbot-popup {
+                bottom: 7rem; /* More space on larger screens */
+                right: 2rem; /* More margin from edge */
+            }
+            
+            #chatbot-button {
+                bottom: 2rem;
+                right: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Chatbot Floating Button -->
+    <button id="chatbot-button" 
+            class="fixed bottom-6 right-6 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white w-16 h-16 rounded-full shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center z-50 animate-pulse-slow group">
+        <i class="fas fa-robot text-xl group-hover:animate-bounce"></i>
+        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Chat with me!
+        </div>
+    </button>
+
+    <!-- Chatbot Popup -->
+    <div id="chatbot-popup" 
+         class="fixed w-80 md:w-96 h-[500px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 transform scale-0 transition-all duration-300 origin-bottom-right z-40 overflow-hidden flex flex-col">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <i class="fas fa-robot text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg">EchoCore Assistant</h3>
+                    <div class="flex items-center space-x-1 text-sm opacity-90">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Online</span>
+                    </div>
+                </div>
+            </div>
+            <button id="close-chatbot" 
+                    class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 border-b border-gray-100">
+            <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">
+                    <i class="text-accent-500 mr-1"></i>
+                    EchoCore v1.0
+                </p>
+                <p class="text-sm text-gray-600 mb-2">
+                    <i class="fas fa-sparkles text-accent-500 mr-1"></i>
+                    Your smart guide through the showcase.
+                </p>
+                <div class="flex justify-center space-x-2 text-xs">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Projects</span>
+                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Blog</span>
+                    <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Writeups</span>
+                    <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">Simulations</span>
+                    <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">Games</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Body -->
+        <div id="chat-area" class="flex-1 p-4 overflow-y-auto min-h-0 bg-gradient-to-b from-gray-50 to-white">
+            <!-- Welcome Message -->
+            <div class="chat-message bot mb-4 animate-fade-in">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm border border-gray-100 max-w-xs">
+                        <p class="text-gray-800 text-sm leading-relaxed">
+                            👋 Hello! I'm your Portfolio Assistant. I can help you explore projects, games, blog posts, and more. What interests you?
+                        </p>
+                        <div class="text-xs text-gray-500 mt-2">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div id="quick-actions" class="space-y-2 mb-4">
+                <div class="text-xs text-gray-500 mb-2 pl-11">Quick actions:</div>
+                <div class="flex flex-wrap gap-2 pl-11">
+                    <button class="quick-action bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-code mr-1"></i>Show Projects
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-gamepad mr-1"></i>Play Games
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-blog mr-1"></i>Read Blog
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-envelope mr-1"></i>Contact Info
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="border-t border-gray-200 p-4 bg-white flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="flex-1 relative">
+                    <input type="text" 
+                           id="chat-input" 
+                           placeholder="Ask about projects, games, or anything..."
+                           class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 text-sm">
+                    <button id="send-message" 
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-full flex items-center justify-center transition-all duration-200 transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="typing-indicator" class="hidden mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                <div class="flex space-x-1">
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+                <span class="ml-2">Assistant is typing...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatbotButton = document.getElementById("chatbot-button");
+            const chatbotPopup = document.getElementById("chatbot-popup");
+            const closeChatbot = document.getElementById("close-chatbot");
+            const chatInput = document.getElementById("chat-input");
+            const sendMessage = document.getElementById("send-message");
+            const chatArea = document.getElementById("chat-area");
+            const quickActions = document.querySelectorAll(".quick-action");
+            const typingIndicator = document.getElementById("typing-indicator");
+
+            let isOpen = false;
+            let messageCount = 0;
+
+            // Enhanced responses with more detailed information
+            const responses = {
+                // Greetings
+                "hello": "Hello! 👋 Welcome to my portfolio showcase. I'm here to help you navigate through my projects, games, blog posts, and more. What would you like to explore first?",
+                "hi": "Hi there! 🌟 Thanks for visiting my portfolio. I can show you around my projects, games, or blog posts. What catches your interest?",
+                "hey": "Hey! 🚀 Ready to explore some cool projects? I can guide you through my web development work, games, or technical blog posts.",
+                "good morning": "Good morning! ☀️ Hope you're having a great day. Let me help you discover my latest projects and creations.",
+                "good afternoon": "Good afternoon! 🌅 Perfect time to explore some interactive projects. What would you like to see?",
+                "good evening": "Good evening! 🌙 Great time to dive into some coding projects or play a quick game. What interests you?",
+
+                // Projects
+                "show projects": "🎯 Here are my featured projects:<br><br>• <strong>Password Security Suite</strong> - Advanced password strength analyzer with hashing<br>• <strong>AES-256 Encryption Tool</strong> - Secure data encryption/decryption<br>• <strong>Interactive Games</strong> - Browser-based entertainment<br>• <strong>Portfolio Website</strong> - This very site you're on!<br><br>Visit my <a href='projects.html' class='text-primary-600 hover:underline font-semibold'>Projects Page</a> to see them all in action! 🚀",
+                "projects": "My project portfolio includes web applications, security tools, and interactive experiences. Each project showcases different technical skills from frontend development to cybersecurity. Would you like to know more about any specific type?",
+                "web development": "💻 My web development projects focus on:<br>• Modern JavaScript frameworks<br>• Responsive design with CSS/Tailwind<br>• Interactive user experiences<br>• Performance optimization<br><br>Check out the live demos on my projects page!",
+                "cybersecurity": "🔐 My cybersecurity projects include:<br>• Password strength analysis tools<br>• AES encryption implementations<br>• Security best practices demos<br>• Vulnerability assessment tools<br><br>All built with security-first principles in mind!",
+
+                // Games
+                "games": "🎮 I've created some fun browser games:<br><br>• <strong>Tic Tac Toe</strong> - Classic strategy game with AI<br>• <strong>The Cube</strong> - 3D puzzle challenge<br>• <strong>More coming soon!</strong><br><br>Try them out on my <a href='games.html' class='text-green-600 hover:underline font-semibold'>Games Page</a>! 🕹️",
+                "play games": "Ready for some fun? 🎲 You can play:<br>• <a href='games/tic-tac-toe.html' class='text-green-600 hover:underline'>Tic Tac Toe</a> - Test your strategy skills<br>• <a href='games/the-cube.html' class='text-green-600 hover:underline'>The Cube</a> - 3D puzzle solving<br><br>Which one sounds more interesting to you?",
+                "tic tac toe": "⭕ Tic Tac Toe is a classic! My version features:<br>• Smart AI opponent<br>• Clean, modern interface<br>• Score tracking<br>• Responsive design<br><br><a href='games/tic-tac-toe.html' class='text-green-600 hover:underline font-semibold'>Play now!</a>",
+                "the cube": "🧩 The Cube is a challenging 3D puzzle game:<br>• Interactive 3D graphics<br>• Multiple difficulty levels<br>• Intuitive controls<br>• Achievement system<br><br><a href='games/the-cube.html' class='text-purple-600 hover:underline font-semibold'>Try the challenge!</a>",
+
+                // Blog
+                "blog": "📝 My blog covers:<br>• Technical tutorials<br>• Project development stories<br>• Cybersecurity insights<br>• Coding best practices<br><br>Visit my <a href='blog.html' class='text-purple-600 hover:underline font-semibold'>Blog Page</a> to read the latest posts!",
+                "read blog": "📚 Some popular blog posts include:<br>• 'Building Secure Password Systems'<br>• 'Modern Web Development Practices'<br>• 'Game Development with JavaScript'<br>• 'Cybersecurity for Developers'<br><br>Which topic interests you most?",
+                "tutorials": "🎓 I write tutorials on:<br>• Web development fundamentals<br>• JavaScript advanced concepts<br>• Security implementation<br>• UI/UX best practices<br><br>Perfect for developers at any level!",
+
+                // Simulations
+                "simulations": "🔬 My interactive simulations include:<br>• Password strength analyzer<br>• AES encryption demo<br>• Hash function comparisons<br>• Security vulnerability demos<br><br>Visit <a href='simulations.html' class='text-blue-600 hover:underline font-semibold'>Simulations</a> to try them out!",
+                "encryption": "🔐 The AES-256 encryption tool demonstrates:<br>• Real-time encryption/decryption<br>• Secure key generation<br>• Multiple cipher modes<br>• Educational explanations<br><br><a href='simulations/aes-encryption.html' class='text-blue-600 hover:underline font-semibold'>Try it here!</a>",
+                "password": "🔑 The password tool analyzes:<br>• Strength scoring<br>• Entropy calculation<br>• Hash generation (bcrypt, SHA)<br>• Security recommendations<br><br><a href='simulations/password-strength.html' class='text-orange-600 hover:underline font-semibold'>Test your passwords!</a>",
+
+                // About & Contact
+                "about": "👨‍💻 I'm a passionate developer focused on:<br>• Web application development<br>• Cybersecurity research<br>• Interactive game design<br>• Educational content creation<br><br>Learn more on my <a href='about.html' class='text-indigo-600 hover:underline font-semibold'>About Page</a>!",
+                "contact": "📧 Let's connect! You can reach me through:<br>• Email form on my website<br>• Professional networking platforms<br>• Project collaboration inquiries<br><br>Visit my <a href='contact.html' class='text-red-600 hover:underline font-semibold'>Contact Page</a> to get in touch!",
+                "contact info": "📱 I'd love to hear from you! Use my <a href='contact.html' class='text-red-600 hover:underline font-semibold'>Contact Form</a> for:<br>• Project collaboration<br>• Technical questions<br>• Feedback and suggestions<br>• Job opportunities<br><br>I typically respond within 24 hours! 🚀",
+
+                // Skills & Technologies
+                "skills": "🛠️ My technical skills include:<br>• <strong>Frontend:</strong> HTML, CSS, JavaScript, React<br>• <strong>Backend:</strong> Node.js, Python, PHP<br>• <strong>Security:</strong> Cryptography, Penetration Testing<br>• <strong>Tools:</strong> Git, Docker, VS Code<br><br>Always learning new technologies!",
+                "technologies": "💻 I work with modern technologies:<br>• JavaScript ES6+, TypeScript<br>• CSS3, Sass, Tailwind CSS<br>• React, Vue.js frameworks<br>• Security libraries and tools<br>• Database systems<br><br>Technology stack varies by project needs!",
+
+                // Help & Features
+                "help": "🤝 I can help you with:<br>• 🎯 Exploring my projects and demos<br>• 🎮 Finding games to play<br>• 📚 Discovering blog content<br>• 🔧 Learning about my tech stack<br>• 📧 Getting contact information<br>• 🎨 Understanding my design process<br><br>Just ask me anything!",
+                "what can you do": "🤖 As your portfolio assistant, I can:<br>• Guide you through all my projects<br>• Recommend games based on your interests<br>• Suggest relevant blog posts<br>• Explain technical concepts<br>• Provide contact information<br>• Share development insights<br><br>Think of me as your personal tour guide! 🎯",
+
+                // Fun responses
+                "thanks": "You're very welcome! 😊 I'm glad I could help. Feel free to explore more of my work or ask me anything else!",
+                "thank you": "My pleasure! 🌟 It's great to see your interest in my projects. Is there anything specific you'd like to dive deeper into?",
+                "awesome": "Thanks! 🚀 I put a lot of effort into making each project both functional and engaging. What would you like to explore next?",
+                "cool": "Glad you think so! 😎 There's plenty more to discover. Want to try out a game or check out some code?",
+                "amazing": "Thank you so much! ✨ That really motivates me to keep creating. What other projects catch your eye?",
+
+                // Default fallback
+                "default": "🤔 That's an interesting question! While I might not have a specific answer for that, I can definitely help you explore my projects, games, blog posts, or get in touch with me. What would you like to discover? 🚀"
+            };
+
+            function getBotReply(message) {
+                const key = message.toLowerCase().trim();
+                
+                // Direct match
+                if (responses[key]) {
+                    return responses[key];
+                }
+                
+                // Partial matching for more natural conversations
+                for (const [keyword, response] of Object.entries(responses)) {
+                    if (key.includes(keyword) || keyword.includes(key)) {
+                        return response;
+                    }
+                }
+                
+                return responses["default"];
+            }
+
+            function addMessage(message, isUser, delay = 0) {
+                setTimeout(() => {
+                    const messageDiv = document.createElement("div");
+                    messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'} mb-4 animate-slide-up`;
+                    
+                    const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    if (isUser) {
+                        messageDiv.innerHTML = `
+                            <div class="flex items-start space-x-3 justify-end">
+                                <div class="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl rounded-tr-sm p-4 shadow-sm max-w-xs">
+                                    <p class="text-sm leading-relaxed">${message}</p>
+                                    <div class="text-xs opacity-75 mt-2">${timestamp}</div>
+                                </div>
+                                <div class="w-8 h-8 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user text-white text-sm"></i>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        messageDiv.innerHTML = `
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-white text-sm"></i>
+                                </div>
+                                <div class="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm border border-gray-100 max-w-xs">
+                                    <p class="text-gray-800 text-sm leading-relaxed">${message}</p>
+                                    <div class="text-xs text-gray-500 mt-2">${timestamp}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Remove quick actions when user sends first message
+                    if (isUser && messageCount === 0) {
+                        const quickActionsDiv = document.getElementById("quick-actions");
+                        if (quickActionsDiv) {
+                            quickActionsDiv.style.display = "none";
+                        }
+                    }
+                    
+                    chatArea.appendChild(messageDiv);
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                    messageCount++;
+                }, delay);
+            }
+
+            function showTypingIndicator() {
+                typingIndicator.classList.remove("hidden");
+            }
+
+            function hideTypingIndicator() {
+                typingIndicator.classList.add("hidden");
+            }
+
+            function sendChatMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = "";
+                    sendMessage.disabled = true;
+                    
+                    // Show typing indicator
+                    showTypingIndicator();
+                    
+                    // Simulate typing delay and send bot response
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        const botReply = getBotReply(message);
+                        addMessage(botReply, false);
+                        sendMessage.disabled = false;
+                        chatInput.focus();
+                    }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+                }
+            }
+
+            // Event Listeners
+            chatbotButton.addEventListener("click", () => {
+                if (isOpen) {
+                    chatbotPopup.style.transform = "scale(0)";
+                    chatbotPopup.style.opacity = "0";
+                    isOpen = false;
+                } else {
+                    chatbotPopup.style.transform = "scale(1)";
+                    chatbotPopup.style.opacity = "1";
+                    isOpen = true;
+                    setTimeout(() => chatInput.focus(), 300);
+                }
+            });
+
+            closeChatbot.addEventListener("click", () => {
+                chatbotPopup.style.transform = "scale(0)";
+                chatbotPopup.style.opacity = "0";
+                isOpen = false;
+            });
+
+            sendMessage.addEventListener("click", sendChatMessage);
+
+            chatInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+
+            // Auto-resize input
+            chatInput.addEventListener("input", function() {
+                sendMessage.disabled = this.value.trim() === "";
+            });
+
+            // Quick action buttons
+            quickActions.forEach(button => {
+                button.addEventListener("click", function() {
+                    const action = this.textContent.trim();
+                    addMessage(action, true);
+                    
+                    setTimeout(() => {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            const botReply = getBotReply(action.toLowerCase());
+                            addMessage(botReply, false);
+                        }, 800);
+                    }, 200);
+                });
+            });
+
+            // Close on outside click
+            document.addEventListener("click", (e) => {
+                if (isOpen && !chatbotPopup.contains(e.target) && !chatbotButton.contains(e.target)) {
+                    chatbotPopup.style.transform = "scale(0)";
+                    chatbotPopup.style.opacity = "0";
+                    isOpen = false;
+                }
+            });
+
+            // Initialize
+            sendMessage.disabled = true;
+        });
+    </script>
+</body>
+</html>

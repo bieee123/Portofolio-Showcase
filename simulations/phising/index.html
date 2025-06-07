@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Phishing Email Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .email-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .phishing-glow {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            animation: phishing-pulse 2s infinite;
+        }
+        
+        @keyframes phishing-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); }
+        }
+        
+        .safe-glow {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: max-content;
+            max-width: 300px;
+            background-color: #1f2937;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .streak-animation {
+            animation: streak-bounce 0.6s ease-out;
+        }
+        
+        @keyframes streak-bounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .difficulty-badge {
+            animation: badge-glow 3s infinite;
+        }
+        
+        @keyframes badge-glow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-indigo-100 min-h-screen font-sans">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-4 shadow-xl">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold flex items-center space-x-3">
+                <i class="fas fa-shield-virus text-yellow-300"></i>
+                <span>Advanced Phishing Detector</span>
+            </h1>
+            <div class="flex flex-wrap items-center space-x-2 md:space-x-6 mt-2 md:mt-0">
+                <div class="flex items-center space-x-4">
+                    <div class="text-center">
+                        <div class="text-xs opacity-90">Score</div>
+                        <div class="text-lg font-bold" id="score">0 / 0</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xs opacity-90">Accuracy</div>
+                        <div class="text-lg font-bold" id="accuracy">0%</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xs opacity-90">Streak</div>
+                        <div class="text-lg font-bold" id="streak">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="container mx-auto mt-3">
+            <div class="w-full bg-white bg-opacity-20 rounded-full h-2">
+                <div id="progress-bar" class="progress-bar bg-yellow-400 h-2 rounded-full" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-xs mt-1 opacity-90">
+                <span>Progress</span>
+                <span id="progress-text">0 / 12 emails analyzed</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Achievement Banner -->
+    <div id="achievement-banner" class="hidden bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3 text-center font-semibold shadow-lg">
+        <i class="fas fa-trophy mr-2"></i>
+        <span id="achievement-text"></span>
+    </div>
+
+    <a href="/simulations.html#simulation-3" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200 ease-in-out mt-4 mb-4 ml-4">
+        <i class="fas fa-arrow-left mr-2"></i>
+        <span>Back to Homepage</span>
+    </a>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 max-w-7xl">
+        <!-- Game Stats Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+                <i class="fas fa-bullseye text-blue-500 text-2xl mb-2"></i>
+                <div class="text-2xl font-bold text-gray-800" id="total-analyzed">0</div>
+                <div class="text-sm text-gray-600">Emails Analyzed</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
+                <div class="text-2xl font-bold text-gray-800" id="phishing-caught">0</div>
+                <div class="text-sm text-gray-600">Phishing Caught</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+                <i class="fas fa-fire text-orange-500 text-2xl mb-2"></i>
+                <div class="text-2xl font-bold text-gray-800" id="max-streak">0</div>
+                <div class="text-sm text-gray-600">Best Streak</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+                <i class="fas fa-star text-yellow-500 text-2xl mb-2"></i>
+                <div class="text-2xl font-bold text-gray-800" id="level">Beginner</div>
+                <div class="text-sm text-gray-600">Security Level</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Email List -->
+            <aside class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-inbox mr-2 text-indigo-600"></i>
+                        Inbox
+                    </h2>
+                    <button onclick="shuffleEmails()" class="text-indigo-600 hover:text-indigo-800 tooltip">
+                        <i class="fas fa-random"></i>
+                        <span class="tooltiptext">Shuffle emails</span>
+                    </button>
+                </div>
+                <div id="email-list" class="space-y-3"></div>
+                <button onclick="resetGame()" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition duration-200">
+                    <i class="fas fa-redo mr-2"></i>Reset Game
+                </button>
+            </aside>
+
+            <!-- Email Content -->
+            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                <div id="email-content" class="min-h-96 text-gray-800">
+                    <div class="text-center text-gray-500 mt-20">
+                        <i class="fas fa-envelope-open-text text-6xl mb-4 opacity-50"></i>
+                        <p class="text-xl mb-2">Select an email to analyze</p>
+                        <p class="text-sm">Look for suspicious indicators and make your decision</p>
+                        
+                        <!-- Quick Tips -->
+                        <div class="mt-8 bg-blue-50 p-4 rounded-lg text-left max-w-md mx-auto">
+                            <h3 class="font-semibold text-blue-800 mb-2">🔍 What to Look For:</h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Suspicious sender domains</li>
+                                <li>• Urgent or threatening language</li>
+                                <li>• Unexpected attachments</li>
+                                <li>• Generic greetings</li>
+                                <li>• Spelling/grammar errors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="feedback" class="mt-6"></div>
+            </section>
+        </div>
+
+        <!-- Learning Resources -->
+        <div class="mt-8 bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-graduation-cap mr-2 text-indigo-600"></i>
+                Phishing Detection Guide
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <h4 class="font-semibold text-red-800 mb-2">🎣 Whaling</h4>
+                    <p class="text-sm text-red-700">Targets high-profile individuals like CEOs with urgent financial requests</p>
+                </div>
+                <div class="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                    <h4 class="font-semibold text-orange-800 mb-2">🦠 Malware</h4>
+                    <p class="text-sm text-orange-700">Contains malicious attachments or downloads that infect your device</p>
+                </div>
+                <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <h4 class="font-semibold text-yellow-800 mb-2">🔗 Link Manipulation</h4>
+                    <p class="text-sm text-yellow-700">Uses disguised links that lead to fake websites to steal credentials</p>
+                </div>
+                <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <h4 class="font-semibold text-blue-800 mb-2">📧 Spoofing</h4>
+                    <p class="text-sm text-blue-700">Impersonates trusted sources with fake sender addresses</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        const emails = [
+            {
+                id: 1,
+                sender: "ceo@company-corp.com",
+                subject: "[URGENT] Transfer Funds Now - Confidential",
+                body: `<div class="space-y-3">
+                    <p>I need you to transfer $25,000 immediately to our new vendor for a confidential project.</p>
+                    <p><strong>Wire Transfer Details:</strong><br>
+                    Account: 4847392847<br>
+                    Routing: 847392847<br>
+                    Name: Global Business Solutions LLC</p>
+                    <p class="text-red-600 font-semibold">This is time-sensitive and confidential. Do NOT discuss with anyone.</p>
+                    <p>- CEO John Patterson</p>
+                </div>`,
+                type: "whaling",
+                difficulty: "Medium",
+                isPhishing: true,
+                indicators: ["Urgent financial request", "Confidentiality pressure", "No proper verification process"],
+                explanation: "This is a <strong>whaling attack</strong> impersonating the CEO. Red flags: urgent money transfer, secrecy demands, and bypassing normal financial procedures."
+            },
+            {
+                id: 2,
+                sender: "it-support@yourbank.com",
+                subject: "🔒 Critical Security Update Required",
+                body: `<div class="space-y-3">
+                    <p>Dear Valued Customer,</p>
+                    <p>Our security team has detected unusual activity on your account. Please download and run the attached security scanner immediately.</p>
+                    <div class="p-3 bg-gray-100 rounded border">
+                        <i class="fas fa-file-archive text-gray-600 mr-2"></i>
+                        <span class="tooltip">
+                            SecurityUpdate.zip
+                            <span class="tooltiptext">⚠️ Suspicious file extension</span>
+                        </span>
+                        <span class="text-xs text-gray-500 ml-2">(2.3 MB)</span>
+                    </div>
+                    <p>Failure to complete this within 24 hours will result in account suspension.</p>
+                    <p>Thank you,<br>IT Security Team</p>
+                </div>`,
+                type: "malware",
+                difficulty: "Easy",
+                isPhishing: true,
+                indicators: ["Suspicious attachment", "Urgent deadline", "Generic greeting"],
+                explanation: "This is a <strong>malware attack</strong>. Banks never send security software via email. The .zip attachment likely contains malicious code."
+            },
+            {
+                id: 3,
+                sender: "friend.jenny@gmail.com",
+                subject: "OMG you have to see this photo! 😱",
+                body: `<div class="space-y-3">
+                    <p>Hey!</p>
+                    <p>I found this old picture of you from college - you're going to die when you see it! 😂</p>
+                    <button class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg tooltip">
+                        <i class="fas fa-image mr-2"></i>VIEW PHOTO
+                        <span class="tooltiptext">Hidden link: http://photo-share-fake.ru/malware.exe</span>
+                    </button>
+                    <p>Can't wait to hear what you think!</p>
+                    <p>xoxo Jenny</p>
+                </div>`,
+                type: "link-manipulation",
+                difficulty: "Hard",
+                isPhishing: true,
+                indicators: ["Compromised personal account", "Hidden malicious link", "Social engineering"],
+                explanation: "This is <strong>link manipulation</strong> from a potentially compromised personal account. The button hides a malicious link to download malware."
+            },
+            {
+                id: 4,
+                sender: "notifications@trustedapp.com",
+                subject: "Feature Update: Enhanced Security Options",
+                body: `<div class="space-y-3">
+                    <p>Hello Sarah,</p>
+                    <p>We've released new security features to help protect your account:</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Two-factor authentication improvements</li>
+                        <li>Enhanced login monitoring</li>
+                        <li>New privacy controls in settings</li>
+                    </ul>
+                    <p>These features are automatically enabled. You can customize them in your account settings.</p>
+                    <p>Best regards,<br>TrustedApp Security Team</p>
+                    <div class="text-xs text-gray-500 mt-4 p-2 bg-gray-50 rounded">
+                        You're receiving this because you have security notifications enabled. 
+                        <a href="#" class="text-blue-600 underline">Unsubscribe</a>
+                    </div>
+                </div>`,
+                type: "legitimate",
+                difficulty: "Easy",
+                isPhishing: false,
+                indicators: ["Personalized greeting", "Informational only", "Proper unsubscribe"],
+                explanation: "This is <strong>legitimate</strong>. Good signs: personalized greeting, informational content only, proper sender domain, and valid unsubscribe option."
+            },
+            {
+                id: 5,
+                sender: "security@payp4l-alerts.com",
+                subject: "⚠️ Account Limitation Notice",
+                body: `<div class="space-y-3">
+                    <div class="p-3 bg-red-100 border border-red-300 rounded">
+                        <p class="text-red-800 font-semibold">🚨 ACCOUNT ACCESS LIMITED</p>
+                    </div>
+                    <p>Your PayPal account has been limited due to suspicious activity.</p>
+                    <p><strong>Detected Issues:</strong></p>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        <li>Login from unrecognized device (Russia)</li>
+                        <li>Unusual spending pattern detected</li>
+                        <li>Failed security verification</li>
+                    </ul>
+                    <div class="text-center my-4">
+                        <a href="#" class="tooltip bg-blue-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-700">
+                            Verify Account Now
+                            <span class="tooltiptext">Fake URL: payp4l-verify.malicious-site.ru</span>
+                        </a>
+                    </div>
+                    <p class="text-red-600 font-semibold">⏰ You have 6 hours to verify or your account will be permanently closed.</p>
+                </div>`,
+                type: "spoofing",
+                difficulty: "Medium",
+                isPhishing: true,
+                indicators: ["Misspelled domain", "Fear tactics", "Urgent deadline"],
+                explanation: "This is <strong>spoofing</strong>. The domain 'payp4l-alerts.com' uses '4' instead of 'a'. Real PayPal uses paypal.com and doesn't threaten permanent closure."
+            },
+            {
+                id: 6,
+                sender: "hr@mycompany.com",
+                subject: "Employee Handbook Update - Please Review",
+                body: `<div class="space-y-3">
+                    <p>Dear Team,</p>
+                    <p>We've updated our employee handbook with new policies effective January 1st. Please review the changes at your convenience:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Updated remote work policy</li>
+                        <li>New vacation request procedures</li>
+                        <li>Revised code of conduct guidelines</li>
+                    </ul>
+                    <p>The updated handbook is available on our company portal. If you have questions, please contact HR.</p>
+                    <p>Best regards,<br>Human Resources Department</p>
+                </div>`,
+                type: "legitimate",
+                difficulty: "Easy",
+                isPhishing: false,
+                indicators: ["Internal company communication", "No urgent action", "Normal business content"],
+                explanation: "This is <strong>legitimate</strong> internal communication. Normal business content, no urgent demands, and typical HR communication style."
+            },
+            {
+                id: 7,
+                sender: "winner-notification@lottery-mega.org",
+                subject: "🎉 CONGRATULATIONS! You've Won $2,500,000!",
+                body: `<div class="space-y-3">
+                    <div class="text-center p-4 bg-yellow-100 border-2 border-yellow-400 rounded">
+                        <h2 class="text-2xl font-bold text-yellow-800">🏆 LOTTERY WINNER! 🏆</h2>
+                    </div>
+                    <p>Dear Lucky Winner,</p>
+                    <p>Your email address has been randomly selected as the Grand Prize winner of $2,500,000 in our International Email Lottery!</p>
+                    <p><strong>Your Winning Details:</strong></p>
+                    <ul class="list-disc list-inside text-sm">
+                        <li>Ticket Number: LMW-7849-2024</li>
+                        <li>Batch Number: 447/2024/LM</li>
+                        <li>Prize Amount: $2,500,000 USD</li>
+                    </ul>
+                    <p>To claim your prize, please contact our claims agent immediately with your personal information including full name, address, and phone number.</p>
+                    <p class="text-red-600 font-semibold">⚠️ This offer expires in 72 hours!</p>
+                    <p>Congratulations again!<br>International Lottery Commission</p>
+                </div>`,
+                type: "advance-fee-scam",
+                difficulty: "Easy",
+                isPhishing: true,
+                indicators: ["Unsolicited prize", "Too good to be true", "Requests personal info"],
+                explanation: "This is an <strong>advance fee scam</strong>. You can't win a lottery you didn't enter. They'll later ask for 'processing fees' to claim the fake prize."
+            },
+            {
+                id: 8,
+                sender: "security-team@micr0soft.com",
+                subject: "Your Microsoft Account Will Be Deleted",
+                body: `<div class="space-y-3">
+                    <div class="p-3 bg-red-100 border border-red-400 rounded">
+                        <p class="text-red-800 font-semibold">⚠️ FINAL WARNING</p>
+                    </div>
+                    <p>Your Microsoft account will be permanently deleted due to inactivity.</p>
+                    <p>We've attempted to reach you multiple times. This is your final opportunity to save your account.</p>
+                    <div class="text-center my-4">
+                        <a href="#" class="tooltip bg-red-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-red-700">
+                            SAVE MY ACCOUNT
+                            <span class="tooltiptext">Suspicious URL: micr0soft-account-recovery.fake-site.com</span>
+                        </a>
+                    </div>
+                    <p class="text-red-600">If you don't act within 24 hours, all your files, emails, and data will be lost forever.</p>
+                    <p>Microsoft Security Team</p>
+                </div>`,
+                type: "spoofing",
+                difficulty: "Medium",
+                isPhishing: true,
+                indicators: ["Domain uses '0' instead of 'o'", "Fear tactics", "False urgency"],
+                explanation: "This is <strong>spoofing</strong>. The domain 'micr0soft.com' uses zero instead of 'o'. Microsoft doesn't delete accounts due to inactivity and wouldn't threaten data loss."
+            },
+            {
+                id: 9,
+                sender: "support@github.com",
+                subject: "Security Alert: New Device Sign-in",
+                body: `<div class="space-y-3">
+                    <p>Hi developer,</p>
+                    <p>We detected a sign-in to your GitHub account from a new device:</p>
+                    <div class="p-3 bg-gray-100 rounded border">
+                        <p><strong>Device:</strong> Chrome on Windows 10</p>
+                        <p><strong>Location:</strong> San Francisco, CA</p>
+                        <p><strong>Time:</strong> Today at 2:14 PM PST</p>
+                        <p><strong>IP Address:</strong> 192.168.1.10</p>
+                    </div>
+                    <p>If this was you, no further action is needed. If this wasn't you, please secure your account immediately by changing your password.</p>
+                    <p>You can review all recent activity in your account security settings.</p>
+                    <p>Thanks,<br>GitHub Security Team</p>
+                </div>`,
+                type: "legitimate",
+                difficulty: "Medium",
+                isPhishing: false,
+                indicators: ["Informational security alert", "No forced action", "Specific details"],
+                explanation: "This is <strong>legitimate</strong>. Real security alerts provide specific information and don't force immediate action. They inform rather than threaten."
+            },
+            {
+                id: 10,
+                sender: "admin@company-internal.com",
+                subject: "Mandatory IT Training - Complete by EOD",
+                body: `<div class="space-y-3">
+                    <p>All Employees,</p>
+                    <p>Due to recent security incidents, all staff must complete mandatory cybersecurity training by end of business today.</p>
+                    <p><strong>Training Requirements:</strong></p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Download training materials from external portal</li>
+                        <li>Complete all modules within 4 hours</li>
+                        <li>Submit completion certificate</li>
+                    </ul>
+                    <div class="text-center my-4">
+                        <a href="#" class="tooltip bg-orange-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-orange-700">
+                            ACCESS TRAINING PORTAL
+                            <span class="tooltiptext">Suspicious external URL: training-portal-secure.external-malicious.net</span>
+                        </a>
+                    </div>
+                    <p class="text-red-600 font-semibold">Failure to complete will result in immediate IT access suspension.</p>
+                    <p>IT Administration</p>
+                </div>`,
+                type: "social-engineering",
+                difficulty: "Hard",
+                isPhishing: true,
+                indicators: ["Creates false urgency", "External suspicious portal", "Threatens consequences"],
+                explanation: "This is <strong>social engineering</strong>. Real IT training comes through official company systems, not external portals. The urgency and threats are manipulation tactics."
+            },
+            {
+                id: 11,
+                sender: "newsletter@techcrunch.com",
+                subject: "Daily Crunch: Latest in Tech Innovation",
+                body: `<div class="space-y-3">
+                    <h2 class="text-xl font-bold text-green-600">Daily Crunch</h2>
+                    <p>Good morning! Here are today's top tech stories:</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold">AI Startup Secures $100M Series B</h3>
+                            <p class="text-sm text-gray-600">Revolutionary machine learning platform attracts major investors including Google Ventures...</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold">New Privacy Regulations Take Effect</h3>
+                            <p class="text-sm text-gray-600">Tech companies must now comply with stricter data protection requirements...</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold">Cybersecurity Market Reaches New High</h3>
+                            <p class="text-sm text-gray-600">Industry analysts report record investment in security solutions as threats evolve...</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500 mt-4">
+                        You're receiving this because you subscribed to TechCrunch newsletters. 
+                        <a href="#" class="text-blue-600 underline">Manage preferences</a> | 
+                        <a href="#" class="text-blue-600 underline">Unsubscribe</a>
+                    </p>
+                </div>`,
+                type: "legitimate",
+                difficulty: "Easy",
+                isPhishing: false,
+                indicators: ["Professional newsletter format", "Subscription-based", "Proper unsubscribe"],
+                explanation: "This is <strong>legitimate</strong>. Standard newsletter format from a known publisher with proper subscription management options."
+            },
+            {
+                id: 12,
+                sender: "billing@app1e-icloud.com",
+                subject: "iCloud Storage Full - Upgrade Required",
+                body: `<div class="space-y-3">
+                    <div class="p-3 bg-blue-100 border border-blue-300 rounded">
+                        <p class="text-blue-800 font-semibold">📱 iCloud Storage Alert</p>
+                    </div>
+                    <p>Your iCloud storage is 98% full. Upgrade now to avoid losing your photos, documents, and backups.</p>
+                    
+                    <div class="p-3 bg-gray-100 rounded">
+                        <p><strong>Current Usage:</strong></p>
+                        <p>Photos: 3.2 GB</p>
+                        <p>Documents: 1.8 GB</p>
+                        <p>Backups: 2.1 GB</p>
+                        <p><strong>Total:</strong> 4.9 GB of 5 GB used</p>
+                    </div>
+                    
+                    <div class="text-center my-4">
+                        <a href="#" class="tooltip bg-blue-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-700">
+                            UPGRADE STORAGE NOW
+                            <span class="tooltiptext">Fake Apple URL: app1e-icloud-upgrade.malicious-site.com</span>
+                        </a>
+                    </div>
+                    
+                    <p class="text-orange-600 font-semibold">⚠️ Your data will be deleted in 48 hours if you don't upgrade!</p>
+                    <p>Apple Support Team</p>
+                </div>`,
+                type: "spoofing",
+                difficulty: "Medium",
+                isPhishing: true,
+                indicators: ["Domain uses '1' instead of 'l'", "False urgency", "Data deletion threat"],
+                explanation: "This is <strong>spoofing</strong>. The domain 'app1e-icloud.com' uses '1' instead of 'l'. Apple uses apple.com and doesn't threaten to delete user data."
+            }
+        ];
+
+        let gameState = {
+            currentEmail: null,
+            score: 0,
+            totalAnalyzed: 0,
+            phishingCaught: 0,
+            streak: 0,
+            maxStreak: 0,
+            mode: 'learn',
+            emailsCompleted: [],
+            achievements: []
+        };
+
+        // Initialize the game
+        function initGame() {
+            loadGameState();
+            renderEmailList();
+            updateStats();
+            updateProgressBar();
+        }
+
+        // Load game state from memory
+        function loadGameState() {
+            // Since we can't use localStorage, we'll keep state in memory
+            // This means progress resets on page refresh
+        }
+
+        // Save game state (in memory only)
+        function saveGameState() {
+            // In a real implementation, this would save to localStorage
+            // but we'll keep it in memory for this demo
+        }
+
+        // Render email list
+        function renderEmailList() {
+            const emailList = document.getElementById('email-list');
+            emailList.innerHTML = '';
+
+            emails.forEach(email => {
+                const isCompleted = gameState.emailsCompleted.includes(email.id);
+                const emailItem = document.createElement('div');
+                emailItem.className = `email-item p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
+                    isCompleted ? 'bg-gray-100 border-gray-300' : 'bg-white border-gray-200 hover:border-indigo-300'
+                } ${gameState.currentEmail?.id === email.id ? 'border-indigo-500 bg-indigo-50' : ''}`;
+                
+                emailItem.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1 mr-2">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="font-medium text-sm ${isCompleted ? 'text-gray-500' : 'text-gray-800'}">${email.sender}</span>
+                                ${isCompleted ? '<i class="fas fa-check-circle text-green-500 text-xs"></i>' : ''}
+                            </div>
+                            <p class="text-sm font-semibold ${isCompleted ? 'text-gray-500' : 'text-gray-900'} line-clamp-1">${email.subject}</p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-1">
+                            <span class="difficulty-badge text-xs px-2 py-1 rounded-full ${getDifficultyColor(email.difficulty)}">${email.difficulty}</span>
+                        </div>
+                    </div>
+                `;
+                
+                emailItem.addEventListener('click', () => selectEmail(email));
+                emailList.appendChild(emailItem);
+            });
+        }
+
+        // Get difficulty color
+        function getDifficultyColor(difficulty) {
+            switch(difficulty) {
+                case 'Easy': return 'bg-green-100 text-green-800';
+                case 'Medium': return 'bg-yellow-100 text-yellow-800';
+                case 'Hard': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        // Select an email
+        function selectEmail(email) {
+            gameState.currentEmail = email;
+            renderEmailContent(email);
+            renderEmailList(); // Re-render to update selection
+            document.getElementById('feedback').innerHTML = ''; // Clear previous feedback
+        }
+
+        // Render email content
+        function renderEmailContent(email) {
+            const emailContent = document.getElementById('email-content');
+            emailContent.innerHTML = `
+                <div class="space-y-4">
+                    <div class="border-b pb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h2 class="text-xl font-semibold text-gray-800">${email.subject}</h2>
+                            <span class="difficulty-badge text-xs px-2 py-1 rounded-full ${getDifficultyColor(email.difficulty)}">${email.difficulty}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <p><strong>From:</strong> ${email.sender}</p>
+                            <p><strong>Type:</strong> ${email.type.charAt(0).toUpperCase() + email.type.slice(1).replace('-', ' ')}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        ${email.body}
+                    </div>
+                    
+                    <div class="flex space-x-4 justify-center pt-4">
+                        <button onclick="makeDecision(false)" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 flex items-center space-x-2">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>SAFE</span>
+                        </button>
+                        <button onclick="makeDecision(true)" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 flex items-center space-x-2">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>PHISHING</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Make a decision
+        function makeDecision(isPhishingGuess) {
+            if (!gameState.currentEmail) return;
+            
+            const email = gameState.currentEmail;
+            const isCorrect = isPhishingGuess === email.isPhishing;
+            
+            // Update game state
+            gameState.totalAnalyzed++;
+            if (isCorrect) {
+                gameState.score++;
+                gameState.streak++;
+                if (email.isPhishing) {
+                    gameState.phishingCaught++;
+                }
+            } else {
+                gameState.streak = 0;
+            }
+            
+            if (gameState.streak > gameState.maxStreak) {
+                gameState.maxStreak = gameState.streak;
+            }
+            
+            // Mark email as completed
+            if (!gameState.emailsCompleted.includes(email.id)) {
+                gameState.emailsCompleted.push(email.id);
+            }
+            
+            // Show feedback
+            showFeedback(isCorrect, email);
+            
+            // Update UI
+            updateStats();
+            updateProgressBar();
+            renderEmailList();
+            checkAchievements();
+            
+            saveGameState();
+        }
+
+        // Show feedback
+        function showFeedback(isCorrect, email) {
+            const feedback = document.getElementById('feedback');
+            const resultClass = isCorrect ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800';
+            const resultIcon = isCorrect ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500';
+            const resultText = isCorrect ? 'Correct!' : 'Incorrect!';
+            
+            feedback.innerHTML = `
+                <div class="p-4 border rounded-lg ${resultClass}">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <i class="fas ${resultIcon} text-xl"></i>
+                        <h3 class="text-lg font-semibold">${resultText}</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <p><strong>This email is:</strong> ${email.isPhishing ? 'PHISHING' : 'LEGITIMATE'}</p>
+                        
+                        <div>
+                            <p class="font-semibold mb-2">Key Indicators:</p>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                ${email.indicators.map(indicator => `<li>${indicator}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="p-3 bg-white rounded border">
+                            <p class="font-semibold mb-2">Explanation:</p>
+                            <p class="text-sm">${email.explanation}</p>
+                        </div>
+                        
+                        ${gameState.mode === 'learn' ? `
+                            <div class="pt-2">
+                                <button onclick="nextEmail()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition duration-200">
+                                    <i class="fas fa-arrow-right mr-2"></i>Next Email
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Add glow effect to current email
+            const emailItems = document.querySelectorAll('.email-item');
+            emailItems.forEach(item => {
+                if (item.querySelector('.fa-check-circle')) {
+                    if (isCorrect) {
+                        item.classList.add('safe-glow');
+                    } else {
+                        item.classList.add('phishing-glow');
+                    }
+                }
+            });
+        }
+
+        // Next email (for learning mode)
+        function nextEmail() {
+            const uncompletedEmails = emails.filter(email => !gameState.emailsCompleted.includes(email.id));
+            if (uncompletedEmails.length > 0) {
+                const randomEmail = uncompletedEmails[Math.floor(Math.random() * uncompletedEmails.length)];
+                selectEmail(randomEmail);
+            } else {
+                showCompletionMessage();
+            }
+        }
+
+        // Show completion message
+        function showCompletionMessage() {
+            const emailContent = document.getElementById('email-content');
+            const accuracy = Math.round((gameState.score / gameState.totalAnalyzed) * 100);
+            
+            emailContent.innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fas fa-trophy text-6xl text-yellow-500 mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Congratulations!</h2>
+                    <p class="text-lg text-gray-600 mb-6">You've completed all emails in the simulation!</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600">${gameState.score}/${gameState.totalAnalyzed}</div>
+                            <div class="text-sm text-blue-800">Final Score</div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-green-600">${accuracy}%</div>
+                            <div class="text-sm text-green-800">Accuracy</div>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-orange-600">${gameState.maxStreak}</div>
+                            <div class="text-sm text-orange-800">Best Streak</div>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-purple-600">${gameState.phishingCaught}</div>
+                            <div class="text-sm text-purple-800">Phishing Caught</div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="resetGame()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold">
+                        <i class="fas fa-redo mr-2"></i>Play Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // Update statistics
+        function updateStats() {
+            const accuracy = gameState.totalAnalyzed > 0 ? Math.round((gameState.score / gameState.totalAnalyzed) * 100) : 0;
+            
+            document.getElementById('score').textContent = `${gameState.score} / ${gameState.totalAnalyzed}`;
+            document.getElementById('accuracy').textContent = `${accuracy}%`;
+            document.getElementById('streak').textContent = gameState.streak;
+            document.getElementById('total-analyzed').textContent = gameState.totalAnalyzed;
+            document.getElementById('phishing-caught').textContent = gameState.phishingCaught;
+            document.getElementById('max-streak').textContent = gameState.maxStreak;
+            
+            // Update security level
+            const level = getSecurityLevel(accuracy, gameState.totalAnalyzed);
+            document.getElementById('level').textContent = level;
+        }
+
+        // Get security level
+        function getSecurityLevel(accuracy, totalAnalyzed) {
+            if (totalAnalyzed < 3) return 'Beginner';
+            if (accuracy >= 90 && totalAnalyzed >= 8) return 'Expert';
+            if (accuracy >= 80) return 'Advanced';
+            if (accuracy >= 60) return 'Intermediate';
+            return 'Novice';
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = (gameState.emailsCompleted.length / emails.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `${gameState.emailsCompleted.length} / ${emails.length} emails analyzed`;
+        }
+
+        // Check for achievements
+        function checkAchievements() {
+            const achievements = [];
+            
+            if (gameState.streak >= 5 && !gameState.achievements.includes('streak5')) {
+                achievements.push({ id: 'streak5', text: 'Hot Streak! 5 correct in a row!' });
+            }
+            
+            if (gameState.phishingCaught >= 5 && !gameState.achievements.includes('hunter')) {
+                achievements.push({ id: 'hunter', text: 'Phishing Hunter! Caught 5 phishing emails!' });
+            }
+            
+            if (gameState.totalAnalyzed >= 10 && (gameState.score / gameState.totalAnalyzed) >= 0.9 && !gameState.achievements.includes('expert')) {
+                achievements.push({ id: 'expert', text: 'Security Expert! 90%+ accuracy with 10+ emails!' });
+            }
+            
+            achievements.forEach(achievement => {
+                showAchievement(achievement.text);
+                gameState.achievements.push(achievement.id);
+            });
+        }
+
+        // Show achievement
+        function showAchievement(text) {
+            const banner = document.getElementById('achievement-banner');
+            const achievementText = document.getElementById('achievement-text');
+            
+            achievementText.textContent = text;
+            banner.classList.remove('hidden');
+            
+            setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Shuffle emails
+        function shuffleEmails() {
+            // Fisher-Yates shuffle
+            for (let i = emails.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [emails[i], emails[j]] = [emails[j], emails[i]];
+            }
+            renderEmailList();
+        }
+
+        // Reset game
+        function resetGame() {
+            gameState = {
+                currentEmail: null,
+                score: 0,
+                totalAnalyzed: 0,
+                phishingCaught: 0,
+                streak: 0,
+                maxStreak: 0,
+                mode: 'learn',
+                emailsCompleted: [],
+                achievements: []
+            };
+            
+            document.getElementById('email-content').innerHTML = `
+                <div class="text-center text-gray-500 mt-20">
+                    <i class="fas fa-envelope-open-text text-6xl mb-4 opacity-50"></i>
+                    <p class="text-xl mb-2">Select an email to analyze</p>
+                    <p class="text-sm">Look for suspicious indicators and make your decision</p>
+                    
+                    <div class="mt-8 bg-blue-50 p-4 rounded-lg text-left max-w-md mx-auto">
+                        <h3 class="font-semibold text-blue-800 mb-2">🔍 What to Look For:</h3>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Suspicious sender domains</li>
+                            <li>• Urgent or threatening language</li>
+                            <li>• Unexpected attachments</li>
+                            <li>• Generic greetings</li>
+                            <li>• Spelling/grammar errors</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('feedback').innerHTML = '';
+            renderEmailList();
+            updateStats();
+            updateProgressBar();
+        }
+
+        // Mode change handler
+        document.getElementById('mode').addEventListener('change', function(e) {
+            gameState.mode = e.target.value;
+            saveGameState();
+        });
+
+        // Initialize the game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

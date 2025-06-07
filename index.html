@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Showcase - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for chat area */
+        #chat-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        #chat-area::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #chat-area::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        #chat-area::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Improved positioning for different screen sizes */
+        #chatbot-popup {
+            bottom: 6rem; /* 96px - more space from button */
+            right: 1.5rem; /* 24px - same as button */
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            #chatbot-popup {
+                bottom: 5rem; /* 80px on mobile */
+                right: 1rem; /* 16px on mobile */
+                left: 1rem; /* Full width with margins on mobile */
+                width: auto;
+            }
+            
+            #chatbot-button {
+                bottom: 1rem; /* 16px on mobile */
+                right: 1rem; /* 16px on mobile */
+            }
+        }
+        
+        /* Ensure proper viewport handling */
+        @media (max-height: 600px) {
+            #chatbot-popup {
+                height: 400px !important;
+                max-height: 70vh !important;
+                bottom: 5rem !important; /* Less space on short screens */
+            }
+        }
+        
+        @media (max-height: 500px) {
+            #chatbot-popup {
+                height: 350px !important;
+                max-height: 65vh !important;
+                bottom: 4.5rem !important; /* Even less space on very short screens */
+            }
+        }
+        
+        /* Large screen adjustments */
+        @media (min-width: 1024px) {
+            #chatbot-popup {
+                bottom: 7rem; /* More space on larger screens */
+                right: 2rem; /* More margin from edge */
+            }
+            
+            #chatbot-button {
+                bottom: 2rem;
+                right: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-home mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-gray-800">Welcome to My Portfolio</h1>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">Cybersecurity Professional</h2>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                    Exploring the intersection of security, development, and innovation through projects, research, and hands-on experience.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="projects.html" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        View Projects
+                    </a>
+                    <a href="about.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+                        About Me
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Preview -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Featured Projects</h3>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Discover my latest work in cybersecurity, web development, and innovative solutions.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition">
+                        <div class="bg-blue-100 rounded-lg h-48 mb-4 flex items-center justify-center">
+                            <i class="fas fa-user-check text-4xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Follow Checker</h4>
+                        <p class="text-gray-600 mb-4">Script to identify users who don’t follow you back.</p>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View Project →</a>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition">
+                        <div class="bg-green-100 rounded-lg h-48 mb-4 flex items-center justify-center">
+                            <i class="fas fa-calculator text-4xl text-green-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">StatCalc</h4>
+                        <p class="text-gray-600 mb-4">Lightweight calculator for solving basic statistical problems easily.</p>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View Project →</a>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition">
+                        <div class="bg-purple-100 rounded-lg h-48 mb-4 flex items-center justify-center">
+                            <i class="fas fa-search text-4xl text-purple-600"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Sensitive Data Finder</h4>
+                        <p class="text-gray-600 mb-4">Python script using Google Dorks to find exposed sensitive data.</p>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View Project →</a>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <a href="projects.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        View All Projects
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Blog & Writeups Preview -->
+        <section class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Blog Preview -->
+                    <div>
+                        <div class="flex items-center mb-8">
+                            <i class="fas fa-blog text-2xl text-blue-600 mr-3"></i>
+                            <h3 class="text-3xl font-bold text-gray-800">Latest Blog Posts</h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <article class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <span>May 25, 2025</span>
+                                    <span class="mx-2">•</span>
+                                    <span>5 min read</span>
+                                </div>
+                                <h4 class="text-xl font-semibold mb-2">AI in Cyber Security: Implementation and Case Study</h4>
+                                <p class="text-gray-600 mb-4">Artificial Intelligence (AI) has emerged as a game-changer in strengthening...</p>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More →</a>
+                            </article>
+                            
+                            <article class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <span>May 20, 2025</span>
+                                    <span class="mx-2">•</span>
+                                    <span>8 min read</span>
+                                </div>
+                                <h4 class="text-xl font-semibold mb-2">Vulnerability Assessment: Bootcamp Project Report</h4>
+                                <p class="text-gray-600 mb-4">The project involved assessing the security posture of a target website by...</p>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More →</a>
+                            </article>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <a href="blog.html" class="text-blue-600 hover:text-blue-800 font-semibold">View All Posts →</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Writeups Preview -->
+                    <div>
+                        <div class="flex items-center mb-8">
+                            <i class="fas fa-shield-alt text-2xl text-red-600 mr-3"></i>
+                            <h3 class="text-3xl font-bold text-gray-800">Bug Bounty Writeups</h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <article class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-semibold">HIGH</span>
+                                    <span class="text-sm text-gray-500">$0 Bounty</span>
+                                </div>
+                                <h4 class="text-xl font-semibold mb-2">Lorem Ipsum Dolor Sit Amet Consectetur Elit Tempor</h4>
+                                <p class="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed.</p>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read Writeup →</a>
+                            </article>
+                            
+                            <article class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs font-semibold">MEDIUM</span>
+                                    <span class="text-sm text-gray-500">$0 Bounty</span>
+                                </div>
+                                <h4 class="text-xl font-semibold mb-2">Lorem Ipsum Dolor Sit Amet Consectetur Elit Tempor</h4>
+                                <p class="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed.</p>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read Writeup →</a>
+                            </article>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <a href="writeups.html" class="text-blue-600 hover:text-blue-800 font-semibold">View All Writeups →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Simulations & Games Preview -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Interactive Learning</h3>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Hands-on cybersecurity simulations and educational games to enhance learning.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Simulations -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                        <i class="fas fa-cogs text-2xl text-green-600 mr-3"></i>
+                        <h4 class="text-2xl font-bold text-gray-800">Security Simulations</h4>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-green-100 to-blue-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-lock text-3xl text-green-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Advanced Encryption Tool</h5>
+                            <p class="text-sm text-gray-600">Encrypt and decrypt using AES-256 GCM with auto key generation.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-key text-3xl text-purple-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Secure Password Hasher</h5>
+                            <p class="text-sm text-gray-600">Hash passwords with SHA-256, SHA-384, and SHA-512. View results instantly.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-red-100 to-orange-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-envelope-open-text text-3xl text-red-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Email Phishing Simulation</h5>
+                            <p class="text-sm text-gray-600">Spot fake emails in lifelike phishing scenarios.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-yellow-100 to-red-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-flask text-3xl text-yellow-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Chemical Lab Simulation</h5>
+                            <p class="text-sm text-gray-600">Interactive virtual lab simulating real chemical reactions safely.</p>
+                        </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                        <a href="simulations.html" class="text-green-600 hover:text-green-800 font-semibold">Explore All Simulations →</a>
+                        </div>
+                    </div>
+
+                    <!-- Games -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                        <i class="fas fa-gamepad text-2xl text-purple-600 mr-3"></i>
+                        <h4 class="text-2xl font-bold text-gray-800">Educational Games</h4>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-chess text-2xl text-3xl text-blue-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Security Chess Red Team vs Blue Team</h5>
+                            <p class="text-sm text-gray-600">Play as hacker or defender in a strategy-based cyber chess game.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-green-100 to-teal-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-th text-3xl text-green-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Tic Tac Toe</h5>
+                            <p class="text-sm text-gray-600">Classic game with a modern twist. Play solo or with a friend.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-pink-100 to-red-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-fire text-3xl text-pink-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Lava Game</h5>
+                            <p class="text-sm text-gray-600">Jump and dodge to avoid lava in this survival challenge.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-indigo-100 to-blue-100 rounded-lg p-6 text-center hover:shadow-lg transition cursor-pointer">
+                            <i class="fas fa-puzzle-piece text-3xl text-indigo-600 mb-4"></i>
+                            <h5 class="font-semibold mb-2">Firewall: Blackout Puzzles</h5>
+                            <p class="text-sm text-gray-600">Solve puzzles to stop hackers and protect the network.</p>
+                        </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                        <a href="games.html" class="text-purple-600 hover:text-purple-800 font-semibold">Play All Games →</a>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-4">Ready to Explore?</h3>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Dive deeper into my work, learn through interactive simulations, or get in touch for collaboration opportunities.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="projects.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        Browse Projects
+                    </a>
+                    <a href="contact.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Professional Showcase. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="https://github.com/bieee123" class="hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabrielle-lintong" class="hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/bielintong0?s=11" class="hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/bielintong" class="hover:text-blue-400 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chatbot Floating Button -->
+    <button id="chatbot-button" 
+            class="fixed bottom-6 right-6 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white w-16 h-16 rounded-full shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center z-50 animate-pulse-slow group">
+        <i class="fas fa-robot text-xl group-hover:animate-bounce"></i>
+        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Chat with me!
+        </div>
+    </button>
+
+    <!-- Chatbot Popup -->
+    <div id="chatbot-popup" 
+         class="fixed w-80 md:w-96 h-[500px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 transform scale-0 transition-all duration-300 origin-bottom-right z-40 overflow-hidden flex flex-col">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <i class="fas fa-robot text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg">EchoCore Assistant</h3>
+                    <div class="flex items-center space-x-1 text-sm opacity-90">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Online</span>
+                    </div>
+                </div>
+            </div>
+            <button id="close-chatbot" 
+                    class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 border-b border-gray-100">
+            <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">
+                    <i class="text-accent-500 mr-1"></i>
+                    EchoCore v1.0
+                </p>
+                <p class="text-sm text-gray-600 mb-2">
+                    <i class="fas fa-sparkles text-accent-500 mr-1"></i>
+                    Your smart guide through the showcase.
+                </p>
+                <div class="flex justify-center space-x-2 text-xs">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Projects</span>
+                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Blog</span>
+                    <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Writeups</span>
+                    <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">Simulations</span>
+                    <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">Games</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Body -->
+        <div id="chat-area" class="flex-1 p-4 overflow-y-auto min-h-0 bg-gradient-to-b from-gray-50 to-white">
+            <!-- Welcome Message -->
+            <div class="chat-message bot mb-4 animate-fade-in">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm border border-gray-100 max-w-xs">
+                        <p class="text-gray-800 text-sm leading-relaxed">
+                            👋 Hello! I'm your Portfolio Assistant. I can help you explore projects, games, blog posts, and more. What interests you?
+                        </p>
+                        <div class="text-xs text-gray-500 mt-2">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div id="quick-actions" class="space-y-2 mb-4">
+                <div class="text-xs text-gray-500 mb-2 pl-11">Quick actions:</div>
+                <div class="flex flex-wrap gap-2 pl-11">
+                    <button class="quick-action bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-code mr-1"></i>Show Projects
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-gamepad mr-1"></i>Play Games
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-blog mr-1"></i>Read Blog
+                    </button>
+                    <button class="quick-action bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-2 rounded-full text-xs transition-all duration-200 transform hover:scale-105">
+                        <i class="fas fa-envelope mr-1"></i>Contact Info
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="border-t border-gray-200 p-4 bg-white flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="flex-1 relative">
+                    <input type="text" 
+                           id="chat-input" 
+                           placeholder="Ask about projects, games, or anything..."
+                           class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 text-sm">
+                    <button id="send-message" 
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-full flex items-center justify-center transition-all duration-200 transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="typing-indicator" class="hidden mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                <div class="flex space-x-1">
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+                <span class="ml-2">Assistant is typing...</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/chatbot.js"></script>
+    <script src="assets/js/sidebar.js"></script>
+</body>
+</html>

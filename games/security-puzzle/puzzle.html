@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIREWALL: BLACKOUT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    @keyframes matrix {
+      0% { transform: translateY(-100%); opacity: 0; }
+      100% { transform: translateY(100vh); opacity: 1; }
+    }
+    .matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .matrix-char {
+      position: absolute;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      animation: matrix 8s linear infinite;
+      opacity: 0.3;
+    }
+    .glow {
+      text-shadow: 0 0 10px currentColor;
+    }
+    .pulse-border {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { border-color: #10b981; }
+      50% { border-color: #34d399; }
+    }
+    .typing {
+      overflow: hidden;
+      border-right: 2px solid #10b981;
+      white-space: nowrap;
+      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #10b981; }
+    }
+    .slide-in {
+      animation: slideIn 0.5s ease-out forwards;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .level-complete {
+      animation: levelComplete 1s ease-in-out;
+    }
+    @keyframes levelComplete {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  </style>
+</head>
+<body class="bg-[#0f172a] text-green-400 font-mono min-h-screen overflow-x-hidden">
+  <!-- Matrix Background Effect -->
+  <div class="matrix-bg" id="matrix-bg"></div>
+
+  <!-- Header with Back Button -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-green-400/30 p-4">
+    <div class="flex items-center justify-between max-w-6xl mx-auto">
+      <button id="back-btn" class="flex items-center gap-2 px-4 py-2 bg-green-600/20 hover:bg-green-600/40 border border-green-400 rounded-md transition-all duration-300">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to homepage</span>
+      </button>
+      <div class="flex items-center gap-4">
+        <div class="text-right">
+          <div class="text-sm text-green-300">LEVEL</div>
+          <div id="current-level" class="text-xl font-bold text-green-400">1</div>
+        </div>
+        <div class="text-right">
+          <div class="text-sm text-green-300">SCORE</div>
+          <div id="total-score" class="text-xl font-bold text-yellow-400">0</div>
+        </div>
+        <div class="text-right">
+          <div class="text-sm text-green-300">TIME</div>
+          <div id="timer" class="text-xl font-bold text-red-400">00:00</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="pt-24 pb-8 px-4">
+    <div class="w-full max-w-6xl mx-auto">
+
+      <!-- Welcome Screen -->
+      <div id="welcome-screen" class="bg-black/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl shadow-green-500/20 border border-green-400 pulse-border">
+        <h1 class="text-4xl md:text-6xl text-center font-bold tracking-widest text-green-500 glow mb-8">FIREWALL: BLACKOUT</h1>
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <div class="space-y-4">
+            <h2 class="text-2xl font-bold text-green-400 mb-4"><i class="fas fa-shield-alt mr-2"></i>Mission Briefing</h2>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <p class="text-green-200 leading-relaxed">
+                The corporate network has been compromised! As a cybersecurity specialist, you must solve increasingly complex puzzles to restore system integrity and prevent data breach.
+              </p>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h2 class="text-2xl font-bold text-green-400 mb-4"><i class="fas fa-gamepad mr-2"></i>Game Features</h2>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30 space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-trophy text-yellow-400"></i>
+                <span class="text-green-200">Progressive difficulty levels</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-clock text-blue-400"></i>
+                <span class="text-green-200">Time-based challenges</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-star text-yellow-400"></i>
+                <span class="text-green-200">Achievement system</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-chart-line text-green-400"></i>
+                <span class="text-green-200">Score multipliers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center space-y-6">
+          <div class="bg-[#0f172a]/80 p-6 rounded-lg border border-green-300/30">
+            <h3 class="text-xl font-bold text-green-400 mb-4"><i class="fas fa-info-circle mr-2"></i>How to Play</h3>
+            <div class="text-left space-y-3 text-green-200">
+              <div class="flex items-start gap-3">
+                <span class="bg-green-600 text-black px-2 py-1 rounded font-bold text-sm">1</span>
+                <span>Solve cybersecurity puzzles using your hacking skills</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="bg-green-600 text-black px-2 py-1 rounded font-bold text-sm">2</span>
+                <span>Complete levels quickly for bonus points</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="bg-green-600 text-black px-2 py-1 rounded font-bold text-sm">3</span>
+                <span>Unlock achievements and climb the leaderboard</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="bg-green-600 text-black px-2 py-1 rounded font-bold text-sm">4</span>
+                <span>Each wrong answer reduces your score multiplier</span>
+              </div>
+            </div>
+          </div>
+          
+          <button id="start-game" class="px-8 py-4 bg-green-600 hover:bg-green-500 text-black font-bold text-xl rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/30">
+            <i class="fas fa-play mr-2"></i>BEGIN INFILTRATION
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="hidden space-y-8">
+        
+        <!-- Progress Bar -->
+        <div class="bg-black/90 backdrop-blur-sm p-4 rounded-xl border border-green-400/50">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-green-300">Progress</span>
+            <span id="progress-text" class="text-green-300">Level 1 of 5</span>
+          </div>
+          <div class="w-full bg-[#0f172a] rounded-full h-3 border border-green-300/30">
+            <div id="progress-bar" class="bg-gradient-to-r from-green-600 to-green-400 h-full rounded-full transition-all duration-500" style="width: 20%"></div>
+          </div>
+        </div>
+
+        <!-- Current Challenge -->
+        <div id="challenge-container" class="bg-black/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl shadow-green-500/20 border border-green-400">
+          <!-- Challenges will be loaded here -->
+        </div>
+
+        <!-- Hint System -->
+        <div class="bg-black/90 backdrop-blur-sm p-4 rounded-xl border border-yellow-400/50">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-lightbulb text-yellow-400"></i>
+              <span class="text-yellow-300">Hints Available: <span id="hints-count">3</span></span>
+            </div>
+            <button id="get-hint" class="px-4 py-2 bg-yellow-600/20 hover:bg-yellow-600/40 border border-yellow-400 rounded-md transition-all duration-300">
+              <i class="fas fa-question-circle mr-2"></i>Get Hint
+            </button>
+          </div>
+          <div id="hint-text" class="mt-3 text-yellow-200 hidden"></div>
+        </div>
+
+        <!-- Achievements -->
+        <div id="achievement-popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black border-2 border-yellow-400 rounded-xl p-6 z-50 hidden">
+          <div class="text-center">
+            <i class="fas fa-trophy text-yellow-400 text-4xl mb-4"></i>
+            <h3 class="text-xl font-bold text-yellow-400 mb-2">Achievement Unlocked!</h3>
+            <p id="achievement-text" class="text-green-200"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Complete Screen -->
+      <div id="complete-screen" class="hidden bg-black/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl shadow-green-500/20 border border-green-400">
+        <div class="text-center space-y-6">
+          <h2 class="text-4xl font-bold text-green-400 glow"><i class="fas fa-check-circle mr-3"></i>MISSION ACCOMPLISHED</h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-yellow-400" id="final-score">0</div>
+              <div class="text-green-300">Final Score</div>
+            </div>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-blue-400" id="final-time">00:00</div>
+              <div class="text-green-300">Total Time</div>
+            </div>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-green-400" id="final-rank">Novice</div>
+              <div class="text-green-300">Security Rank</div>
+            </div>
+          </div>
+          <div class="space-x-4">
+            <button id="play-again" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-black font-bold rounded-lg transition-all duration-300">
+              <i class="fas fa-redo mr-2"></i>Play Again
+            </button>
+            <button id="share-score" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-all duration-300">
+              <i class="fas fa-share mr-2"></i>Share Score
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Game State
+    let gameState = {
+      currentLevel: 1,
+      totalScore: 0,
+      timeStarted: null,
+      hintsUsed: 0,
+      multiplier: 1.0,
+      wrongAnswers: 0,
+      achievements: [],
+      hintsRemaining: 3
+    };
+
+    // Game Data
+    const challenges = [
+      {
+        id: 1,
+        type: 'caesar',
+        title: 'Caesar Cipher Decryption',
+        description: 'Decrypt the intercepted message to reveal the secret access code.',
+        icon: 'fas fa-key',
+        encrypted: 'KHOOR ZRUOG',
+        shift: 3,
+        answer: 'HELLO WORLD',
+        points: 100,
+        hint: 'Try shifting each letter back by 3 positions in the alphabet'
+      },
+      {
+        id: 2,
+        type: 'loganalysis',
+        title: 'Network Log Analysis',
+        description: 'Identify the suspicious IP address with the highest activity.',
+        icon: 'fas fa-search',
+        logs: ['10.0.0.1', '192.168.1.5', '10.0.0.1', '172.16.0.3', '10.0.0.1', '192.168.1.5', '10.0.0.1', '172.16.0.3', '192.168.1.5'],
+        answer: '10.0.0.1',
+        points: 150,
+        hint: 'Count the frequency of each IP address in the logs'
+      },
+      {
+        id: 3,
+        type: 'base64',
+        title: 'Base64 Decoder',
+        description: 'Decode the Base64 encoded sensitive data.',
+        icon: 'fas fa-code',
+        encoded: 'U0VDUkVUIERBVEE=',
+        answer: 'SECRET DATA',
+        points: 200,
+        hint: 'This looks like Base64 encoding - decode it to reveal the message'
+      },
+      {
+        id: 4,
+        type: 'binary',
+        title: 'Binary Message',
+        description: 'Convert the binary code to reveal the hidden message.',
+        icon: 'fas fa-microchip',
+        binary: '01001000 01000001 01000011 01001011',
+        answer: 'HACK',
+        points: 250,
+        hint: 'Convert each 8-bit binary number to its ASCII character'
+      },
+      {
+        id: 5,
+        type: 'password',
+        title: 'Password Pattern Analysis',
+        description: 'Find the pattern in these compromised passwords to predict the next one.',
+        icon: 'fas fa-lock',
+        passwords: ['Pass1!', 'Pass2@', 'Pass3#', 'Pass4$'],
+        answer: 'Pass5%',
+        points: 300,
+        hint: 'Look at the number increment and the special character progression'
+      }
+    ];
+
+    const achievements = [
+      { id: 'first_solve', name: 'First Blood', description: 'Solve your first puzzle', icon: 'fas fa-trophy' },
+      { id: 'speed_demon', name: 'Speed Demon', description: 'Complete a level in under 30 seconds', icon: 'fas fa-bolt' },
+      { id: 'no_hints', name: 'Pure Skill', description: 'Complete a level without using hints', icon: 'fas fa-brain' },
+      { id: 'perfect_score', name: 'Perfectionist', description: 'Complete all levels with max multiplier', icon: 'fas fa-star' },
+      { id: 'game_complete', name: 'System Secured', description: 'Complete all security challenges', icon: 'fas fa-shield-check' }
+    ];
+
+    // Matrix Background Effect
+    function createMatrixEffect() {
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const matrixBg = document.getElementById('matrix-bg');
+      
+      setInterval(() => {
+        const char = document.createElement('div');
+        char.className = 'matrix-char';
+        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+        char.style.left = Math.random() * 100 + '%';
+        char.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        matrixBg.appendChild(char);
+        
+        setTimeout(() => {
+          if (char.parentNode) {
+            char.parentNode.removeChild(char);
+          }
+        }, 8000);
+      }, 200);
+    }
+
+    // Timer Functions
+    function startTimer() {
+      gameState.timeStarted = Date.now();
+      const timerElement = document.getElementById('timer');
+      
+      const updateTimer = () => {
+        if (gameState.timeStarted) {
+          const elapsed = Math.floor((Date.now() - gameState.timeStarted) / 1000);
+          const minutes = Math.floor(elapsed / 60);
+          const seconds = elapsed % 60;
+          timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+      };
+      
+      updateTimer();
+      gameState.timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+      if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+        gameState.timerInterval = null;
+      }
+      return Math.floor((Date.now() - gameState.timeStarted) / 1000);
+    }
+
+    // Achievement System
+    function unlockAchievement(achievementId) {
+      if (!gameState.achievements.includes(achievementId)) {
+        gameState.achievements.push(achievementId);
+        const achievement = achievements.find(a => a.id === achievementId);
+        showAchievementPopup(achievement);
+      }
+    }
+
+    function showAchievementPopup(achievement) {
+      const popup = document.getElementById('achievement-popup');
+      const text = document.getElementById('achievement-text');
+      text.textContent = achievement.description;
+      popup.classList.remove('hidden');
+      
+      setTimeout(() => {
+        popup.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Challenge Rendering
+    function renderChallenge(challenge) {
+      const container = document.getElementById('challenge-container');
+      container.className = 'bg-black/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl shadow-green-500/20 border border-green-400 slide-in';
+      
+      let challengeHTML = `
+        <div class="space-y-6">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="${challenge.icon} text-3xl text-green-500"></i>
+            <div>
+              <h2 class="text-2xl font-bold text-green-400">${challenge.title}</h2>
+              <p class="text-green-200">${challenge.description}</p>
+            </div>
+            <div class="ml-auto text-right">
+              <div class="text-sm text-green-300">POINTS</div>
+              <div class="text-xl font-bold text-yellow-400">${Math.floor(challenge.points * gameState.multiplier)}</div>
+            </div>
+          </div>
+      `;
+
+      switch (challenge.type) {
+        case 'caesar':
+          challengeHTML += `
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-2 text-green-300">Encrypted Message:</label>
+                <div class="p-4 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold text-lg">${challenge.encrypted}</div>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block mb-2 text-green-300">Shift Key (1–25):</label>
+                  <input id="shift-range" type="range" min="1" max="25" value="3" class="w-full accent-green-500">
+                  <p class="text-sm text-green-300 mt-1">Current Shift: <span id="current-shift" class="text-green-400 font-bold">3</span></p>
+                </div>
+                <div>
+                  <label class="block mb-2 text-green-300">Your Answer:</label>
+                  <input id="answer-input" type="text" placeholder="Enter decrypted message" class="w-full p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold">
+                </div>
+              </div>
+              <div>
+                <label class="block mb-2 text-green-300">Live Preview:</label>
+                <div id="decrypted-preview" class="p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 min-h-[3rem] font-bold">${caesarDecrypt(challenge.encrypted, 3)}</div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'loganalysis':
+          challengeHTML += `
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-2 text-green-300">Network Access Logs:</label>
+                <div class="bg-[#0f172a] border border-green-300 rounded-md p-4 h-48 overflow-y-scroll text-sm font-mono">
+                  ${challenge.logs.map((ip, index) => `<div class="py-1">${String(index + 1).padStart(3, '0')} | ${ip} - /system_access</div>`).join('')}
+                </div>
+              </div>
+              <div>
+                <label class="block mb-2 text-green-300">Most Suspicious IP Address:</label>
+                <input id="answer-input" type="text" placeholder="e.g. 192.168.1.1" class="w-full p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold">
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'base64':
+          challengeHTML += `
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-2 text-green-300">Base64 Encoded Data:</label>
+                <div class="p-4 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold text-lg break-all">${challenge.encoded}</div>
+              </div>
+              <div>
+                <label class="block mb-2 text-green-300">Decoded Message:</label>
+                <input id="answer-input" type="text" placeholder="Enter decoded message" class="w-full p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold">
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'binary':
+          challengeHTML += `
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-2 text-green-300">Binary Code:</label>
+                <div class="p-4 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold text-lg font-mono">${challenge.binary}</div>
+              </div>
+              <div>
+                <label class="block mb-2 text-green-300">ASCII Message:</label>
+                <input id="answer-input" type="text" placeholder="Enter converted message" class="w-full p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold">
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'password':
+          challengeHTML += `
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-2 text-green-300">Compromised Password Sequence:</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  ${challenge.passwords.map(pwd => `<div class="p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold text-center">${pwd}</div>`).join('')}
+                </div>
+              </div>
+              <div>
+                <label class="block mb-2 text-green-300">Next Password in Sequence:</label>
+                <input id="answer-input" type="text" placeholder="Predict the next password" class="w-full p-3 bg-[#0f172a] border border-green-300 rounded-md text-green-200 font-bold">
+              </div>
+            </div>
+          `;
+          break;
+      }
+
+      challengeHTML += `
+          <div class="flex gap-4 pt-4">
+            <button id="submit-answer" class="flex-1 px-6 py-3 bg-green-600 hover:bg-green-500 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105">
+              <i class="fas fa-check mr-2"></i>Submit Answer
+            </button>
+            <button id="skip-challenge" class="px-6 py-3 bg-red-600/20 hover:bg-red-600/40 border border-red-400 text-red-300 font-bold rounded-lg transition-all duration-300">
+              <i class="fas fa-forward mr-2"></i>Skip (-50 pts)
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = challengeHTML;
+      
+      // Add event listeners
+      setupChallengeListeners(challenge);
+    }
+
+    function setupChallengeListeners(challenge) {
+      const submitBtn = document.getElementById('submit-answer');
+      const skipBtn = document.getElementById('skip-challenge');
+      const answerInput = document.getElementById('answer-input');
+
+      // Caesar cipher live preview
+      if (challenge.type === 'caesar') {
+        const shiftRange = document.getElementById('shift-range');
+        const currentShift = document.getElementById('current-shift');
+        const preview = document.getElementById('decrypted-preview');
+
+        const updatePreview = () => {
+          const shift = parseInt(shiftRange.value);
+          currentShift.textContent = shift;
+          preview.textContent = caesarDecrypt(challenge.encrypted, shift);
+        };
+
+        shiftRange.addEventListener('input', updatePreview);
+      }
+
+      // Submit answer
+      submitBtn.addEventListener('click', () => checkAnswer(challenge));
+      answerInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkAnswer(challenge);
+      });
+
+      // Skip challenge
+      skipBtn.addEventListener('click', () => skipChallenge(challenge));
+
+      // Focus on input
+      answerInput.focus();
+    }
+
+    function checkAnswer(challenge) {
+      const answerInput = document.getElementById('answer-input');
+      const userAnswer = answerInput.value.trim().toUpperCase();
+      const correctAnswer = challenge.answer.toUpperCase();
+
+      if (userAnswer === correctAnswer) {
+        // Correct answer
+        const levelTime = stopTimer();
+        const points = Math.floor(challenge.points * gameState.multiplier);
+        gameState.totalScore += points;
+        
+        // Check for achievements
+        if (gameState.achievements.length === 0) {
+          unlockAchievement('first_solve');
+        }
+        if (levelTime < 30) {
+          unlockAchievement('speed_demon');
+        }
+        if (gameState.hintsUsed === 0) {
+          unlockAchievement('no_hints');
+        }
+
+        showLevelComplete(points, levelTime);
+      } else {
+        // Wrong answer
+        gameState.wrongAnswers++;
+        gameState.multiplier = Math.max(0.5, gameState.multiplier - 0.1);
+        showWrongAnswer();
+      }
+    }
+
+    function showLevelComplete(points, time) {
+      const container = document.getElementById('challenge-container');
+      container.className = 'bg-black/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl shadow-green-500/20 border border-green-400 level-complete';
+      container.innerHTML = `
+        <div class="text-center space-y-6">
+          <div class="text-6xl text-green-400 mb-4">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h2 class="text-3xl font-bold text-green-400">Level Complete!</h2>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-yellow-400">+${points}</div>
+              <div class="text-green-300">Points Earned</div>
+            </div>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-blue-400">${time}s</div>
+              <div class="text-green-300">Completion Time</div>
+            </div>
+            <div class="bg-[#0f172a]/80 p-4 rounded-lg border border-green-300/30">
+              <div class="text-2xl font-bold text-green-400">${gameState.multiplier.toFixed(1)}x</div>
+              <div class="text-green-300">Score Multiplier</div>
+            </div>
+          </div>
+          <button id="next-level" class="px-8 py-3 bg-green-600 hover:bg-green-500 text-black font-bold text-xl rounded-lg transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-arrow-right mr-2"></i>Continue Mission
+          </button>
+        </div>
+      `;
+
+      document.getElementById('next-level').addEventListener('click', nextLevel);
+      updateUI();
+    }
+
+    function showWrongAnswer() {
+      const container = document.getElementById('challenge-container');
+      const wrongFeedback = document.createElement('div');
+      wrongFeedback.className = 'bg-red-900/50 border border-red-400 rounded-lg p-4 mt-4 text-center';
+      wrongFeedback.innerHTML = `
+        <div class="text-red-400 font-bold">
+          <i class="fas fa-times-circle mr-2"></i>Incorrect! Score multiplier reduced to ${gameState.multiplier.toFixed(1)}x
+        </div>
+      `;
+      
+      container.appendChild(wrongFeedback);
+      
+      setTimeout(() => {
+        wrongFeedback.remove();
+      }, 3000);
+    }
+
+    function skipChallenge(challenge) {
+      gameState.totalScore = Math.max(0, gameState.totalScore - 50);
+      gameState.multiplier = Math.max(0.5, gameState.multiplier - 0.2);
+      nextLevel();
+    }
+
+    function nextLevel() {
+      gameState.currentLevel++;
+      gameState.hintsUsed = 0;
+      gameState.hintsRemaining = 3;
+      
+      if (gameState.currentLevel > challenges.length) {
+        completeGame();
+      } else {
+        startLevel(gameState.currentLevel);
+      }
+    }
+
+    function startLevel(level) {
+      const challenge = challenges[level - 1];
+      document.getElementById('current-level').textContent = level;
+      document.getElementById('progress-text').textContent = `Level ${level} of ${challenges.length}`;
+      document.getElementById('progress-bar').style.width = `${(level / challenges.length) * 100}%`;
+      document.getElementById('hints-count').textContent = gameState.hintsRemaining;
+      
+      renderChallenge(challenge);
+      startTimer();
+      updateUI();
+    }
+
+    function completeGame() {
+      stopTimer();
+      const totalTime = Math.floor((Date.now() - gameState.timeStarted) / 1000);
+      
+      // Check final achievements
+      if (gameState.multiplier === 1.0) {
+        unlockAchievement('perfect_score');
+      }
+      unlockAchievement('game_complete');
+      
+      // Calculate rank
+      let rank = 'Novice';
+      if (gameState.totalScore >= 1000) rank = 'Expert';
+      else if (gameState.totalScore >= 750) rank = 'Advanced';
+      else if (gameState.totalScore >= 500) rank = 'Intermediate';
+      
+      // Show completion screen
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('complete-screen').classList.remove('hidden');
+      
+      document.getElementById('final-score').textContent = gameState.totalScore;
+      document.getElementById('final-time').textContent = formatTime(totalTime);
+      document.getElementById('final-rank').textContent = rank;
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Caesar cipher function
+    function caesarDecrypt(text, shift) {
+      return text.toUpperCase().split('').map(char => {
+        if (char >= 'A' && char <= 'Z') {
+          return String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
+        } else {
+          return char;
+        }
+      }).join('');
+    }
+
+    // Hint system
+    document.getElementById('get-hint').addEventListener('click', () => {
+      if (gameState.hintsRemaining > 0) {
+        gameState.hintsRemaining--;
+        gameState.hintsUsed++;
+        gameState.multiplier = Math.max(0.5, gameState.multiplier - 0.05);
+        
+        const challenge = challenges[gameState.currentLevel - 1];
+        document.getElementById('hint-text').textContent = challenge.hint;
+        document.getElementById('hint-text').classList.remove('hidden');
+        document.getElementById('hints-count').textContent = gameState.hintsRemaining;
+        
+        if (gameState.hintsRemaining === 0) {
+          document.getElementById('get-hint').disabled = true;
+          document.getElementById('get-hint').classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      }
+    });
+
+    // UI Update function
+    function updateUI() {
+      document.getElementById('total-score').textContent = gameState.totalScore;
+      document.getElementById('current-level').textContent = gameState.currentLevel;
+    }
+
+    // Game initialization
+    document.getElementById('start-game').addEventListener('click', () => {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+      startLevel(1);
+    });
+
+    document.getElementById('play-again').addEventListener('click', () => {
+      // Reset game state
+      gameState = {
+        currentLevel: 1,
+        totalScore: 0,
+        timeStarted: null,
+        hintsUsed: 0,
+        multiplier: 1.0,
+        wrongAnswers: 0,
+        achievements: [],
+        hintsRemaining: 3
+      };
+      
+      document.getElementById('complete-screen').classList.add('hidden');
+      document.getElementById('welcome-screen').classList.remove('hidden');
+    });
+
+    document.getElementById('back-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to leave the game? Your progress will be lost.')) {
+            window.location.href = '/games.html#game-4'; // Ganti dengan path sebenarnya dari home kamu
+        }
+    });
+
+    document.getElementById('share-score').addEventListener('click', () => {
+      const shareText = `I just completed FIREWALL: BLACKOUT with a score of ${gameState.totalScore} points! Can you beat my cybersecurity skills?`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'FIREWALL: BLACKOUT',
+          text: shareText,
+          url: window.location.href
+        });
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        navigator.clipboard.writeText(shareText).then(() => {
+          alert('Score copied to clipboard!');
+        });
+      }
+    });
+
+    // Initialize matrix effect and start the game
+    createMatrixEffect();
+  </script>
+</body>
+</html>

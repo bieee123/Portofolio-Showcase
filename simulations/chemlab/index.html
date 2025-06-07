@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemLab Pro - Interactive Chemical Reaction Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'lab-blue': '#1e3a8a',
+                        'lab-green': '#059669',
+                        'lab-orange': '#ea580c',
+                        'lab-red': '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        @keyframes bubble {
+            0% { transform: translateY(0) scale(0.8); opacity: 0.7; }
+            50% { transform: translateY(-20px) scale(1); opacity: 1; }
+            100% { transform: translateY(-40px) scale(0.6); opacity: 0; }
+        }
+        
+        @keyframes precipitate {
+            0% { transform: translateY(-10px); opacity: 0; }
+            100% { transform: translateY(20px); opacity: 0.8; }
+        }
+        
+        @keyframes colorChange {
+            0% { background-color: #3b82f6; }
+            50% { background-color: #10b981; }
+            100% { background-color: #f59e0b; }
+        }
+        
+        .bubble {
+            animation: bubble 2s infinite;
+        }
+        
+        .precipitate {
+            animation: precipitate 3s infinite;
+        }
+        
+        .color-change {
+            animation: colorChange 3s ease-in-out;
+        }
+        
+        .beaker {
+            background: linear-gradient(to bottom, transparent 30%, #3b82f6 30%);
+            border: 3px solid #374151;
+            border-radius: 0 0 50px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .beaker-liquid {
+            transition: all 0.5s ease;
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .console {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 1px solid #374151;
+        }
+        
+        .nav-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">ChemLab Pro</h1>
+                </div>
+                
+                <!-- Theme Toggles -->
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">🌕</span>
+                    </button>
+                    <button id="labModeToggle" class="px-3 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
+                        Lab Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between flex-wrap gap-4 py-2">
+                <!-- Button aligned to the right -->
+                <a href="/simulations.html#simulation-4" class="px-4 py-2 bg-lab-blue text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
+                    ⬅ Back to Homepage
+                </a>
+
+                <!-- Tabs -->
+                <div class="flex flex-wrap space-x-1">
+                    <button class="nav-tab active px-6 py-3 text-white font-medium rounded-t-lg" data-tab="simulate">Simulate</button>
+                    <button class="nav-tab px-6 py-3 text-gray-700 dark:text-gray-300 font-medium rounded-t-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-tab="quiz">Quiz</button>
+                    <button class="nav-tab px-6 py-3 text-gray-700 dark:text-gray-300 font-medium rounded-t-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-tab="learn">Learn</button>
+                    <button class="nav-tab px-6 py-3 text-gray-700 dark:text-gray-300 font-medium rounded-t-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-tab="developer">Developer</button>
+                    <button class="nav-tab px-6 py-3 text-gray-700 dark:text-gray-300 font-medium rounded-t-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-tab="about">About</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Simulate Tab -->
+        <div id="simulate" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls Panel -->
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Reactant Selection -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Select Reactants</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Reactant A</label>
+                                <select id="reactantA" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select compound...</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Reactant B</label>
+                                <select id="reactantB" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select compound...</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                            <button id="reactBtn" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105 font-medium">
+                                React
+                            </button>
+                            <button id="randomBtn" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 font-medium">
+                                Random 
+                            </button>
+                            <button id="resetBtn" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-2 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all transform hover:scale-105 font-medium">
+                                Reset 
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tips Toggle -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Helper Tips</h3>
+                            <label class="flex items-center cursor-pointer">
+                                <input id="tipsToggle" type="checkbox" class="sr-only">
+                                <div class="relative">
+                                    <div class="block bg-gray-300 w-14 h-8 rounded-full"></div>
+                                    <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div id="tipsContent" class="hidden space-y-3">
+                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+                                <p class="text-sm text-blue-800 dark:text-blue-200" id="currentTip">Select reactants to see helpful tips!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reaction Visualization -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">Virtual Lab</h3>
+                        
+                        <div class="flex flex-col items-center space-y-6">
+                            <!-- Beaker -->
+                            <div class="relative">
+                                <div id="beaker" class="beaker w-32 h-40 mx-auto relative">
+                                    <div id="liquid" class="beaker-liquid absolute bottom-0 w-full h-20 bg-blue-400 transition-all duration-1000"></div>
+                                    <div id="bubbles" class="absolute inset-0 pointer-events-none"></div>
+                                    <div id="precipitate" class="absolute inset-0 pointer-events-none"></div>
+                                </div>
+                                
+                                <!-- Safety Status -->
+                                <div id="safetyStatus" class="mt-4 text-center">
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">Ready</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Reaction Equation -->
+                            <div id="reactionEquation" class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg w-full">
+                                <p class="text-gray-600 dark:text-gray-400 mono text-sm">A + B → ?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Console Output -->
+                <div class="lg:col-span-1">
+                    <div class="console rounded-xl shadow-lg p-6 h-full">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-white">Live Console</h3>
+                            <button id="clearConsole" class="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Clear</button>
+                        </div>
+                        
+                        <div id="consoleOutput" class="mono text-sm text-green-400 h-80 overflow-y-auto space-y-1 bg-black/20 rounded p-3">
+                            <div class="text-cyan-400">ChemLab Pro Console v1.0</div>
+                            <div class="text-gray-400">Ready for chemical reactions...</div>
+                            <div class="text-yellow-400">Type: help for commands</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div id="quiz" class="tab-content hidden">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Reaction Prediction Quiz</h2>
+                    
+                    <div id="quizQuestion" class="space-y-6">
+                        <div class="text-center p-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg">
+                            <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">What happens when these react?</p>
+                            <div id="quizReactants" class="text-2xl font-bold text-purple-600 dark:text-purple-400 mono">
+                                HCl + NaOH → ?
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your Answer:</label>
+                            <select id="quizAnswer" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option value="">Select product...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button id="submitQuiz" class="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all transform hover:scale-105 font-medium">
+                                Submit Answer
+                            </button>
+                            <button id="newQuiz" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 font-medium">
+                                New Question
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="quizResult" class="mt-6 p-4 rounded-lg hidden">
+                        <div id="quizFeedback" class="text-lg font-semibold mb-2"></div>
+                        <div id="quizExplanation" class="text-sm text-gray-600 dark:text-gray-400"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learn Tab -->
+        <div id="learn" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Basic Concepts -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🔬 Basic Concepts</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div><strong>Acid:</strong> Substance that releases H⁺ ions (pH < 7)</div>
+                        <div><strong>Base:</strong> Substance that releases OH⁻ ions (pH > 7)</div>
+                        <div><strong>Salt:</strong> Ionic compound formed from acid-base reactions</div>
+                        <div><strong>Precipitate:</strong> Solid formed when two solutions react</div>
+                    </div>
+                </div>
+                
+                <!-- Reaction Types -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">⚛️ Reaction Types</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div><strong>Neutralization:</strong> Acid + Base → Salt + Water</div>
+                        <div><strong>Precipitation:</strong> Solutions combine to form solid</div>
+                        <div><strong>Double Displacement:</strong> AB + CD → AD + CB</div>
+                        <div><strong>Redox:</strong> Transfer of electrons between substances</div>
+                    </div>
+                </div>
+                
+                <!-- Safety Tips -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🦺 Safety Tips</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div><strong>Always:</strong> Wear safety goggles and gloves</div>
+                        <div><strong>Acids:</strong> Can cause burns - handle with care</div>
+                        <div><strong>Bases:</strong> Can be corrosive - avoid skin contact</div>
+                        <div><strong>Unknown reactions:</strong> Test small amounts first</div>
+                    </div>
+                </div>
+                
+                <!-- Fun Facts -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🌟 Fun Facts</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div>Pure water has a pH of exactly 7.0</div>
+                        <div>Lemon juice is more acidic than vinegar</div>
+                        <div>Silver nitrate was used in old photography</div>
+                        <div>Table salt forms perfect cubic crystals</div>
+                    </div>
+                </div>
+                
+                <!-- Common Compounds -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🧪 Common Lab Compounds</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div><strong>HCl:</strong> Hydrochloric acid (stomach acid)</div>
+                        <div><strong>NaOH:</strong> Sodium hydroxide (drain cleaner)</div>
+                        <div><strong>NaCl:</strong> Table salt</div>
+                        <div><strong>AgNO₃:</strong> Silver nitrate (antiseptic)</div>
+                    </div>
+                </div>
+                
+                <!-- Prediction Tips -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🎯 Prediction Tips</h3>
+                    <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div>Strong acid + Strong base = Salt + Water</div>
+                        <div>Metal salt + Halide = Possible precipitate</div>
+                        <div>Check solubility rules for predictions</div>
+                        <div>Color changes often indicate reactions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Tab -->
+        <div id="developer" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Debug Panel -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🔧 Debug Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-2">Current State</h4>
+                            <div id="debugState" class="mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded border max-h-40 overflow-y-auto">
+                                <pre id="stateJson">{}</pre>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-2">Last Reaction Data</h4>
+                            <div id="debugReaction" class="mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded border max-h-40 overflow-y-auto">
+                                <pre id="reactionJson">No reaction data</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Equations -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">⚗️ Balanced Equations & Ion Breakdown</h3>
+                    <div id="detailedEquations" class="space-y-4">
+                        <p class="text-gray-600 dark:text-gray-400">Perform a reaction to see detailed analysis</p>
+                    </div>
+                </div>
+                
+                <!-- Compound Database -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">💾 Compound Database</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-2 text-gray-900 dark:text-white">Formula</th>
+                                    <th class="text-left py-2 text-gray-900 dark:text-white">Name</th>
+                                    <th class="text-left py-2 text-gray-900 dark:text-white">Molar Mass</th>
+                                    <th class="text-left py-2 text-gray-900 dark:text-white">Type</th>
+                                    <th class="text-left py-2 text-gray-900 dark:text-white">Color</th>
+                                </tr>
+                            </thead>
+                            <tbody id="compoundTable" class="text-gray-600 dark:text-gray-400">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Tab -->
+        <div id="about" class="tab-content hidden">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">About ChemLab Pro</h2>
+                    
+                    <div class="prose prose-gray dark:prose-invert max-w-none">
+                        <p class="text-lg text-gray-600 dark:text-gray-400 mb-6 text-center">
+                            An interactive chemistry learning platform designed for high school and early college students.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Features</h3>
+                                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <li>• Interactive reaction simulation</li>
+                                    <li>• Visual beaker animations</li>
+                                    <li>• Real-time console feedback</li>
+                                    <li>• Quiz mode for learning</li>
+                                    <li>• Developer mode for advanced users</li>
+                                    <li>• Dark mode support</li>
+                                    <li>• Mobile-responsive design</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Educational Goals</h3>
+                                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <li>• Understanding chemical reactions</li>
+                                    <li>• Learning compound properties</li>
+                                    <li>• Practicing reaction prediction</li>
+                                    <li>• Exploring safety concepts</li>
+                                    <li>• Building chemistry intuition</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Safety Notice</h3>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                This is a virtual simulation for educational purposes. Always follow proper safety protocols 
+                                when working with real chemicals in a laboratory setting. Wear appropriate protective equipment 
+                                and work under qualified supervision.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Chemical Database
+        const compounds = {
+            'HCl': { name: 'Hydrochloric Acid', type: 'acid', molarMass: 36.46, color: 'colorless', soluble: true, safety: 'caution' },
+            'NaOH': { name: 'Sodium Hydroxide', type: 'base', molarMass: 40.00, color: 'colorless', soluble: true, safety: 'caution' },
+            'AgNO3': { name: 'Silver Nitrate', type: 'salt', molarMass: 169.87, color: 'colorless', soluble: true, safety: 'caution' },
+            'NaCl': { name: 'Sodium Chloride', type: 'salt', molarMass: 58.44, color: 'colorless', soluble: true, safety: 'safe' },
+            'KOH': { name: 'Potassium Hydroxide', type: 'base', molarMass: 56.11, color: 'colorless', soluble: true, safety: 'caution' },
+            'Ca(OH)2': { name: 'Calcium Hydroxide', type: 'base', molarMass: 74.09, color: 'colorless', soluble: false, safety: 'safe' },
+            'H2SO4': { name: 'Sulfuric Acid', type: 'acid', molarMass: 98.08, color: 'colorless', soluble: true, safety: 'danger' },
+            'CuSO4': { name: 'Copper Sulfate', type: 'salt', molarMass: 159.61, color: 'blue', soluble: true, safety: 'caution' },
+            'FeCl3': { name: 'Iron(III) Chloride', type: 'salt', molarMass: 162.20, color: 'yellow', soluble: true, safety: 'caution' },
+            'BaCl2': { name: 'Barium Chloride', type: 'salt', molarMass: 208.23, color: 'colorless', soluble: true, safety: 'danger' }
+        };
+
+        // Reaction Database
+        const reactions = {
+            'HCl+NaOH': {
+                products: ['NaCl', 'H2O'],
+                equation: 'HCl + NaOH → NaCl + H₂O',
+                balancedEquation: 'HCl + NaOH → NaCl + H₂O',
+                ionicEquation: 'H⁺ + OH⁻ → H₂O',
+                type: 'Neutralization',
+                color: 'colorless',
+                description: 'Strong acid neutralizes strong base to form salt and water',
+                precipitate: false,
+                bubbles: false,
+                safety: 'safe'
+            },
+            'AgNO3+NaCl': {
+                products: ['AgCl', 'NaNO3'],
+                equation: 'AgNO₃ + NaCl → AgCl + NaNO₃',
+                balancedEquation: 'AgNO₃ + NaCl → AgCl ↓ + NaNO₃',
+                ionicEquation: 'Ag⁺ + Cl⁻ → AgCl ↓',
+                type: 'Precipitation',
+                color: 'white',
+                description: 'Silver chloride precipitate forms (white solid)',
+                precipitate: true,
+                bubbles: false,
+                safety: 'caution'
+            },
+            'HCl+Ca(OH)2': {
+                products: ['CaCl2', 'H2O'],
+                equation: 'HCl + Ca(OH)₂ → CaCl₂ + H₂O',
+                balancedEquation: '2HCl + Ca(OH)₂ → CaCl₂ + 2H₂O',
+                ionicEquation: '2H⁺ + 2OH⁻ → 2H₂O',
+                type: 'Neutralization',
+                color: 'colorless',
+                description: 'Acid neutralizes base to form salt and water',
+                precipitate: false,
+                bubbles: false,
+                safety: 'safe'
+            },
+            'H2SO4+BaCl2': {
+                products: ['BaSO4', 'HCl'],
+                equation: 'H₂SO₄ + BaCl₂ → BaSO₄ + HCl',
+                balancedEquation: 'H₂SO₄ + BaCl₂ → BaSO₄ ↓ + 2HCl',
+                ionicEquation: 'Ba²⁺ + SO₄²⁻ → BaSO₄ ↓',
+                type: 'Precipitation',
+                color: 'white',
+                description: 'Barium sulfate precipitate forms (white solid)',
+                precipitate: true,
+                bubbles: false,
+                safety: 'danger'
+            }
+        };
+
+        // Tips Database
+        const tips = {
+            acids: "Acids have pH < 7 and release H⁺ ions. Common examples include HCl and H₂SO₄. Always handle with care!",
+            bases: "Bases have pH > 7 and release OH⁻ ions. Examples include NaOH and KOH. They can be corrosive to skin.",
+            salts: "Salts are ionic compounds formed from acid-base reactions. Table salt (NaCl) is the most common example.",
+            precipitation: "Precipitation reactions form insoluble solids. Look for compounds with low solubility!",
+            neutralization: "When acids and bases react, they neutralize each other to form salt and water.",
+            safety: "Always wear safety goggles and gloves. Never mix unknown chemicals without proper knowledge!",
+            prediction: "Use solubility rules and ionic charges to predict reaction products. Practice makes perfect!",
+            colors: "Color changes often indicate chemical reactions. Blue copper compounds, yellow iron compounds, etc."
+        };
+
+        // Application State
+        let currentState = {
+            reactantA: '',
+            reactantB: '',
+            currentReaction: null,
+            darkMode: false,
+            labMode: false,
+            tipsEnabled: false,
+            activeTab: 'simulate'
+        };
+
+        // DOM Elements
+        const elements = {
+            reactantA: document.getElementById('reactantA'),
+            reactantB: document.getElementById('reactantB'),
+            reactBtn: document.getElementById('reactBtn'),
+            randomBtn: document.getElementById('randomBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            beaker: document.getElementById('beaker'),
+            liquid: document.getElementById('liquid'),
+            bubbles: document.getElementById('bubbles'),
+            precipitate: document.getElementById('precipitate'),
+            safetyStatus: document.getElementById('safetyStatus'),
+            reactionEquation: document.getElementById('reactionEquation'),
+            consoleOutput: document.getElementById('consoleOutput'),
+            clearConsole: document.getElementById('clearConsole'),
+            tipsToggle: document.getElementById('tipsToggle'),
+            tipsContent: document.getElementById('tipsContent'),
+            currentTip: document.getElementById('currentTip'),
+            darkModeToggle: document.getElementById('darkModeToggle'),
+            labModeToggle: document.getElementById('labModeToggle')
+        };
+
+        // Initialize Application
+        function init() {
+            populateDropdowns();
+            setupEventListeners();
+            updateDebugInfo();
+            populateCompoundTable();
+            generateNewQuiz();
+            logToConsole('System initialized successfully', 'success');
+        }
+
+        // Populate Dropdown Menus
+        function populateDropdowns() {
+            const compoundKeys = Object.keys(compounds);
+            
+            [elements.reactantA, elements.reactantB].forEach(select => {
+                select.innerHTML = '<option value="">Select compound...</option>';
+                compoundKeys.forEach(compound => {
+                    const option = document.createElement('option');
+                    option.value = compound;
+                    option.textContent = `${compound} - ${compounds[compound].name}`;
+                    option.title = `${compounds[compound].name} (${compounds[compound].type})`;
+                    select.appendChild(option);
+                });
+            });
+
+            // Populate quiz answer options
+            const quizAnswer = document.getElementById('quizAnswer');
+            if (quizAnswer) {
+                const products = new Set();
+                Object.values(reactions).forEach(reaction => {
+                    reaction.products.forEach(product => products.add(product));
+                });
+                
+                quizAnswer.innerHTML = '<option value="">Select product...</option>';
+                Array.from(products).sort().forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product;
+                    option.textContent = product;
+                    quizAnswer.appendChild(option);
+                });
+            }
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Reaction Controls
+            elements.reactBtn.addEventListener('click', performReaction);
+            elements.randomBtn.addEventListener('click', selectRandomReactants);
+            elements.resetBtn.addEventListener('click', resetReaction);
+            
+            // Reactant Selection
+            elements.reactantA.addEventListener('change', updateCurrentState);
+            elements.reactantB.addEventListener('change', updateCurrentState);
+            
+            // Tips Toggle
+            elements.tipsToggle.addEventListener('change', toggleTips);
+            
+            // Theme Toggles
+            elements.darkModeToggle.addEventListener('click', toggleDarkMode);
+            elements.labModeToggle.addEventListener('click', toggleLabMode);
+            
+            // Console Clear
+            elements.clearConsole.addEventListener('click', clearConsole);
+            
+            // Tab Navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
+            });
+
+            // Quiz Controls
+            const submitQuizBtn = document.getElementById('submitQuiz');
+            const newQuizBtn = document.getElementById('newQuiz');
+            if (submitQuizBtn) submitQuizBtn.addEventListener('click', submitQuizAnswer);
+            if (newQuizBtn) newQuizBtn.addEventListener('click', generateNewQuiz);
+        }
+
+        // Update Current State
+        function updateCurrentState() {
+            currentState.reactantA = elements.reactantA.value;
+            currentState.reactantB = elements.reactantB.value;
+            updateTips();
+            updateDebugInfo();
+        }
+
+        // Perform Chemical Reaction
+        function performReaction() {
+            const { reactantA, reactantB } = currentState;
+            
+            if (!reactantA || !reactantB) {
+                logToConsole('Error: Please select both reactants', 'error');
+                return;
+            }
+            
+            if (reactantA === reactantB) {
+                logToConsole('Warning: Same compound selected for both reactants', 'warning');
+                return;
+            }
+
+            logToConsole(`Mixing ${reactantA} + ${reactantB}...`, 'info');
+            
+            const reactionKey = `${reactantA}+${reactantB}`;
+            const reverseKey = `${reactantB}+${reactantA}`;
+            
+            let reaction = reactions[reactionKey] || reactions[reverseKey];
+            
+            if (reaction) {
+                currentState.currentReaction = reaction;
+                displayReaction(reaction);
+                animateReaction(reaction);
+                logReactionDetails(reactantA, reactantB, reaction);
+            } else {
+                displayNoReaction();
+                logToConsole('No observable reaction occurred', 'warning');
+                logToConsole('These compounds do not react under normal conditions', 'info');
+            }
+            
+            updateDebugInfo();
+        }
+
+        // Display Reaction Results
+        function displayReaction(reaction) {
+            // Update equation
+            elements.reactionEquation.innerHTML = `
+                <p class="mono text-sm font-medium text-gray-800 dark:text-gray-200">${reaction.equation}</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">${reaction.type} Reaction</p>
+            `;
+            
+            // Update safety status
+            const safetyColors = {
+                safe: 'bg-green-100 text-green-800 border-green-200',
+                caution: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                danger: 'bg-red-100 text-red-800 border-red-200'
+            };
+            
+            elements.safetyStatus.innerHTML = `
+                <span class="px-3 py-1 rounded-full text-sm font-medium border ${safetyColors[reaction.safety]}">
+                    ${reaction.safety.charAt(0).toUpperCase() + reaction.safety.slice(1)}
+                </span>
+            `;
+        }
+
+        // Display No Reaction
+        function displayNoReaction() {
+            elements.reactionEquation.innerHTML = `
+                <p class="mono text-sm text-gray-600 dark:text-gray-400">No Observable Reaction</p>
+                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">Try different compounds</p>
+            `;
+            
+            elements.safetyStatus.innerHTML = `
+                <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium border border-gray-200">
+                    Neutral
+                </span>
+            `;
+            
+            // Reset liquid to default
+            elements.liquid.className = 'beaker-liquid absolute bottom-0 w-full h-20 bg-blue-400 transition-all duration-1000';
+            clearAnimations();
+        }
+
+        // Animate Reaction
+        function animateReaction(reaction) {
+            clearAnimations();
+            
+            // Color change based on products
+            const colorMap = {
+                'white': 'bg-gray-100',
+                'blue': 'bg-blue-500',
+                'yellow': 'bg-yellow-400',
+                'green': 'bg-green-400',
+                'red': 'bg-red-400',
+                'colorless': 'bg-blue-300'
+            };
+            
+            const newColor = colorMap[reaction.color] || 'bg-blue-400';
+            elements.liquid.className = `beaker-liquid absolute bottom-0 w-full h-20 ${newColor} transition-all duration-1000`;
+            
+            // Add glow effect
+            elements.beaker.classList.add('glow');
+            setTimeout(() => {
+                elements.beaker.classList.remove('glow');
+            }, 2000);
+            
+            // Add bubbles if reaction produces gas
+            if (reaction.bubbles) {
+                createBubbles();
+            }
+            
+            // Add precipitate animation
+            if (reaction.precipitate) {
+                createPrecipitate();
+            }
+        }
+
+        // Create Bubble Animation
+        function createBubbles() {
+            const bubbleContainer = elements.bubbles;
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'absolute w-2 h-2 bg-white rounded-full bubble opacity-70';
+                    bubble.style.left = Math.random() * 80 + 10 + '%';
+                    bubble.style.bottom = '0px';
+                    bubbleContainer.appendChild(bubble);
+                    
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.parentNode.removeChild(bubble);
+                        }
+                    }, 2000);
+                }, i * 200);
+            }
+        }
+
+        // Create Precipitate Animation
+        function createPrecipitate() {
+            const precipitateContainer = elements.precipitate;
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'absolute w-1 h-1 bg-white rounded-full precipitate opacity-80';
+                    particle.style.left = Math.random() * 80 + 10 + '%';
+                    particle.style.top = '20px';
+                    precipitateContainer.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // Clear Animations
+        function clearAnimations() {
+            elements.bubbles.innerHTML = '';
+            elements.precipitate.innerHTML = '';
+        }
+
+        // Log Reaction Details
+        function logReactionDetails(reactantA, reactantB, reaction) {
+            logToConsole(`✓ Reaction successful!`, 'success');
+            logToConsole(`Products: ${reaction.products.join(' + ')}`, 'info');
+            logToConsole(`Type: ${reaction.type}`, 'info');
+            logToConsole(`Description: ${reaction.description}`, 'info');
+            if (reaction.precipitate) {
+                logToConsole(`Precipitate formed: ${reaction.color} solid`, 'warning');
+            }
+        }
+
+        // Select Random Reactants
+        function selectRandomReactants() {
+            const compoundKeys = Object.keys(compounds);
+            const randomA = compoundKeys[Math.floor(Math.random() * compoundKeys.length)];
+            let randomB = compoundKeys[Math.floor(Math.random() * compoundKeys.length)];
+            
+            // Ensure different compounds
+            while (randomB === randomA) {
+                randomB = compoundKeys[Math.floor(Math.random() * compoundKeys.length)];
+            }
+            
+            elements.reactantA.value = randomA;
+            elements.reactantB.value = randomB;
+            updateCurrentState();
+            
+            logToConsole(`Random selection: ${randomA} + ${randomB}`, 'info');
+        }
+
+        // Reset Reaction
+        function resetReaction() {
+            elements.reactantA.value = '';
+            elements.reactantB.value = '';
+            currentState.reactantA = '';
+            currentState.reactantB = '';
+            currentState.currentReaction = null;
+            
+            // Reset visual elements
+            elements.liquid.className = 'beaker-liquid absolute bottom-0 w-full h-20 bg-blue-400 transition-all duration-1000';
+            elements.reactionEquation.innerHTML = '<p class="text-gray-600 dark:text-gray-400 mono text-sm">A + B → ?</p>';
+            elements.safetyStatus.innerHTML = '<span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">Ready</span>';
+            
+            clearAnimations();
+            elements.beaker.classList.remove('glow');
+            
+            logToConsole('System reset - ready for new reaction', 'info');
+            updateDebugInfo();
+        }
+
+        // Console Logging
+        function logToConsole(message, type = 'info') {
+            const colors = {
+                info: 'text-cyan-400',
+                success: 'text-green-400',
+                warning: 'text-yellow-400',
+                error: 'text-red-400'
+            };
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `${colors[type]} text-sm`;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            
+            elements.consoleOutput.appendChild(logEntry);
+            elements.consoleOutput.scrollTop = elements.consoleOutput.scrollHeight;
+        }
+
+        // Clear Console
+        function clearConsole() {
+            elements.consoleOutput.innerHTML = `
+                <div class="text-cyan-400">ChemLab Pro Console v1.0</div>
+                <div class="text-gray-400">Console cleared - ready for new operations...</div>
+            `;
+        }
+
+        // Toggle Tips
+        function toggleTips() {
+            currentState.tipsEnabled = elements.tipsToggle.checked;
+            
+            if (currentState.tipsEnabled) {
+                elements.tipsContent.classList.remove('hidden');
+                elements.tipsToggle.nextElementSibling.querySelector('.dot').style.transform = 'translateX(24px)';
+                elements.tipsToggle.nextElementSibling.querySelector('.block').classList.add('bg-blue-500');
+                elements.tipsToggle.nextElementSibling.querySelector('.block').classList.remove('bg-gray-300');
+                updateTips();
+            } else {
+                elements.tipsContent.classList.add('hidden');
+                elements.tipsToggle.nextElementSibling.querySelector('.dot').style.transform = 'translateX(0)';
+                elements.tipsToggle.nextElementSibling.querySelector('.block').classList.remove('bg-blue-500');
+                elements.tipsToggle.nextElementSibling.querySelector('.block').classList.add('bg-gray-300');
+            }
+        }
+
+        // Update Tips
+        function updateTips() {
+            if (!currentState.tipsEnabled) return;
+            
+            const { reactantA, reactantB } = currentState;
+            let tip = tips.safety; // Default tip
+            
+            if (reactantA && reactantB) {
+                const compoundA = compounds[reactantA];
+                const compoundB = compounds[reactantB];
+                
+                if (compoundA.type === 'acid' && compoundB.type === 'base') {
+                    tip = tips.neutralization;
+                } else if (compoundA.type === 'acid' || compoundB.type === 'acid') {
+                    tip = tips.acids;
+                } else if (compoundA.type === 'base' || compoundB.type === 'base') {
+                    tip = tips.bases;
+                } else {
+                    tip = tips.prediction;
+                }
+            } else if (reactantA) {
+                const compound = compounds[reactantA];
+                tip = tips[compound.type] || tips.safety;
+            }
+            
+            elements.currentTip.textContent = tip;
+        }
+
+        // Theme Controls
+        function toggleDarkMode() {
+            currentState.darkMode = !currentState.darkMode;
+            document.documentElement.classList.toggle('dark', currentState.darkMode);
+            updateDebugInfo();
+        }
+
+        function toggleLabMode() {
+            currentState.labMode = !currentState.labMode;
+            if (currentState.labMode) {
+                document.body.classList.add('bg-gray-800');
+                elements.labModeToggle.textContent = 'Exit Lab Mode';
+            } else {
+                document.body.classList.remove('bg-gray-800');
+                elements.labModeToggle.textContent = 'Lab Mode';
+            }
+            updateDebugInfo();
+        }
+
+        // Tab Management
+        function switchTab(tabName) {
+            // Update active tab state
+            currentState.activeTab = tabName;
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.remove('hidden');
+            
+            // Update tab button states
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active', 'text-white');
+                tab.classList.add('text-gray-700', 'dark:text-gray-300');
+            });
+            
+            // Activate selected tab button
+            const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+            activeTab.classList.add('active', 'text-white');
+            activeTab.classList.remove('text-gray-700', 'dark:text-gray-300');
+            
+            updateDebugInfo();
+        }
+
+        // Quiz Functionality
+        let currentQuiz = null;
+
+        function generateNewQuiz() {
+            const reactionKeys = Object.keys(reactions);
+            const randomReaction = reactionKeys[Math.floor(Math.random() * reactionKeys.length)];
+            const [reactantA, reactantB] = randomReaction.split('+');
+            const reaction = reactions[randomReaction];
+            
+            currentQuiz = {
+                reactantA,
+                reactantB,
+                correctAnswer: reaction.products[0], // First product as answer
+                reaction
+            };
+            
+            document.getElementById('quizReactants').textContent = `${reactantA} + ${reactantB} → ?`;
+            
+            // Hide previous results
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('quizAnswer').value = '';
+        }
+
+        function submitQuizAnswer() {
+            if (!currentQuiz) {
+                generateNewQuiz();
+                return;
+            }
+            
+            const userAnswer = document.getElementById('quizAnswer').value;
+            const resultDiv = document.getElementById('quizResult');
+            const feedbackDiv = document.getElementById('quizFeedback');
+            const explanationDiv = document.getElementById('quizExplanation');
+            
+            if (!userAnswer) {
+                alert('Please select an answer first!');
+                return;
+            }
+            
+            const isCorrect = currentQuiz.correctAnswer === userAnswer;
+            
+            resultDiv.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'border-green-200', 'border-red-200');
+            
+            if (isCorrect) {
+                resultDiv.classList.add('bg-green-50', 'border-green-200', 'border');
+                feedbackDiv.textContent = '✅ Correct!';
+                feedbackDiv.className = 'text-lg font-semibold mb-2 text-green-800';
+                explanationDiv.textContent = `Great job! ${currentQuiz.reaction.description}`;
+                explanationDiv.className = 'text-sm text-green-600';
+            } else {
+                resultDiv.classList.add('bg-red-50', 'border-red-200', 'border');
+                feedbackDiv.textContent = '❌ Incorrect';
+                feedbackDiv.className = 'text-lg font-semibold mb-2 text-red-800';
+                explanationDiv.textContent = `The correct answer is ${currentQuiz.correctAnswer}. ${currentQuiz.reaction.description}`;
+                explanationDiv.className = 'text-sm text-red-600';
+            }
+        }
+
+        // Debug Information
+        function updateDebugInfo() {
+            const stateJson = document.getElementById('stateJson');
+            const reactionJson = document.getElementById('reactionJson');
+            
+            if (stateJson) {
+                stateJson.textContent = JSON.stringify(currentState, null, 2);
+            }
+            
+            if (reactionJson && currentState.currentReaction) {
+                reactionJson.textContent = JSON.stringify(currentState.currentReaction, null, 2);
+            }
+            
+            updateDetailedEquations();
+        }
+
+        function updateDetailedEquations() {
+            const detailedDiv = document.getElementById('detailedEquations');
+            if (!detailedDiv || !currentState.currentReaction) return;
+            
+            const reaction = currentState.currentReaction;
+            detailedDiv.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Balanced Equation</h4>
+                        <p class="mono text-sm text-gray-600 dark:text-gray-400">${reaction.balancedEquation}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Net Ionic Equation</h4>
+                        <p class="mono text-sm text-gray-600 dark:text-gray-400">${reaction.ionicEquation}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Reaction Analysis</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Type:</strong> ${reaction.type}</div>
+                            <div><strong>Safety:</strong> ${reaction.safety}</div>
+                            <div><strong>Color:</strong> ${reaction.color}</div>
+                            <div><strong>Precipitate:</strong> ${reaction.precipitate ? 'Yes' : 'No'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function populateCompoundTable() {
+            const tbody = document.getElementById('compoundTable');
+            if (!tbody) return;
+            
+            Object.entries(compounds).forEach(([formula, data]) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 dark:border-gray-700';
+                row.innerHTML = `
+                    <td class="py-2 mono font-medium">${formula}</td>
+                    <td class="py-2">${data.name}</td>
+                    <td class="py-2 mono">${data.molarMass} g/mol</td>
+                    <td class="py-2 capitalize">${data.type}</td>
+                    <td class="py-2 capitalize">${data.color}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

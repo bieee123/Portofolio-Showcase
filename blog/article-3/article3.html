@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Assessment Report - Modern Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Serif+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Source Serif Pro', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white font-body text-gray-900 leading-relaxed">
+    
+    <!-- Article Container -->
+    <main class="py-8 md:py-16">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            <!-- Back Link -->
+            <div class="mb-12">
+                <a href="/blog.html#article-3" class="inline-flex items-center text-gray-500 hover:text-gray-900 transition-all duration-300 text-sm font-medium tracking-wide group">
+                    <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to blog
+                </a>
+            </div>
+
+            <!-- Article Header -->
+            <header class="mb-16">
+                <div class="mb-6">
+                    <span class="text-xs font-medium tracking-widest text-gray-500 uppercase">Security Assessment • July 25, 2024</span>
+                </div>
+                
+                <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 leading-tight mb-8">
+                    Vulnerability Assessment Report
+                </h1>
+                
+                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-medium text-gray-900">Gabrielle Briliant Lintong</p>
+                            <p class="text-gray-500">Cyber Security Researcher</p>
+                        </div>
+                    </div>
+                    <span class="text-gray-300">•</span>
+                    <span>15 min read</span>
+                </div>
+            </header>
+
+            <!-- Article Body -->
+            <article class="prose prose-lg max-w-none">
+                <div class="font-body text-lg leading-relaxed text-gray-700">
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>
+                            <h3 class="font-semibold text-blue-900">Academic Project</h3>
+                        </div>
+                        <p class="text-blue-800 leading-relaxed">
+                            This project was conducted as part of the <strong>Cyber Security: Network Security Fundamentals</strong> bootcamp by TalentHub. Completing this project was a requirement for graduation, showcasing skills in vulnerability assessment, identification of security risks, and providing mitigation strategies.
+                        </p>
+                    </div>
+
+                    <p class="text-xl leading-relaxed text-gray-800 mb-8 font-light">
+                        The project involved assessing the security posture of a target website by utilizing industry-standard tools and methodologies. It emphasized practical application of concepts learned during the bootcamp, such as information gathering, vulnerability scanning, manual analysis, and report writing.
+                    </p>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        1. Introduction
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                            <h3 class="font-semibold text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                Assessment Details
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Assessment Date:</span>
+                                    <span class="font-medium">July 25, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Assessor:</span>
+                                    <span class="font-medium">Gabrielle B. Lintong</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Target:</span>
+                                    <span class="font-medium font-mono text-xs bg-gray-200 px-2 py-1 rounded">http://34.45.20.126</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                            <h3 class="font-semibold text-amber-900 mb-4 flex items-center">
+                                <i class="fas fa-target text-amber-600 mr-2"></i>
+                                Objective
+                            </h3>
+                            <p class="text-amber-800 text-sm leading-relaxed">
+                                To identify and evaluate security vulnerabilities in the target website through comprehensive security testing and analysis.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        2. Methodology
+                    </h2>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="border-l-4 border-indigo-400 pl-6 bg-indigo-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-indigo-900 mb-2 flex items-center">
+                                <i class="fas fa-search mr-2"></i>
+                                Information Gathering
+                            </h3>
+                            <p class="text-indigo-800">Using tools like Nmap to collect basic data about the target system and identify open ports and services.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-400 pl-6 bg-purple-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-purple-900 mb-2 flex items-center">
+                                <i class="fas fa-bug mr-2"></i>
+                                Vulnerability Scanning
+                            </h3>
+                            <p class="text-purple-800">Utilizing OpenVAS to identify existing vulnerabilities through automated scanning techniques.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-400 pl-6 bg-green-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-green-900 mb-2 flex items-center">
+                                <i class="fas fa-microscope mr-2"></i>
+                                Manual Analysis
+                            </h3>
+                            <p class="text-green-800">Verifying findings using Nikto for in-depth manual analysis and validation of discovered vulnerabilities.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-orange-400 pl-6 bg-orange-50 py-4 rounded-r-lg">
+                            <h3 class="font-semibold text-orange-900 mb-2 flex items-center">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Reporting
+                            </h3>
+                            <p class="text-orange-800">Compiling a comprehensive report on findings, impacts, and mitigation recommendations.</p>
+                        </div>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        3. Findings
+                    </h2>
+
+                    <h3 class="font-display text-2xl font-semibold text-gray-900 mt-8 mb-6">
+                        Critical Vulnerabilities
+                    </h3>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-8 mb-8">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                            <h4 class="font-bold text-red-900 text-lg">Remote Code Execution (RCE)</h4>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="font-semibold text-red-800 mb-2">Description</h5>
+                                <p class="text-red-700 leading-relaxed">
+                                    This vulnerability allows attackers to execute arbitrary code on the target system remotely, potentially giving them complete control over the affected server.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold text-red-800 mb-2">Potential Impact</h5>
+                                <ul class="text-red-700 space-y-1 list-disc list-inside">
+                                    <li>Complete system takeover and unauthorized access</li>
+                                    <li>Sensitive data theft and information disclosure</li>
+                                    <li>Malware distribution and backdoor installation</li>
+                                    <li>Service disruption and denial of service attacks</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="font-display text-2xl font-semibold text-gray-900 mt-8 mb-6">
+                        General Recommendations
+                    </h3>
+                    
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-8 mb-8">
+                        <h4 class="font-semibold text-green-900 mb-4 flex items-center">
+                            <i class="fas fa-shield-alt text-green-600 mr-2"></i>
+                            Security Improvement Strategies
+                        </h4>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <i class="fas fa-arrow-up text-green-600 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-semibold text-green-800">Software Updates</h5>
+                                        <p class="text-green-700 text-sm">Update all software components to the latest stable versions with security patches.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fas fa-cogs text-green-600 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-semibold text-green-800">Server Configuration</h5>
+                                        <p class="text-green-700 text-sm">Configure the server with robust security settings and hardening guidelines.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <i class="fas fa-search text-green-600 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-semibold text-green-800">Regular Audits</h5>
+                                        <p class="text-green-700 text-sm">Conduct regular security audits and penetration testing to identify new vulnerabilities.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fas fa-tools text-green-600 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-semibold text-green-800">Security Tools</h5>
+                                        <p class="text-green-700 text-sm">Utilize vulnerability detection and mitigation tools for continuous monitoring.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="font-display text-3xl font-semibold text-gray-900 mt-12 mb-6">
+                        4. Conclusion
+                    </h2>
+                    
+                    <div class="bg-gray-900 text-white rounded-lg p-8 mb-8">
+                        <blockquote class="text-lg italic leading-relaxed">
+                            "This assessment identified several critical vulnerabilities requiring immediate attention. Implementing the recommended mitigations is expected to significantly enhance the security of the target website and protect against potential cyber threats."
+                        </blockquote>
+                        <div class="mt-4 text-gray-300 text-sm">
+                            — Assessment Summary
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+                        <h4 class="font-semibold text-blue-900 mb-3 flex items-center">
+                            <i class="fas fa-lightbulb text-blue-600 mr-2"></i>
+                            Key Takeaways
+                        </h4>
+                        <ul class="text-blue-800 space-y-2 list-disc list-inside">
+                            <li>Immediate patching of critical vulnerabilities is essential</li>
+                            <li>Regular security assessments help maintain robust defenses</li>
+                            <li>Proper configuration management reduces attack surface</li>
+                            <li>Continuous monitoring enables early threat detection</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Tags -->
+                    <div class="pt-8 mt-12 border-t border-gray-200">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Cyber Security</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Vulnerability Assessment</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Penetration Testing</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Security Research</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Share Section -->
+                    <div class="pt-8 mt-8 border-t border-gray-200">
+                        <p class="text-sm text-gray-500 mb-4 tracking-wide">SHARE THIS ARTICLE</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-twitter text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-linkedin text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-facebook text-gray-600"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-medium text-gray-600"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </article>
+        </div>
+    </main>
+
+</body>
+</html>

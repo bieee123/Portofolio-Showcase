@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Red vs Blue Teams | CyberSim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2a2a2a',
+                        },
+                        cyber: {
+                            red: '#ff3860',
+                            blue: '#3273dc',
+                            green: '#23d160',
+                            yellow: '#ffdd57',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .cyber-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .cyber-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-dark-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-dark-800 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                <i class="fas fa-shield-alt mr-2"></i> CyberSim
+            </a>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-dark-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-cyber-blue">Home</a>
+                    <a href="simulations.html" class="hover:text-cyber-blue">Simulations</a>
+                    <a href="defense_tips.html" class="text-cyber-blue">Defense Tips</a>
+                    <a href="about.html" class="text-cyber-blue font-medium">About</a>
+                </div>
+                <button class="md:hidden p-2" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white dark:bg-dark-800 px-4 py-2" id="mobileMenu">
+            <a href="index.html" class="block py-2 hover:text-cyber-blue">Home</a>
+            <a href="simulations.html" class="block py-2 hover:text-cyber-blue">Simulations</a>
+            <a href="about.html" class="block py-2 hover:text-cyber-blue">About</a>
+            <a href="defense_tips.html" class="block py-2 hover:text-cyber-blue">Defense Tips</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Red Team vs Blue Team</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Understanding the offensive and defensive sides of cybersecurity</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center">The Cybersecurity Battlefield</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-red-50 dark:bg-red-900/20 p-8 rounded-lg border-l-4 border-cyber-red">
+                    <h3 class="text-2xl font-bold mb-4 text-cyber-red flex items-center">
+                        <i class="fas fa-skull-crossbones mr-3"></i> Red Team
+                    </h3>
+                    <p class="mb-4">Red Teams are offensive security professionals who simulate real-world cyber attacks to test an organization's defenses. They think and act like adversaries to identify vulnerabilities before malicious hackers can exploit them.</p>
+                    <div class="mb-6">
+                        <h4 class="font-bold mb-2 text-cyber-red">Red Team Activities:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Penetration testing (ethical hacking)</li>
+                            <li>Social engineering attacks</li>
+                            <li>Physical security testing</li>
+                            <li>Exploit development</li>
+                            <li>Simulated phishing campaigns</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2 text-cyber-red">Tools Used:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-red-100 dark:bg-red-800/30 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm">Metasploit</span>
+                            <span class="bg-red-100 dark:bg-red-800/30 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm">Cobalt Strike</span>
+                            <span class="bg-red-100 dark:bg-red-800/30 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm">Burp Suite</span>
+                            <span class="bg-red-100 dark:bg-red-800/30 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm">Impacket</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-lg border-l-4 border-cyber-blue">
+                    <h3 class="text-2xl font-bold mb-4 text-cyber-blue flex items-center">
+                        <i class="fas fa-shield-alt mr-3"></i> Blue Team
+                    </h3>
+                    <p class="mb-4">Blue Teams are defensive security professionals responsible for protecting an organization's systems and data. They detect, respond to, and prevent cyber attacks through continuous monitoring and security controls.</p>
+                    <div class="mb-6">
+                        <h4 class="font-bold mb-2 text-cyber-blue">Blue Team Activities:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Security monitoring and alerting</li>
+                            <li>Incident response</li>
+                            <li>Vulnerability management</li>
+                            <li>Security policy enforcement</li>
+                            <li>Threat intelligence analysis</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2 text-cyber-blue">Tools Used:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 dark:bg-blue-800/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">SIEM (Splunk, ELK)</span>
+                            <span class="bg-blue-100 dark:bg-blue-800/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">EDR Solutions</span>
+                            <span class="bg-blue-100 dark:bg-blue-800/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">Wireshark</span>
+                            <span class="bg-blue-100 dark:bg-blue-800/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">YARA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center">The Cybersecurity Lifecycle</h2>
+            <div class="bg-white dark:bg-dark-800 rounded-lg shadow-md p-6">
+                <div class="relative">
+                    <!-- Steps -->
+                    <div class="relative grid grid-cols-1 sm:grid-cols-5 gap-6 sm:gap-0">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-full bg-cyber-red text-white flex items-center justify-center mb-2 relative z-10">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Reconnaissance</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Red Team gathers information about the target</p>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-full bg-cyber-red text-white flex items-center justify-center mb-2 relative z-10">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Initial Access</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Red Team exploits vulnerabilities to gain access</p>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-full bg-cyber-blue text-white flex items-center justify-center mb-2 relative z-10">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Detection</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Blue Team detects the intrusion attempt</p>
+                        </div>
+                        
+                        <!-- Step 4 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-full bg-cyber-blue text-white flex items-center justify-center mb-2 relative z-10">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Response</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Blue Team responds to contain the threat</p>
+                        </div>
+                        
+                        <!-- Step 5 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-full bg-cyber-green text-white flex items-center justify-center mb-2 relative z-10">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Improvement</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Security controls are improved based on findings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center">Purple Teaming</h2>
+            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg shadow-md p-8 border-l-4 border-purple-500">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 text-center mb-6 md:mb-0">
+                        <div class="w-32 h-32 rounded-full bg-purple-500 text-white flex items-center justify-center mx-auto text-5xl">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Collaborative Security</h3>
+                        <p class="mb-4">Purple Teaming is the collaborative approach where Red and Blue Teams work together to improve an organization's security posture. It combines offensive and defensive perspectives for continuous security improvement.</p>
+                        <ul class="list-disc pl-5 space-y-1 mb-4">
+                            <li>Red Team shares attack techniques with Blue Team</li>
+                            <li>Blue Team provides feedback on detection capabilities</li>
+                            <li>Both teams work to close security gaps</li>
+                            <li>Creates a feedback loop for continuous improvement</li>
+                        </ul>
+                        <p>The result is a stronger, more resilient security posture that evolves with emerging threats.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Explore Cybersecurity?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Try our interactive simulations to experience both offensive and defensive security techniques.</p>
+            <a href="simulation.html" class="inline-block cyber-btn bg-cyber-blue hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg">
+                Start Simulations <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-dark-800 py-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                        <i class="fas fa-shield-alt mr-2"></i> CyberSim
+                    </a>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Educational cybersecurity simulation platform</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="simulation.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">Simulations</a>
+                    <a href="about.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">About</a>
+                    <a href="defense_tips.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">Defense Tips</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>© 2023 Cyber Attack & Defense Simulator. For educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Check for saved user preference or OS preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

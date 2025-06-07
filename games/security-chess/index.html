@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Chess - Learn Cybersecurity Through Strategy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .square {
+      width: 70px;
+      height: 70px;
+      transition: all 0.2s ease;
+    }
+    .dark { background-color: #1e293b; }
+    .light { background-color: #f1f5f9; }
+    .highlight { 
+      background-color: #22d3ee !important; 
+      box-shadow: inset 0 0 10px rgba(34, 211, 238, 0.5);
+    }
+    .possible-move { 
+      background-color: #84cc16 !important; 
+      opacity: 0.8;
+    }
+    .attack-move { 
+      background-color: #ef4444 !important; 
+      opacity: 0.9;
+    }
+    .selected { 
+      border: 3px solid #fbbf24 !important; 
+      transform: scale(1.05);
+    }
+    .piece-hover:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+    .info-card { 
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border: 1px solid #334155;
+    }
+    .attacker-piece { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+    .defender-piece { color: #3b82f6; text-shadow: 0 0 8px rgba(59, 130, 246, 0.5); }
+    .game-status {
+      background: linear-gradient(45deg, #1e293b, #334155);
+      border-left: 4px solid #22d3ee;
+    }
+    .threat-level {
+      background: linear-gradient(135deg, #7c2d12, #dc2626);
+    }
+    .security-level {
+      background: linear-gradient(135deg, #14532d, #16a34a);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white min-h-screen">
+  <div class="container mx-auto px-4 py-6">
+    <!-- Back to Homepage Button -->
+    <div class="mb-6">
+      <a href="#" onclick="goBack()" class="inline-flex items-center gap-2 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 px-4 py-2 rounded-lg font-semibold transition-all transform hover:scale-105 text-white">
+        <i class="fas fa-arrow-left"></i>
+        Back to Homepage
+      </a>
+    </div>
+    
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
+        Security Chess
+      </h1>
+      <p class="text-lg text-gray-300">Learn Cybersecurity Through Strategic Gameplay</p>
+    </div>
+
+    <!-- Game Board and Status -->
+    <div class="flex flex-col xl:flex-row gap-8 justify-center items-start">
+      <!-- Board Section -->
+      <div class="flex flex-col items-center">
+        <div id="board" class="grid grid-cols-8 gap-0 border-4 border-cyan-400 rounded-lg shadow-2xl mb-6"></div>
+        
+        <!-- Game Controls -->
+        <div class="flex gap-4 mb-4">
+          <button onclick="resetGame()" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105">
+            🔄 Reset Game
+          </button>
+          <button onclick="showHint()" class="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105">
+            💡 Hint
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Status Panel -->
+      <div class="xl:max-w-md w-full">
+        <div class="game-status p-6 rounded-xl shadow-xl mb-6">
+          <h3 class="text-2xl font-bold mb-4 text-cyan-400">Game Status</h3>
+          <div id="turnDisplay" class="text-lg mb-3">Turn: 🛡️ Defender (Blue)</div>
+          <div id="gamePhase" class="text-md mb-3">Phase: Initial Setup</div>
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="threat-level p-3 rounded-lg text-center">
+              <div class="text-sm text-red-200">Threat Level</div>
+              <div id="threatLevel" class="text-xl font-bold">🟢 Low</div>
+            </div>
+            <div class="security-level p-3 rounded-lg text-center">
+              <div class="text-sm text-green-200">Security Level</div>
+              <div id="securityLevel" class="text-xl font-bold">🟢 High</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Move History -->
+        <div class="info-card p-4 rounded-xl shadow-xl mb-6">
+          <h3 class="text-lg font-semibold mb-3 text-cyan-400">📝 Move History</h3>
+          <div id="moveHistory" class="text-sm max-h-32 overflow-y-auto space-y-1">
+            <div class="text-gray-400 italic">Game started - Defender's turn</div>
+          </div>
+        </div>
+
+        <!-- Selected Piece Info -->
+        <div id="pieceInfo" class="info-card p-4 rounded-xl shadow-xl hidden">
+          <h3 class="text-lg font-semibold mb-3 text-cyan-400">🎯 Selected Piece</h3>
+          <div id="pieceDetails"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Content -->
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Learning Objectives -->
+      <div class="info-card p-6 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-semibold mb-4 text-cyan-400">🎓 Learning Objectives</h2>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span>Understand the roles of attackers vs defenders in cybersecurity</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span>Learn about different security components and their functions</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span>Practice strategic thinking in security scenarios</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span>Visualize attack vectors and defense mechanisms</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span>Develop incident response and threat assessment skills</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pieces Guide -->
+      <div class="info-card p-6 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-semibold mb-4 text-cyan-400">♟️ Security Components</h2>
+        <div class="space-y-3 text-sm">
+          <div class="border-b border-gray-600 pb-2">
+            <div class="flex items-center gap-2 font-semibold text-blue-400">
+              🗄️ Server (King) <span class="text-xs text-gray-400">- Critical Asset</span>
+            </div>
+            <p class="text-gray-300 mt-1">The core system that must be protected at all costs. Represents critical infrastructure.</p>
+          </div>
+          <div class="border-b border-gray-600 pb-2">
+            <div class="flex items-center gap-2 font-semibold text-red-400">
+              💣 Zero-Day (Queen) <span class="text-xs text-gray-400">- Advanced Threat</span>
+            </div>
+            <p class="text-gray-300 mt-1">Unknown vulnerabilities with maximum attack potential and flexibility.</p>
+          </div>
+          <div class="border-b border-gray-600 pb-2">
+            <div class="flex items-center gap-2 font-semibold text-purple-400">
+              🧱 Firewall (Rook) <span class="text-xs text-gray-400">- Network Defense</span>
+            </div>
+            <p class="text-gray-300 mt-1">Linear protection system controlling network traffic flow.</p>
+          </div>
+          <div class="border-b border-gray-600 pb-2">
+            <div class="flex items-center gap-2 font-semibold text-green-400">
+              🔐 Encryption (Bishop) <span class="text-xs text-gray-400">- Data Protection</span>
+            </div>
+            <p class="text-gray-300 mt-1">Diagonal security layer protecting data through cryptographic methods.</p>
+          </div>
+          <div class="border-b border-gray-600 pb-2">
+            <div class="flex items-center gap-2 font-semibold text-yellow-400">
+              🕵️ Red Team (Knight) <span class="text-xs text-gray-400">- Penetration Testing</span>
+            </div>
+            <p class="text-gray-300 mt-1">Bypasses traditional defenses through unconventional attack paths.</p>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 font-semibold text-cyan-400">
+              🖥️ Endpoint (Pawn) <span class="text-xs text-gray-400">- Entry Point</span>
+            </div>
+            <p class="text-gray-300 mt-1">User devices and initial attack vectors. Can escalate privileges when reaching the end.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Concepts -->
+      <div class="info-card p-6 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-semibold mb-4 text-cyan-400">🔒 Key Security Concepts</h2>
+        <div class="space-y-4 text-sm">
+          <div class="bg-gray-800 p-3 rounded-lg">
+            <h4 class="font-semibold text-red-400 mb-2">🎯 Attack Vectors</h4>
+            <p class="text-gray-300">Methods used by attackers to gain unauthorized access to systems, including social engineering, malware, and network exploitation.</p>
+          </div>
+          <div class="bg-gray-800 p-3 rounded-lg">
+            <h4 class="font-semibold text-blue-400 mb-2">🛡️ Defense in Depth</h4>
+            <p class="text-gray-300">Layered security approach using multiple defensive measures to protect against various threat types.</p>
+          </div>
+          <div class="bg-gray-800 p-3 rounded-lg">
+            <h4 class="font-semibold text-green-400 mb-2">🔄 Incident Response</h4>
+            <p class="text-gray-300">Systematic approach to addressing security breaches, including detection, containment, and recovery.</p>
+          </div>
+          <div class="bg-gray-800 p-3 rounded-lg">
+            <h4 class="font-semibold text-purple-400 mb-2">⚡ Threat Intelligence</h4>
+            <p class="text-gray-300">Information about current and potential attacks that helps organizations prepare and respond effectively.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Rules -->
+    <div class="mt-8 info-card p-6 rounded-xl shadow-xl">
+      <h2 class="text-2xl font-semibold mb-4 text-cyan-400">📋 How to Play</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+        <div>
+          <h3 class="font-semibold text-blue-400 mb-3">🛡️ Defender Objectives:</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li>• Protect your Server (King) from being captured</li>
+            <li>• Establish strong defensive perimeters</li>
+            <li>• Control key network pathways</li>
+            <li>• Eliminate attacker pieces when possible</li>
+            <li>• Maintain security monitoring coverage</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-red-400 mb-3">⚔️ Attacker Objectives:</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li>• Capture the opponent's Server (King)</li>
+            <li>• Penetrate security defenses</li>
+            <li>• Exploit endpoint vulnerabilities</li>
+            <li>• Use unconventional attack paths</li>
+            <li>• Create persistent access points</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-6 p-4 bg-gray-800 rounded-lg">
+        <h3 class="font-semibold text-yellow-400 mb-2">💡 Strategic Tips:</h3>
+        <p class="text-gray-300 text-sm">
+          Click on any piece to see available moves (green = safe move, red = attack). Use your pieces' unique abilities strategically. 
+          Firewalls excel at controlling lanes, Encryption protects diagonally, and Red Team can bypass traditional defenses. 
+          Remember: in cybersecurity, prevention is better than reaction!
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-12 pb-6">
+      <p class="text-gray-400 text-sm">
+        🎯 Educational cybersecurity game designed to teach security concepts through interactive gameplay
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const board = document.getElementById('board');
+    const turnDisplay = document.getElementById('turnDisplay');
+    const gamePhase = document.getElementById('gamePhase');
+    const threatLevel = document.getElementById('threatLevel');
+    const securityLevel = document.getElementById('securityLevel');
+    const moveHistory = document.getElementById('moveHistory');
+    const pieceInfo = document.getElementById('pieceInfo');
+    const pieceDetails = document.getElementById('pieceDetails');
+    
+    let selected = null;
+    let currentTurn = 'defender';
+    let moveCount = 0;
+    let gameState = {
+      phase: 'opening',
+      capturedPieces: { attacker: [], defender: [] },
+      threatScore: 0,
+      securityScore: 100
+    };
+
+    const initialPositions = {
+      0: ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'],
+      1: Array(8).fill('pawn'),
+      6: Array(8).fill('pawn'),
+      7: ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
+    };
+
+    const pieces = {
+      pawn: '🖥️',
+      rook: '🧱',
+      knight: '🕵️',
+      bishop: '🔐',
+      queen: '💣',
+      king: '🗄️'
+    };
+
+    const pieceColors = {
+      0: 'attacker',
+      1: 'attacker',
+      6: 'defender',
+      7: 'defender'
+    };
+
+    const pieceDescriptions = {
+      king: { name: "Server (King)", role: "Critical Infrastructure", description: "The core system that must be protected. Represents critical business infrastructure and data." },
+      queen: { name: "Zero-Day (Queen)", role: "Advanced Persistent Threat", description: "Unknown vulnerability with maximum attack potential. Can move in any direction with great power." },
+      rook: { name: "Firewall (Rook)", role: "Network Security", description: "Controls network traffic flow in straight lines. Blocks unauthorized access attempts." },
+      bishop: { name: "Encryption (Bishop)", role: "Data Protection", description: "Protects data through cryptographic methods. Operates on diagonal security layers." },
+      knight: { name: "Red Team (Knight)", role: "Penetration Testing", description: "Bypasses traditional security through unconventional paths. Tests system vulnerabilities." },
+      pawn: { name: "Endpoint (Pawn)", role: "User Device/Entry Point", description: "Represents user devices and initial attack vectors. Can be promoted when reaching the opposite end." }
+    };
+
+    const state = {};
+
+    function createBoard() {
+      board.innerHTML = '';
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const square = document.createElement('div');
+          square.id = `${row}-${col}`;
+          square.className = `square flex items-center justify-center font-bold text-3xl cursor-pointer ${ (row + col) % 2 === 0 ? 'light' : 'dark' }`;
+          square.addEventListener('click', () => handleClick(row, col));
+
+          if (initialPositions[row]) {
+            const pieceType = initialPositions[row][col];
+            if (pieceType) {
+              square.dataset.piece = pieceType;
+              square.dataset.color = pieceColors[row];
+              square.innerText = pieces[pieceType];
+              square.classList.add(pieceColors[row] === 'attacker' ? 'attacker-piece' : 'defender-piece');
+              square.classList.add('piece-hover');
+              state[`${row}-${col}`] = { type: pieceType, color: pieceColors[row] };
+            }
+          }
+
+          board.appendChild(square);
+        }
+      }
+      updateGameStatus();
+    }
+
+    function handleClick(row, col) {
+      const id = `${row}-${col}`;
+      const square = document.getElementById(id);
+
+      if (selected) {
+        if (square.classList.contains('possible-move') || square.classList.contains('attack-move')) {
+          const isCapture = state[id] !== undefined;
+          movePiece(selected, id, isCapture);
+          clearHighlights();
+          hideSelection();
+          selected = null;
+          switchTurn();
+          return;
+        }
+        clearHighlights();
+        hideSelection();
+        selected = null;
+      }
+
+      if (state[id] && state[id].color === currentTurn) {
+        selected = id;
+        showSelection(id);
+        highlightMoves(row, col, state[id].type);
+        showPieceInfo(state[id].type, state[id].color);
+      } else {
+        hidePieceInfo();
+      }
+    }
+
+    function showSelection(id) {
+      document.getElementById(id).classList.add('selected');
+    }
+
+    function hideSelection() {
+      document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+    }
+
+    function highlightMoves(row, col, pieceType) {
+      let moves = [];
+      
+      switch(pieceType) {
+        case 'pawn':
+          moves = getPawnMoves(row, col);
+          break;
+        case 'rook':
+          moves = getRookMoves(row, col);
+          break;
+        case 'knight':
+          moves = getKnightMoves(row, col);
+          break;
+        case 'bishop':
+          moves = getBishopMoves(row, col);
+          break;
+        case 'queen':
+          moves = getQueenMoves(row, col);
+          break;
+        case 'king':
+          moves = getKingMoves(row, col);
+          break;
+      }
+
+      moves.forEach(([r, c, isAttack]) => {
+        const target = document.getElementById(`${r}-${c}`);
+        if (target) {
+          target.classList.add(isAttack ? 'attack-move' : 'possible-move');
+        }
+      });
+    }
+
+    function getPawnMoves(row, col) {
+      const moves = [];
+      const direction = state[`${row}-${col}`].color === 'defender' ? -1 : 1;
+      const startRow = state[`${row}-${col}`].color === 'defender' ? 6 : 1;
+      
+      // Forward move
+      if (isValidSquare(row + direction, col) && !state[`${row + direction}-${col}`]) {
+        moves.push([row + direction, col, false]);
+        
+        // Double move from starting position
+        if (row === startRow && !state[`${row + 2 * direction}-${col}`]) {
+          moves.push([row + 2 * direction, col, false]);
+        }
+      }
+      
+      // Diagonal attacks
+      [-1, 1].forEach(dc => {
+        if (isValidSquare(row + direction, col + dc)) {
+          const target = state[`${row + direction}-${col + dc}`];
+          if (target && target.color !== currentTurn) {
+            moves.push([row + direction, col + dc, true]);
+          }
+        }
+      });
+      
+      return moves;
+    }
+
+    function getRookMoves(row, col) {
+      const moves = [];
+      const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      
+      directions.forEach(([dr, dc]) => {
+        for (let i = 1; i < 8; i++) {
+          const r = row + dr * i;
+          const c = col + dc * i;
+          if (!isValidSquare(r, c)) break;
+          
+          const target = state[`${r}-${c}`];
+          if (!target) {
+            moves.push([r, c, false]);
+          } else {
+            if (target.color !== currentTurn) {
+              moves.push([r, c, true]);
+            }
+            break;
+          }
+        }
+      });
+      
+      return moves;
+    }
+
+    function getKnightMoves(row, col) {
+      const moves = [];
+      const knightMoves = [
+        [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+        [1, -2], [1, 2], [2, -1], [2, 1]
+      ];
+      
+      knightMoves.forEach(([dr, dc]) => {
+        const r = row + dr;
+        const c = col + dc;
+        if (isValidSquare(r, c)) {
+          const target = state[`${r}-${c}`];
+          if (!target) {
+            moves.push([r, c, false]);
+          } else if (target.color !== currentTurn) {
+            moves.push([r, c, true]);
+          }
+        }
+      });
+      
+      return moves;
+    }
+
+    function getBishopMoves(row, col) {
+      const moves = [];
+      const directions = [[1, 1], [-1, -1], [1, -1], [-1, 1]];
+      
+      directions.forEach(([dr, dc]) => {
+        for (let i = 1; i < 8; i++) {
+          const r = row + dr * i;
+          const c = col + dc * i;
+          if (!isValidSquare(r, c)) break;
+          
+          const target = state[`${r}-${c}`];
+          if (!target) {
+            moves.push([r, c, false]);
+          } else {
+            if (target.color !== currentTurn) {
+              moves.push([r, c, true]);
+            }
+            break;
+          }
+        }
+      });
+      
+      return moves;
+    }
+
+    function getQueenMoves(row, col) {
+      return [...getRookMoves(row, col), ...getBishopMoves(row, col)];
+    }
+
+    function getKingMoves(row, col) {
+      const moves = [];
+      const directions = [
+        [1, 0], [-1, 0], [0, 1], [0, -1],
+        [1, 1], [-1, -1], [1, -1], [-1, 1]
+      ];
+      
+      directions.forEach(([dr, dc]) => {
+        const r = row + dr;
+        const c = col + dc;
+        if (isValidSquare(r, c)) {
+          const target = state[`${r}-${c}`];
+          if (!target) {
+            moves.push([r, c, false]);
+          } else if (target.color !== currentTurn) {
+            moves.push([r, c, true]);
+          }
+        }
+      });
+      
+      return moves;
+    }
+
+    function isValidSquare(row, col) {
+      return row >= 0 && row < 8 && col >= 0 && col < 8;
+    }
+
+    function clearHighlights() {
+      document.querySelectorAll('.possible-move, .attack-move').forEach(el => {
+        el.classList.remove('possible-move', 'attack-move');
+      });
+    }
+
+    function movePiece(from, to, isCapture) {
+      const fromEl = document.getElementById(from);
+      const toEl = document.getElementById(to);
+      const piece = state[from];
+      
+      // Handle capture
+      if (isCapture) {
+        const capturedPiece = state[to];
+        gameState.capturedPieces[capturedPiece.color].push(capturedPiece.type);
+        updateThreatSecurityLevels(capturedPiece.type, capturedPiece.color);
+      }
+      
+      // Move piece
+      toEl.innerText = fromEl.innerText;
+      toEl.dataset.piece = fromEl.dataset.piece;
+      toEl.dataset.color = fromEl.dataset.color;
+      toEl.className = fromEl.className;
+      
+      state[to] = { ...state[from] };
+      delete state[from];
+      
+      fromEl.innerText = '';
+      delete fromEl.dataset.piece;
+      delete fromEl.dataset.color;
+      fromEl.className = fromEl.className.replace('attacker-piece defender-piece piece-hover', '').trim();
+      
+      // Add to move history
+      addMoveToHistory(piece, from, to, isCapture);
+      
+      // Check for pawn promotion
+      checkPawnPromotion(to, piece);
+      
+      moveCount++;
+      updateGamePhase();
+    }
+
+    function addMoveToHistory(piece, from, to, isCapture) {
+      const moveDiv = document.createElement('div');
+      const pieceIcon = pieces[piece.type];
+      const captureText = isCapture ? ' captures' : ' moves to';
+      const fromSquare = `${String.fromCharCode(97 + parseInt(from.split('-')[1]))}${8 - parseInt(from.split('-')[0])}`;
+      const toSquare = `${String.fromCharCode(97 + parseInt(to.split('-')[1]))}${8 - parseInt(to.split('-')[0])}`;
+      
+      moveDiv.innerHTML = `<span class="${piece.color === 'attacker' ? 'text-red-400' : 'text-blue-400'}">${pieceIcon} ${pieceDescriptions[piece.type].name.split(' ')[0]}${captureText} ${toSquare}</span>`;
+      moveHistory.appendChild(moveDiv);
+      moveHistory.scrollTop = moveHistory.scrollHeight;
+    }
+
+    function checkPawnPromotion(position, piece) {
+      if (piece.type === 'pawn') {
+        const row = parseInt(position.split('-')[0]);
+        if ((piece.color === 'defender' && row === 0) || (piece.color === 'attacker' && row === 7)) {
+          // Promote to queen for simplicity
+          const square = document.getElementById(position);
+          square.innerText = pieces.queen;
+          square.dataset.piece = 'queen';
+          state[position].type = 'queen';
+          
+          const promoDiv = document.createElement('div');
+          promoDiv.innerHTML = `<span class="${piece.color === 'attacker' ? 'text-red-400' : 'text-blue-400'}">🎉 Endpoint promoted to Zero-Day!</span>`;
+          moveHistory.appendChild(promoDiv);
+        }
+      }
+    }
+
+    function updateThreatSecurityLevels(capturedType, capturedColor) {
+      const pieceValues = { pawn: 10, knight: 30, bishop: 30, rook: 50, queen: 90, king: 1000 };
+      const value = pieceValues[capturedType] || 0;
+      
+      if (capturedColor === 'defender') {
+        gameState.threatScore += value;
+        gameState.securityScore -= value;
+      } else {
+        gameState.threatScore -= value;
+        gameState.securityScore += value;
+      }
+      
+      updateGameStatus();
+    }
+
+    function updateGameStatus() {
+      // Update threat level
+      if (gameState.threatScore < 30) {
+        threatLevel.innerHTML = "🟢 Low";
+      } else if (gameState.threatScore < 80) {
+        threatLevel.innerHTML = "🟡 Medium";
+      } else {
+        threatLevel.innerHTML = "🔴 High";
+      }
+      
+      // Update security level
+      if (gameState.securityScore > 80) {
+        securityLevel.innerHTML = "🟢 High";
+      } else if (gameState.securityScore > 40) {
+        securityLevel.innerHTML = "🟡 Medium";
+      } else {
+        securityLevel.innerHTML = "🔴 Low";
+      }
+    }
+
+    function updateGamePhase() {
+      if (moveCount < 10) {
+        gameState.phase = 'opening';
+        gamePhase.innerText = 'Phase: Opening - Establishing Defenses';
+      } else if (moveCount < 30) {
+        gameState.phase = 'midgame';
+        gamePhase.innerText = 'Phase: Active Engagement - Attack vs Defense';
+      } else {
+        gameState.phase = 'endgame';
+        gamePhase.innerText = 'Phase: Critical - System Breach Imminent';
+      }
+    }
+
+    function switchTurn() {
+      currentTurn = currentTurn === 'defender' ? 'attacker' : 'defender';
+      const turnIcon = currentTurn === 'defender' ? '🛡️' : '⚔️';
+      const turnName = currentTurn === 'defender' ? 'Defender (Blue)' : 'Attacker (Red)';
+      turnDisplay.innerText = `Turn: ${turnIcon} ${turnName}`;
+      
+      // Check for checkmate or game end conditions
+      checkGameEnd();
+    }
+
+    function checkGameEnd() {
+      // Find kings
+      let defenderKing = null;
+      let attackerKing = null;
+      
+      for (let pos in state) {
+        if (state[pos].type === 'king') {
+          if (state[pos].color === 'defender') {
+            defenderKing = pos;
+          } else {
+            attackerKing = pos;
+          }
+        }
+      }
+      
+      // Check if a king is captured (game over)
+      if (!defenderKing) {
+        endGame('attacker', 'System Compromised! Attacker has breached the server!');
+      } else if (!attackerKing) {
+        endGame('defender', 'Threat Eliminated! Defender has secured the network!');
+      }
+    }
+
+    function endGame(winner, message) {
+      const endDiv = document.createElement('div');
+      endDiv.className = `p-4 rounded-lg text-center font-bold ${winner === 'defender' ? 'bg-green-800 text-green-200' : 'bg-red-800 text-red-200'}`;
+      endDiv.innerHTML = `
+        <div class="text-2xl mb-2">${winner === 'defender' ? '🛡️ DEFENSE SUCCESSFUL!' : '⚔️ SYSTEM BREACHED!'}</div>
+        <div class="text-lg">${message}</div>
+        <div class="text-sm mt-2">Total moves: ${moveCount}</div>
+      `;
+      
+      document.querySelector('.container').insertBefore(endDiv, document.querySelector('.mt-12'));
+      
+      // Disable further moves
+      board.style.pointerEvents = 'none';
+    }
+
+    function showPieceInfo(pieceType, color) {
+      const info = pieceDescriptions[pieceType];
+      const colorClass = color === 'attacker' ? 'text-red-400' : 'text-blue-400';
+      
+      pieceDetails.innerHTML = `
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">${pieces[pieceType]}</span>
+            <div>
+              <div class="font-semibold ${colorClass}">${info.name}</div>
+              <div class="text-xs text-gray-400">${info.role}</div>
+            </div>
+          </div>
+          <div class="text-sm text-gray-300">${info.description}</div>
+          <div class="text-xs text-gray-400">
+            Team: <span class="${colorClass}">${color === 'attacker' ? 'Red Team (Attacker)' : 'Blue Team (Defender)'}</span>
+          </div>
+        </div>
+      `;
+      pieceInfo.classList.remove('hidden');
+    }
+
+    function hidePieceInfo() {
+      pieceInfo.classList.add('hidden');
+    }
+
+    function showHint() {
+      const hints = {
+        opening: [
+          "🛡️ Defenders: Establish firewall perimeters early to control key pathways",
+          "⚔️ Attackers: Develop endpoints to create multiple attack vectors",
+          "🔐 Use encryption pieces to protect diagonal approaches to your server",
+          "🕵️ Red team knights can bypass traditional defenses - use them wisely",
+          "💡 Control the center of the board for maximum strategic flexibility"
+        ],
+        midgame: [
+          "🎯 Look for tactical combinations involving multiple pieces",
+          "🛡️ Defenders: Keep your server protected while maintaining active defense",
+          "⚔️ Attackers: Create threats on multiple fronts to overwhelm defenses",
+          "🔄 Trade pieces favorably - eliminate key defensive components",
+          "⚡ Watch for breakthrough opportunities in the opponent's position"
+        ],
+        endgame: [
+          "👑 King safety is paramount - every move could be decisive",
+          "🏃 Promote your endpoints to create new threats",
+          "🎯 Use your remaining pieces in coordination for maximum effect",
+          "⏰ Time is critical - make every move count",
+          "🔍 Look for checkmate patterns and defensive resources"
+        ]
+      };
+      
+      const phaseHints = hints[gameState.phase] || hints.opening;
+      const randomHint = phaseHints[Math.floor(Math.random() * phaseHints.length)];
+      
+      const hintDiv = document.createElement('div');
+      hintDiv.className = 'bg-yellow-800 border border-yellow-600 p-3 rounded-lg text-yellow-200 text-sm';
+      hintDiv.innerHTML = `<strong>💡 Strategic Hint:</strong> ${randomHint}`;
+      
+      // Insert hint above move history
+      const moveHistoryParent = moveHistory.parentElement;
+      moveHistoryParent.insertBefore(hintDiv, moveHistoryParent.firstChild);
+      
+      // Remove hint after 5 seconds
+      setTimeout(() => {
+        if (hintDiv.parentElement) {
+          hintDiv.remove();
+        }
+      }, 5000);
+    }
+
+    function resetGame() {
+      // Clear all game state
+      Object.keys(state).forEach(key => delete state[key]);
+      currentTurn = 'defender';
+      moveCount = 0;
+      gameState = {
+        phase: 'opening',
+        capturedPieces: { attacker: [], defender: [] },
+        threatScore: 0,
+        securityScore: 100
+      };
+      
+      // Reset UI
+      turnDisplay.innerText = 'Turn: 🛡️ Defender (Blue)';
+      gamePhase.innerText = 'Phase: Initial Setup';
+      moveHistory.innerHTML = '<div class="text-gray-400 italic">Game started - Defender\'s turn</div>';
+      hidePieceInfo();
+      
+      // Remove any game end messages
+      const endMessages = document.querySelectorAll('.bg-green-800, .bg-red-800');
+      endMessages.forEach(msg => msg.remove());
+      
+      // Re-enable board
+      board.style.pointerEvents = 'auto';
+      
+      // Recreate board
+      createBoard();
+      
+      // Add reset notification
+      const resetDiv = document.createElement('div');
+      resetDiv.className = 'bg-blue-800 border border-blue-600 p-3 rounded-lg text-blue-200 text-sm text-center';
+      resetDiv.innerHTML = '🔄 Game Reset - New security assessment begins!';
+      moveHistory.appendChild(resetDiv);
+      
+      setTimeout(() => {
+        if (resetDiv.parentElement) {
+          resetDiv.remove();
+        }
+      }, 3000);
+    }
+
+    // Initialize game
+    createBoard();
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      switch(e.key.toLowerCase()) {
+        case 'r':
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            resetGame();
+          }
+          break;
+        case 'h':
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            showHint();
+          }
+          break;
+        case 'escape':
+          if (selected) {
+            clearHighlights();
+            hideSelection();
+            selected = null;
+            hidePieceInfo();
+          }
+          break;
+      }
+    });
+
+    // Back to homepage function
+    function goBack() {
+      if (confirm('Are you sure you want to leave the game? Your progress will be lost.')) {
+        // You can customize this to go to your actual homepage
+        window.location.href = '/games.html#game-1';
+      }
+    }
+
+    // Add tooltip for keyboard shortcuts
+    const shortcutsDiv = document.createElement('div');
+    shortcutsDiv.className = 'fixed bottom-4 right-4 bg-gray-800 border border-gray-600 p-3 rounded-lg text-xs text-gray-300';
+    shortcutsDiv.innerHTML = `
+      <div class="font-semibold mb-2">⌨️ Keyboard Shortcuts:</div>
+      <div>Ctrl+R: Reset Game</div>
+      <div>Ctrl+H: Show Hint</div>
+      <div>Esc: Clear Selection</div>
+      <div class="mt-2 pt-2 border-t border-gray-600">
+        <div>🏠 Click "Back to Homepage" to return</div>
+      </div>
+    `;
+    document.body.appendChild(shortcutsDiv);
+
+  </script>
+</body>
+</html>

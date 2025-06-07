@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Professional Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .filter-btn.active { background-color: #3b82f6; color: white; }
+        .blog-card { transition: all 0.3s ease; }
+        .blog-card:hover { transform: translateY(-4px); }
+        .tag { transition: all 0.2s ease; }
+        .tag:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-blog mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-gray-800">Blog & Articles</h1>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-purple-600 to-blue-700 text-white py-12">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl">
+                    <h2 class="text-4xl font-bold mb-4">Latest Articles</h2>
+                    <p class="text-xl mb-6">
+                        Insights into cybersecurity, development practices, research findings, and industry trends. 
+                        Sharing knowledge and experiences from the field.
+                    </p>
+                    <div class="flex items-center space-x-4 text-sm">
+                        <span class="flex items-center">
+                            <i class="fas fa-edit mr-2"></i>
+                            <span id="totalArticles">4 Articles</span>
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-eye mr-2"></i>
+                            12K+ Views
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            Updated Weekly
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Filters -->
+        <section class="bg-white py-6 border-b border-gray-200">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap gap-3">
+                    <button class="filter-btn active px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="all">
+                        All Articles
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="cybersecurity">
+                        <i class="fas fa-shield-alt mr-2"></i>Cybersecurity
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="development">
+                        <i class="fas fa-code mr-2"></i>Development
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="research">
+                        <i class="fas fa-microscope mr-2"></i>Research
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="tutorials">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i>Tutorials
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Featured Article -->
+        <section class="py-8 bg-white">
+            <div class="container mx-auto px-6">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800">Featured Article</h3>
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg overflow-hidden shadow-lg">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center p-8">
+                            <i class="fas fa-shield-alt text-6xl text-white"></i>
+                        </div>
+                        <div class="md:w-2/3 p-8 text-white">
+                            <div class="flex items-center mb-3">
+                                <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm font-semibold">FEATURED</span>
+                                <span class="ml-3 text-sm opacity-90">May 31, 2025</span>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-3">Zero Trust 2.0: Why Legacy Security Models Are Obsolete in 2025</h4>
+                            <p class="mb-4 opacity-90">Discover how Zero Trust has evolved beyond "never trust, always verify" into an intelligent, adaptive security framework leveraging AI, behavioral analytics, and cloud-native architecture for modern threat landscapes.</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex space-x-3">
+                                    <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-xs">Zero Trust</span>
+                                    <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-xs">AI Security</span>
+                                    <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-xs">Cloud Security</span>
+                                </div>
+                                <a href="/blog/featured/featured.html" class="bg-white text-indigo-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+                                    Read Article
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Grid -->
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <div id="blogGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Article 1 -->
+                    <article id="article-1" class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="cybersecurity">
+                        <div class="h-48 bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center">
+                            <i class="fas fa-robot text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs font-semibold">AI SECURITY</span>
+                                <span class="text-sm text-gray-500">Mar 20, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="blog/article-1/article1.html">AI in Cyber Security: Implementation and Case Study</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Explore the dual role of Artificial Intelligence in defending and attacking digital infrastructure with real-world case studies and insights...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Cyber Security</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">AI</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">DDoS</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>1.5K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>8 min read</span>
+                                </div>
+                                <a href="blog/article-1/article1.html" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article id="article-2" class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="cybersecurity">
+                        <div class="h-48 bg-gradient-to-br from-red-500 to-yellow-500 flex items-center justify-center">
+                            <i class="fas fa-shield-halved text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-semibold">XSS REPORT</span>
+                                <span class="text-sm text-gray-500">Dec 20, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="blog/article-2/article2.html">Reflected Cross-Site Scripting in cx.apps.binus.ac.id</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">A critical reflected XSS vulnerability discovered in the Binus apps login page — including a proof of concept and mitigation recommendations...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Cybersecurity</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">XSS</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Web Security</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>980 views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>10 min read</span>
+                                </div>
+                                <a href="blog/article-2/article2.html" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article id="article-3" class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="cybersecurity">
+                        <div class="h-48 bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center">
+                            <i class="fas fa-shield-virus text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-semibold">ASSESSMENT</span>
+                                <span class="text-sm text-gray-500">Jul 25, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="blog/article-3/article3.html">Vulnerability Assessment: Bootcamp Project Report</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">A comprehensive vulnerability assessment report conducted during a cyber security bootcamp, highlighting real-world threats and remediation steps...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Cyber Security</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Vulnerability</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Bootcamp</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>1.1K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>7 min read</span>
+                                </div>
+                                <a href="blog/article-3/article3.html" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 
+                    <article class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="tutorials">
+                        <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-semibold">TUTORIAL</span>
+                                <span class="text-sm text-gray-500">Jan 3, 2025</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="#">Setting Up a Home Security Lab with Docker</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Step-by-step guide to creating your own cybersecurity testing environment using Docker containers and virtual networks...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Docker</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Lab Setup</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Homelab</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>1.8K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>20 min read</span>
+                                </div>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    -- Article 5 --
+                    <article class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="cybersecurity">
+                        <div class="h-48 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                            <i class="fas fa-network-wired text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs font-semibold">NETWORK SECURITY</span>
+                                <span class="text-sm text-gray-500">Dec 30, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="#">Advanced Network Monitoring with Suricata and ELK Stack</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Comprehensive guide to implementing network intrusion detection using Suricata IDS and visualizing threats with ELK Stack...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Suricata</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">ELK Stack</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">IDS</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>1.5K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>18 min read</span>
+                                </div>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    -- Article 6 --
+                    <article class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="development">
+                        <div class="h-48 bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center">
+                            <i class="fas fa-lock text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded text-xs font-semibold">AUTHENTICATION</span>
+                                <span class="text-sm text-gray-500">Dec 28, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="#">Implementing Zero Trust Authentication with JWT</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Modern authentication strategies using JSON Web Tokens, multi-factor authentication, and zero trust security principles...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">JWT</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Zero Trust</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">MFA</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>980 views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>14 min read</span>
+                                </div>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article> -->
+                    
+                    <!-- More articles 
+                    <article class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="tutorials">
+                        <div class="h-48 bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
+                            <i class="fas fa-terminal text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs font-semibold">COMMAND LINE</span>
+                                <span class="text-sm text-gray-500">Dec 25, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="#">Penetration Testing with Kali Linux: Essential Tools</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Comprehensive guide to essential penetration testing tools in Kali Linux, including usage examples and practical scenarios...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Kali Linux</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Pentesting</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Tools</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>2.3K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>25 min read</span>
+                                </div>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card bg-white rounded-lg shadow-md overflow-hidden" data-category="research">
+                        <div class="h-48 bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                            <i class="fas fa-chart-pie text-5xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-semibold">ANALYSIS</span>
+                                <span class="text-sm text-gray-500">Dec 22, 2024</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 hover:text-blue-600 transition">
+                                <a href="#">2024 Cybersecurity Threat Landscape Analysis</a>
+                            </h3>
+                            <p class="text-gray-600 mb-4">Year-end analysis of major cybersecurity threats, attack trends, and emerging vulnerabilities that shaped 2024...</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Threat Analysis</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">2024 Report</span>
+                                <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs cursor-pointer">Statistics</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>3.1K views</span>
+                                    <i class="far fa-clock ml-3 mr-1"></i>
+                                    <span>22 min read</span>
+                                </div>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Read More</a>
+                            </div>
+                        </div>
+                    </article> -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Newsletter Section -->
+        <section class="bg-gray-800 text-white py-12">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-2xl font-bold mb-4">Stay Updated</h3>
+                <p class="mb-6 max-w-2xl mx-auto">Subscribe to get the latest articles on cybersecurity, development, and tech insights delivered to your inbox.</p>
+                <div class="max-w-md mx-auto flex">
+                    <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-l-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="bg-blue-600 px-6 py-3 rounded-r-lg hover:bg-blue-700 transition font-semibold">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4">Professional Showcase</h3>
+                        <p class="text-gray-400 mb-4 max-w-md">
+                            Cybersecurity researcher and developer sharing insights, tools, and knowledge through articles, projects, and interactive content.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/bieee123" class="text-gray-400 hover:text-white transition">
+                                <i class="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-400 hover:text-white transition">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </a>
+                            <a href="https://x.com/bielintong0?s=11" class="text-gray-400 hover:text-white transition">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="https://medium.com/@bielintong" class="text-gray-400 hover:text-white transition">
+                                <i class="fab fa-medium text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="index.html" class="text-gray-400 hover:text-white transition">Home</a></li>
+                            <li><a href="projects.html" class="text-gray-400 hover:text-white transition">Projects</a></li>
+                            <li><a href="blog.html" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                            <li><a href="writeups.html" class="text-gray-400 hover:text-white transition">Bug Bounty</a></li>
+                            <li><a href="simulations.html" class="text-gray-400 hover:text-white transition">Simulations</a></li>
+                            <li><a href="games.html" class="text-gray-400 hover:text-white transition">Games</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Categories</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Cybersecurity</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Development</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Research</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Tutorials</a></li>
+                            <li><a href="about.html" class="text-gray-400 hover:text-white transition">About</a></li>
+                            <li><a href="contact.html" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p class="text-gray-400">
+                        &copy; 2025 Professional Showcase. All rights reserved. Built with passion for cybersecurity and technology.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+        
+        // Event listeners
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar on window resize if mobile
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        });
+        
+        // Blog filtering functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const blogCards = document.querySelectorAll('.blog-card');
+        const totalArticlesSpan = document.getElementById('totalArticles');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.getAttribute('data-filter');
+                let visibleCount = 0;
+                
+                blogCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                        // Add fade in animation
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                        }, 100);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update article count
+                totalArticlesSpan.textContent = filter === 'all' ? blogCards.length : visibleCount;
+            });
+        });
+        
+        // Tag hover effects
+        const tags = document.querySelectorAll('.tag');
+        tags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const tagText = tag.textContent.toLowerCase();
+                // Could implement tag-based filtering here
+                console.log('Tag clicked:', tagText);
+            });
+        });
+        
+        // Newsletter subscription
+        const newsletterForm = document.querySelector('section.bg-gray-800 .flex');
+        if (newsletterForm) {
+            const emailInput = newsletterForm.querySelector('input[type="email"]');
+            const subscribeBtn = newsletterForm.querySelector('button');
+            
+            subscribeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = emailInput.value.trim();
+                
+                if (email && email.includes('@')) {
+                    // Simple email validation
+                    subscribeBtn.textContent = 'Subscribed!';
+                    subscribeBtn.classList.add('bg-green-600');
+                    subscribeBtn.classList.remove('bg-blue-600');
+                    emailInput.value = '';
+                    
+                    setTimeout(() => {
+                        subscribeBtn.textContent = 'Subscribe';
+                        subscribeBtn.classList.remove('bg-green-600');
+                        subscribeBtn.classList.add('bg-blue-600');
+                    }, 3000);
+                } else {
+                    emailInput.style.borderColor = '#ef4444';
+                    emailInput.setAttribute('placeholder', 'Please enter a valid email');
+                    
+                    setTimeout(() => {
+                        emailInput.style.borderColor = '';
+                        emailInput.setAttribute('placeholder', 'Enter your email');
+                    }, 3000);
+                }
+            });
+        }
+        
+        // Load more functionality
+        const loadMoreBtn = document.querySelector('button:contains("Load More Articles")');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                // Simulate loading more articles
+                loadMoreBtn.textContent = 'Loading...';
+                loadMoreBtn.disabled = true;
+                
+                setTimeout(() => {
+                    loadMoreBtn.textContent = 'No More Articles';
+                    loadMoreBtn.classList.add('bg-gray-500');
+                    loadMoreBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                }, 2000);
+            });
+        }
+        
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll-to-top functionality
+        const scrollToTopBtn = document.createElement('button');
+        scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        scrollToTopBtn.className = 'fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition transform scale-0 z-50';
+        scrollToTopBtn.id = 'scrollToTop';
+        document.body.appendChild(scrollToTopBtn);
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.remove('scale-0');
+                scrollToTopBtn.classList.add('scale-100');
+            } else {
+                scrollToTopBtn.classList.add('scale-0');
+                scrollToTopBtn.classList.remove('scale-100');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial sidebar state based on screen size
+            if (window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+            
+            // Add loading animation to cards
+            blogCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

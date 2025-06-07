@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense Tips | CyberSim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2a2a2a',
+                        },
+                        cyber: {
+                            red: '#ff3860',
+                            blue: '#3273dc',
+                            green: '#23d160',
+                            yellow: '#ffdd57',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .cyber-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .cyber-btn:active {
+            transform: translateY(0);
+        }
+        .console {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-dark-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-dark-800 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                <i class="fas fa-shield-alt mr-2"></i> CyberSim
+            </a>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors">
+                    <i class="fas fa-moon dark:fa-sun"></i>
+                </button>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-cyber-blue">Home</a>
+                    <a href="simulations.html" class="hover:text-cyber-blue">Simulations</a>
+                    <a href="defense_tips.html" class="text-cyber-blue font-medium">Defense Tips</a>
+                    <a href="about.html" class="hover:text-cyber-blue">About</a>
+                </div>
+                <button class="md:hidden p-2" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white dark:bg-dark-800 px-4 py-2" id="mobileMenu">
+            <a href="index.html" class="block py-2 hover:text-cyber-blue">Home</a>
+            <a href="simulations.html" class="block py-2 hover:text-cyber-blue">Simulations</a>
+            <a href="about.html" class="block py-2 hover:text-cyber-blue">About</a>
+            <a href="defense_tips.html" class="block py-2 hover:text-cyber-blue">Defense Tips</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4">Cyber Defense Tips</h1>
+        <p class="text-xl max-w-3xl mx-auto">Learn essential strategies to protect yourself and your organization from cyber threats.</p>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Tip Card 1 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-lock text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Strong Password Practices</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use long, complex passwords (12+ characters)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Never reuse passwords across accounts</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use a reputable password manager</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Enable multi-factor authentication (MFA)</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tip Card 2 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-shield-virus text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Software Protection</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Keep all software updated regularly</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use reputable antivirus/anti-malware</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Enable automatic security updates</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Remove unused software and plugins</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tip Card 3 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-user-secret text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Phishing Defense</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Verify sender email addresses carefully</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Hover over links before clicking</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Never share credentials via email</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Report suspicious messages</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tip Card 4 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-network-wired text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Network Security</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use WPA3 or WPA2 encryption for WiFi</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Change default router credentials</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Disable remote management features</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Consider using a VPN on public networks</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tip Card 5 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-cloud text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Data Protection</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Regularly back up important data</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use encryption for sensitive files</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Be cautious with cloud storage permissions</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Implement the principle of least privilege</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tip Card 6 -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="gradient-bg p-6 text-white">
+                <i class="fas fa-mobile-alt text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Mobile Security</h3>
+            </div>
+            <div class="p-6">
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Use device encryption and passcodes</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Only download apps from official stores</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Review app permissions carefully</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-cyber-green mt-1 mr-2"></i>
+                        <span>Disable Bluetooth when not in use</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Resources Section -->
+    <section class="bg-white dark:bg-dark-800 rounded-lg shadow-lg p-8 mb-12">
+        <h2 class="text-2xl font-bold mb-6 text-center">Additional Resources</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="#" class="cyber-btn bg-cyber-blue hover:bg-cyber-blue/90 text-white py-3 px-4 rounded-lg flex items-center justify-center">
+                <i class="fas fa-book mr-2"></i> Security Guides
+            </a>
+            <a href="#" class="cyber-btn bg-cyber-green hover:bg-cyber-green/90 text-white py-3 px-4 rounded-lg flex items-center justify-center">
+                <i class="fas fa-video mr-2"></i> Training Videos
+            </a>
+            <a href="#" class="cyber-btn bg-cyber-red hover:bg-cyber-red/90 text-white py-3 px-4 rounded-lg flex items-center justify-center">
+                <i class="fas fa-tools mr-2"></i> Security Tools
+            </a>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="gradient-bg text-white rounded-lg shadow-lg p-8">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-4">Stay Updated on Security Trends</h2>
+            <p class="mb-6">Subscribe to our monthly cybersecurity newsletter for the latest defense tips and threat alerts.</p>
+            <form class="flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-lg text-gray-900">
+                <button type="submit" class="cyber-btn bg-cyber-yellow hover:bg-cyber-yellow/90 text-gray-900 font-bold py-3 px-6 rounded-lg">
+                    Subscribe
+                </button>
+            </form>
+            <p class="text-sm mt-4 opacity-80">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-white dark:bg-dark-800 py-8 mt-12">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                    <i class="fas fa-shield-alt mr-2"></i> CyberSim
+                </a>
+                <p class="text-sm mt-2">Empowering you with cybersecurity knowledge.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-cyber-blue"><i class="fab fa-twitter text-lg"></i></a>
+                <a href="#" class="hover:text-cyber-blue"><i class="fab fa-linkedin text-lg"></i></a>
+                <a href="#" class="hover:text-cyber-blue"><i class="fab fa-github text-lg"></i></a>
+                <a href="#" class="hover:text-cyber-blue"><i class="fab fa-youtube text-lg"></i></a>
+            </div>
+        </div>
+        <hr class="border-gray-200 dark:border-dark-700 my-6">
+        <div class="flex flex-col md:flex-row justify-between items-center text-sm">
+            <p>&copy; 2023 CyberSim. All rights reserved.</p>
+            <div class="mt-4 md:mt-0 flex space-x-4">
+                <a href="#" class="hover:text-cyber-blue">Privacy Policy</a>
+                <a href="#" class="hover:text-cyber-blue">Terms of Service</a>
+                <a href="#" class="hover:text-cyber-blue">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+
+    // Check for saved user preference or system preference
+    if (localStorage.getItem('darkMode') === 'true' || 
+        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.classList.add('dark');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        localStorage.setItem('darkMode', html.classList.contains('dark'));
+        updateDarkModeIcon();
+    });
+
+    function updateDarkModeIcon() {
+        const icon = darkModeToggle.querySelector('i');
+        if (html.classList.contains('dark')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
+
+    // Initialize icon
+    updateDarkModeIcon();
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
+</body> 
+</html>

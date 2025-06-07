@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Professional Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .filter-btn.active { background-color: #3b82f6; color: white; }
+        .project-card { transition: all 0.3s ease; }
+        .project-card:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-folder mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-shield-alt mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-gray-800">My Projects</h1>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-12">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl">
+                    <h2 class="text-4xl font-bold mb-4">Featured Projects</h2>
+                    <p class="text-xl mb-6">
+                        Explore my collection of cybersecurity tools, web applications, and innovative solutions. 
+                        Each project demonstrates different aspects of security research and development.
+                    </p>
+                    <div class="flex items-center space-x-4 text-sm">
+                        <span class="flex items-center">
+                            <i class="fas fa-code mr-2"></i>
+                            <span id="totalProjects">12 Projects</span> 
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-star mr-2"></i>
+                            Multiple Technologies
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            2023 - 2025
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Filters -->
+        <section class="bg-white py-6 border-b border-gray-200">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap gap-3">
+                    <button class="filter-btn active px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="all">
+                        All Projects
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="security">
+                        <i class="fas fa-shield-alt mr-2"></i>Security Tools
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="web">
+                        <i class="fas fa-globe mr-2"></i>Web Development
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="automation">
+                        <i class="fas fa-robot mr-2"></i>Automation
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-600 hover:text-white transition" data-filter="research">
+                        <i class="fas fa-microscope mr-2"></i>Research
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Grid -->
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <div id="projectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Security Scanner Project -->
+                    <!-- <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="security">
+                        <div class="bg-gradient-to-br from-red-500 to-red-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-semibold">SECURITY</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Advanced Security Scanner</h3>
+                            <p class="text-gray-600 mb-4">Comprehensive vulnerability assessment tool with automated reporting, OWASP compliance checking, and custom rule engine.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Python</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Nmap</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">SQLMap</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Jan 2025</span>
+                                <a href="#" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Web Application Project -->
+                    <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="web">
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-landmark text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-semibold">WEB APP</span>
+                                <div class="flex space-x-2">
+                                    <a href="https://github.com/bieee123/Tax-Company-Website" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="https://bieee123.github.io/Tax-Company-Website/" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Tax Solutions</h3>
+                            <p class="text-gray-600 mb-4">Efficient and secure tax strategies tailored to your business, ensuring compliance and maximizing financial outcomes.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Html</Html:5></span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">CSS</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">JavaScript</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Oct 2024</span>
+                                <a href="https://bieee123.github.io/Tax-Company-Website/" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Network Monitor -->
+                    <!-- <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="security">
+                        <div class="bg-gradient-to-br from-green-500 to-green-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-network-wired text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">MONITORING</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Real-time Network Monitor</h3>
+                            <p class="text-gray-600 mb-4">Advanced network traffic analysis tool with intrusion detection, anomaly detection, and real-time alerting system.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Python</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Wireshark</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Suricata</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Nov 2024</span>
+                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Automation Tool -->
+                    <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="automation">
+                        <div class="bg-gradient-to-br from-purple-500 to-purple-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-user-check text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-semibold">AUTOMATION</span>
+                                <div class="flex space-x-2">
+                                    <a href="https://github.com/bieee123/Follow-Back-Checker" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="https://colab.research.google.com/drive/1MGLNvKqge7C1hYH6guYfV8RkCKKOH8HA?usp=sharing" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Follow Checker</h3>
+                            <p class="text-gray-600 mb-4">Identifies users you follow who don’t follow you back using Instagram JSON data in Colab.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Python</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Google Colab</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Nov 2024</span>
+                                <a href="https://colab.research.google.com/drive/1MGLNvKqge7C1hYH6guYfV8RkCKKOH8HA?usp=sharing" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- API Security Tool -->
+                    <!-- <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="security">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-code text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs font-semibold">API SECURITY</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">API Security Analyzer</h3>
+                            <p class="text-gray-600 mb-4">Specialized tool for REST API and GraphQL security testing with OWASP API Top 10 coverage and automated fuzzing.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Go</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Burp Suite</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">GraphQL</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Sep 2024</span>
+                                <a href="#" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Research Project -->
+                    <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="research">
+                        <div class="bg-gradient-to-br from-teal-500 to-teal-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-calculator text-6xl text-white"></i>
+                        </div> 
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded text-xs font-semibold">CALCULATOR</span>
+                                <div class="flex space-x-2">
+                                    <a href="https://github.com/bieee123/statcalc" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="https://bieee123.github.io/statcalc/" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">StatCalc</h3>
+                            <p class="text-gray-600 mb-4">Web-based calculator for statistical analysis, including basic stats, distributions, and inference tools.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Html</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">CSS</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">JavaScript</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">May 2024</span>
+                                <a href="https://bieee123.github.io/statcalc/" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- More projects to demonstrate filtering -->
+                    <!-- <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="web">
+                        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs font-semibold">MOBILE</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Security Mobile App</h3>
+                            <p class="text-gray-600 mb-4">Cross-platform mobile application for security professionals with encrypted communications and secure file sharing.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">React Native</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Expo</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Firebase</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Jul 2024</span>
+                                <a href="#" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="automation">
+                        <div class="bg-gradient-to-br from-pink-500 to-pink-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-search text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-semibold">AUTOMATION</span>
+                                <div class="flex space-x-2">
+                                    <a href="https://github.com/bieee123/Sensitive-Data-Finder" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="https://colab.research.google.com/drive/1BZhNDrITAEXMq1qIJgFXqTkBVXTEeRBb?usp=sharing" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Sensitive Data Finder</h3>
+                            <p class="text-gray-600 mb-4">Automates Google Dorking to uncover sensitive documents and exposed personal data on targeted websites efficiently.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Python</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Google Colab</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Jun 2024</span>
+                                <a href="https://colab.research.google.com/drive/1BZhNDrITAEXMq1qIJgFXqTkBVXTEeRBb?usp=sharing" class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="research">
+                        <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 h-48 flex items-center justify-center">
+                            <i class="fas fa-chart-line text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-semibold">ANALYTICS</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="text-gray-400 hover:text-gray-600"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Security Metrics Dashboard</h3>
+                            <p class="text-gray-600 mb-4">Comprehensive security analytics platform with real-time threat intelligence and risk assessment visualization.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">D3.js</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Elasticsearch</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Kibana</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">May 2024</span>
+                                <a href="#" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">View Project</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                </div>
+                
+                <!-- No Results Message -->
+                <div id="noResults" class="text-center py-12 hidden">
+                    <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Projects Found</h3>
+                    <p class="text-gray-500">Try selecting a different filter to see more projects.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-4">Interested in Collaboration?</h3>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    I'm always open to discussing new projects, innovative ideas, or opportunities to contribute to meaningful security initiatives.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        Get in Touch
+                    </a>
+                    <a href="#" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Professional Showcase. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="https://github.com/bieee123" class="hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabrielle-lintong" class="hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/bielintong0?s=11" class="hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/bielintong" class="hover:text-blue-400 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.getElementById('mainContent');
+        
+        function toggleSidebar() {
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+        
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar when clicking on navigation links on mobile
+        const navLinks = document.querySelectorAll('#sidebar nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        const noResults = document.getElementById('noResults');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'active' class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add 'active' class to clicked button
+                button.classList.add('active');
+
+                const filter = button.getAttribute('data-filter');
+                let anyVisible = false;
+
+                projectCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        anyVisible = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show/hide "No Results" message
+                if (anyVisible) {
+                    noResults.classList.add('hidden');
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            });
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

