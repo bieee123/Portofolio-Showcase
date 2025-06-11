@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Showcase - Bug Bounty Writeups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .content-transition { transition: margin-left 0.3s ease-in-out; }
+        .overlay { backdrop-filter: blur(4px); }
+        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .glow-effect { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+        .countdown-item { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(90deg, #d62828, #f77f00);
+            background-size: 400% 400%;
+            animation: gradient 8s ease infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-2xl z-50 transform -translate-x-full lg:translate-x-0 sidebar-transition">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Portfolio</h2>
+                    <p class="text-xs text-gray-500">Professional Showcase</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="index.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-home mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="projects.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-folder mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Projects</span>
+                </a>
+                <a href="blog.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Blog</span>
+                </a>
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <i class="fas fa-shield mr-3 text-blue-600"></i>
+                    <span class="font-semibold">Bug Bounty Writeups</span>
+                </a>
+                <a href="simulations.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-cogs mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Simulations</span>
+                </a>
+                <a href="games.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-gamepad mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Games</span>
+                </a>
+                <a href="about.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-user mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">About</span>
+                </a>
+                <a href="contact.html" class="flex items-center px-4 py-3 mx-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group">
+                    <i class="fas fa-envelope mr-3 text-gray-500 group-hover:text-gray-700"></i>
+                    <span class="font-medium">Contact</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        GB
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Gabrielle B. Lintong</p>
+                        <p class="text-xs text-gray-500 truncate">Security Researcher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="lg:ml-64 content-transition">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl text-red-600 mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">Bug Bounty Writeups</h1>
+                </div>
+                <div class="hidden lg:flex space-x-4">
+                    <a href="https://github.com/bieee123" class="text-gray-600 hover:text-gray-900"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-600 hover:text-gray-900"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/bielintong0?s=11" class="text-gray-600 hover:text-gray-900"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Coming Soon Hero Section -->
+        <section class="animated-gradient min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+            <!-- Floating Icons Background -->
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute top-20 left-20 float-animation">
+                    <i class="fas fa-bug text-4xl opacity-20" style="animation-delay: 0s;"></i>
+                </div>
+                <div class="absolute top-40 right-32 float-animation">
+                    <i class="fas fa-shield-alt text-3xl opacity-20" style="animation-delay: 1s;"></i>
+                </div>
+                <div class="absolute bottom-40 left-32 float-animation">
+                    <i class="fas fa-search text-3xl opacity-20" style="animation-delay: 2s;"></i>
+                </div>
+                <div class="absolute bottom-20 right-20 float-animation">
+                    <i class="fas fa-code text-4xl opacity-20" style="animation-delay: 1.5s;"></i>
+                </div>
+                <div class="absolute top-60 left-1/2 float-animation">
+                    <i class="fas fa-lock text-3xl opacity-20" style="animation-delay: 0.5s;"></i>
+                </div>
+            </div>
+            
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <!-- Main Icon -->
+                <div class="mt-8 mb-8">
+                    <div class="inline-block p-6 bg-white bg-opacity-20 rounded-full glow-effect">
+                        <i class="fas fa-shield-alt text-6xl pulse-animation"></i>
+                    </div>
+                </div>
+                
+                <!-- Main Title -->
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                    Security Research
+                    <span class="block text-yellow-300">Coming Soon</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
+                    Currently working on documenting my bug bounty discoveries and security research findings.
+                    Stay tuned for detailed writeups and methodologies.
+                </p>
+                
+                <!-- Countdown Timer -->
+                <div class="flex justify-center space-x-4 mb-12">
+                    <div class="countdown-item p-4 rounded-lg text-center min-w-[80px]">
+                        <div class="text-2xl font-bold" id="days">--</div>
+                        <div class="text-sm opacity-75">Days</div>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg text-center min-w-[80px]">
+                        <div class="text-2xl font-bold" id="hours">--</div>
+                        <div class="text-sm opacity-75">Hours</div>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg text-center min-w-[80px]">
+                        <div class="text-2xl font-bold" id="minutes">--</div>
+                        <div class="text-sm opacity-75">Minutes</div>
+                    </div>
+                    <div class="countdown-item p-4 rounded-lg text-center min-w-[80px]">
+                        <div class="text-2xl font-bold" id="seconds">--</div>
+                        <div class="text-sm opacity-75">Seconds</div>
+                    </div>
+                </div>
+                
+                <!-- What to Expect -->
+                <div class="max-w-4xl mx-auto mb-12">
+                    <h3 class="text-2xl font-bold mb-6">What to Expect</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-filter backdrop-blur-sm">
+                            <i class="fas fa-bug text-3xl mb-4 text-yellow-300"></i>
+                            <h4 class="text-lg font-semibold mb-2">Vulnerability Analysis</h4>
+                            <p class="text-sm opacity-80">Detailed technical analysis of discovered security vulnerabilities</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-filter backdrop-blur-sm">
+                            <i class="fas fa-tools text-3xl mb-4 text-yellow-300"></i>
+                            <h4 class="text-lg font-semibold mb-2">Research Methodology</h4>
+                            <p class="text-sm opacity-80">Step-by-step approach to finding and exploiting security issues</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-filter backdrop-blur-sm">
+                            <i class="fas fa-award text-3xl mb-4 text-yellow-300"></i>
+                            <h4 class="text-lg font-semibold mb-2">Hall of Fame</h4>
+                            <p class="text-sm opacity-80">Recognition from companies for responsible disclosure</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification Signup -->
+                <div class="bg-white bg-opacity-10 p-8 rounded-lg backdrop-filter backdrop-blur-sm max-w-md mx-auto mb-16">
+                    <h4 class="text-xl font-semibold mb-4">Get Notified</h4>
+                    <p class="text-sm opacity-80 mb-4">Be the first to know when new writeups are published</p>
+                    <div class="flex gap-2">
+                        <input 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            class="flex-1 px-4 py-2 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                        >
+                        <button class="bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition">
+                            Notify Me
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                <div class="flex flex-col items-center">
+                    <span class="text-sm opacity-75 mb-2">Scroll for more</span>
+                    <div class="w-6 h-10 border-2 border-white border-opacity-50 rounded-full flex justify-center">
+                        <div class="w-1 h-3 bg-white rounded-full mt-2 pulse-animation"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Current Status Section -->
+        <section class="py-16 bg-gray-900 text-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-4">Current Research Status</h3>
+                    <p class="text-xl max-w-2xl mx-auto text-gray-300">
+                        Actively engaged in security research and vulnerability assessment
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="bg-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-search text-2xl"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Research</h4>
+                        <p class="text-gray-300">Active vulnerability research</p>
+                        <div class="mt-2 bg-red-600 bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                            In Progress
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-pen-alt text-2xl"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Documentation</h4>
+                        <p class="text-gray-300">Writing detailed writeups</p>
+                        <div class="mt-2 bg-yellow-600 bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                            Upcoming
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Disclosure</h4>
+                        <p class="text-gray-300">Responsible disclosure process</p>
+                        <div class="mt-2 bg-blue-600 bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                            Ongoing
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-trophy text-2xl"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Recognition</h4>
+                        <p class="text-gray-300">Building hall of fame</p>
+                        <div class="mt-2 bg-green-600 bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                            Future
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <section class="py-16 bg-gradient-to-r from-red-600 to-orange-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-4">Follow My Security Journey</h3>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Stay connected and follow my progress in security research and ethical hacking.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        Get In Touch
+                    </a>
+                    <a href="blog.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition">
+                        Read My Blog
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <i class="fas fa-shield-alt text-2xl text-red-600 mr-3"></i>
+                        <span class="text-xl font-bold">Security Research Portfolio</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/bieee123" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/gabrielle-lintong" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://x.com/bielintong0?s=11" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/bielintong" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                    <p>&copy; 2025 Security Research Portfolio. All rights reserved.</p>
+                    <p class="text-sm mt-2">Responsible disclosure and ethical hacking practices.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+        
+        // Mobile menu close on link click
+        document.querySelectorAll('#sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Responsive sidebar handling
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        // Countdown Timer (set to 30 days from now)
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const launchDate = new Date('2025-07-01T00:00:00').getTime(); // 30 days from now
+            const distance = launchDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Email notification (you can integrate this with your backend)
+        document.querySelector('button').addEventListener('click', function() {
+            const email = document.querySelector('input[type="email"]').value;
+            if (email) {
+                alert('Thank you! You\'ll be notified when the writeups are available.');
+                document.querySelector('input[type="email"]').value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+    </script>
+</body>
+</html>
