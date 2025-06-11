@@ -44,7 +44,7 @@
                     <i class="fas fa-blog mr-3 text-gray-500 group-hover:text-gray-700"></i>
                     <span class="font-medium">Blog</span>
                 </a>
-                <a href="comingsoon-writeups.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <a href="writeups.html" class="flex items-center px-4 py-3 mx-2 text-blue-600 bg-blue-50 rounded-lg border-l-4 border-blue-500">
                     <i class="fas fa-shield mr-3 text-blue-600"></i>
                     <span class="font-semibold">Bug Bounty Writeups</span>
                 </a>
@@ -172,9 +172,247 @@
         <section class="py-12">
             <div class="container mx-auto px-6">
                 <div id="writeupGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <!-- for the writeups can be filled in here. -->
+                    <!-- Critical Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="critical" data-bounty="5000" data-date="2025-05-25">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Critical
+                                </span>
+                                <span class="text-green-600 font-bold">$5,000</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Remote Code Execution in File Upload</h3>
+                            <p class="text-gray-600 mb-4">Discovered critical RCE vulnerability in file upload functionality allowing arbitrary code execution on server...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>May 25, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>12 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">RCE</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">File Upload</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">PHP</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
 
+                    <!-- High Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="high" data-bounty="2500" data-date="2025-05-20">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    High
+                                </span>
+                                <span class="text-green-600 font-bold">$2,500</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">SQL Injection in Payment Gateway</h3>
+                            <p class="text-gray-600 mb-4">Time-based blind SQL injection vulnerability in payment processing system allowing database enumeration...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>May 20, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>8 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">SQL Injection</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Blind SQLi</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Payment</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- High Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="high" data-bounty="1800" data-date="2025-05-15">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    High
+                                </span>
+                                <span class="text-green-600 font-bold">$1,800</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Authentication Bypass via JWT</h3>
+                            <p class="text-gray-600 mb-4">JWT signature verification bypass allowing privilege escalation and unauthorized access to admin functions...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>May 15, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>10 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">JWT</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Authentication</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Privilege Escalation</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- Medium Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="medium" data-bounty="800" data-date="2025-05-10">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Medium
+                                </span>
+                                <span class="text-green-600 font-bold">$800</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Stored XSS in User Comments</h3>
+                            <p class="text-gray-600 mb-4">Persistent cross-site scripting vulnerability in comment section allowing session hijacking and malicious script execution...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>May 10, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>6 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">XSS</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Stored</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Session Hijacking</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- Medium Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="medium" data-bounty="600" data-date="2025-05-05">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Medium
+                                </span>
+                                <span class="text-green-600 font-bold">$600</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">IDOR in User Profile Access</h3>
+                            <p class="text-gray-600 mb-4">Insecure Direct Object Reference vulnerability allowing unauthorized access to other users' profile information...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>May 5, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>7 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">IDOR</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Access Control</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Privacy</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- Low Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="low" data-bounty="200" data-date="2025-04-30">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Low
+                                </span>
+                                <span class="text-green-600 font-bold">$200</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Information Disclosure in Error Messages</h3>
+                            <p class="text-gray-600 mb-4">Verbose error messages revealing sensitive server information and potential attack vectors...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>April 30, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>4 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Information Disclosure</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Error Handling</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- Medium Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="medium" data-bounty="1200" data-date="2025-04-25">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Medium
+                                </span>
+                                <span class="text-green-600 font-bold">$1,200</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">CSRF in Account Settings</h3>
+                            <p class="text-gray-600 mb-4">Cross-Site Request Forgery vulnerability in account settings allowing unauthorized account modifications...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>April 25, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>5 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">CSRF</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Account Security</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Token Bypass</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- High Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="high" data-bounty="3200" data-date="2025-04-20">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    High
+                                </span>
+                                <span class="text-green-600 font-bold">$3,200</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Server-Side Template Injection</h3>
+                            <p class="text-gray-600 mb-4">Template injection vulnerability in email notification system leading to remote code execution...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>April 20, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>9 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">SSTI</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Template Engine</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">RCE</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
+
+                    <!-- Low Severity Writeup -->
+                    <article class="writeup-card bg-white rounded-lg shadow-md overflow-hidden" data-severity="low" data-bounty="150" data-date="2025-04-15">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                                    Low
+                                </span>
+                                <span class="text-green-600 font-bold">$150</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Missing Security Headers</h3>
+                            <p class="text-gray-600 mb-4">Analysis of missing HTTP security headers and their potential security implications...</p>
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>April 15, 2025</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>3 min read</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Security Headers</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">HTTP</span>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Best Practices</span>
+                            </div>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Read Full Writeup →</a>
+                        </div>
+                    </article>
                 </div>
                 
                 <!-- Load More Button -->
@@ -246,9 +484,77 @@
                 </div>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    <!-- for the hall of fame can be filled in here.-->
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-microsoft text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Microsoft</h4>
+                        <p class="text-sm text-gray-600">Security Researcher</p>
+                        <p class="text-xs text-gray-500 mt-2">May 2025</p>
+                    </div>
 
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-google text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Google</h4>
+                        <p class="text-sm text-gray-600">VRP Hall of Fame</p>
+                        <p class="text-xs text-gray-500 mt-2">April 2025</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-yahoo text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Yahoo</h4>
+                        <p class="text-sm text-gray-600">Security Hall of Fame</p>
+                        <p class="text-xs text-gray-500 mt-2">March 2025</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-facebook text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Meta</h4>
+                        <p class="text-sm text-gray-600">White Hat Researcher</p>
+                        <p class="text-xs text-gray-500 mt-2">February 2025</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-apple text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Apple</h4>
+                        <p class="text-sm text-gray-600">Security Bounty</p>
+                        <p class="text-xs text-gray-500 mt-2">January 2025</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-amazon text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Amazon</h4>
+                        <p class="text-sm text-gray-600">Security Team</p>
+                        <p class="text-xs text-gray-500 mt-2">December 2024</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-spotify text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Spotify</h4>
+                        <p class="text-sm text-gray-600">Security Researcher</p>
+                        <p class="text-xs text-gray-500 mt-2">November 2024</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition">
+                        <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-shopify text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Shopify</h4>
+                        <p class="text-sm text-gray-600">Bug Bounty Hunter</p>
+                        <p class="text-xs text-gray-500 mt-2">October 2024</p>
+                    </div>
                 </div>
 
                 <!-- No Hall of Fame Message -->
