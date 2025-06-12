@@ -211,19 +211,21 @@
                 </div>
                 
                 <!-- Notification Signup -->
-                <div class="bg-white bg-opacity-10 p-8 rounded-lg backdrop-filter backdrop-blur-sm max-w-md mx-auto mb-16">
-                    <h4 class="text-xl font-semibold mb-4">Get Notified</h4>
-                    <p class="text-sm opacity-80 mb-4">Be the first to know when new writeups are published</p>
-                    <div class="flex gap-2">
+                <div class="bg-white bg-opacity-10 p-6 sm:p-8 rounded-lg backdrop-filter backdrop-blur-sm max-w-lg mx-auto mb-16 w-full">
+                    <h4 class="text-xl font-semibold mb-4 text-white">Get Notified</h4>
+                    <p class="text-sm opacity-80 text-white mb-4">Be the first to know when new writeups are published</p>
+                    <form class="flex flex-wrap sm:flex-nowrap gap-2">
                         <input 
-                            type="email" 
-                            placeholder="Enter your email" 
-                            class="flex-1 px-4 py-2 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                        >
-                        <button class="bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition">
-                            Notify Me
+                        type="email" 
+                        placeholder="Enter your email" 
+                        class="flex-1 px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 w-full sm:w-auto"
+                    >
+                        <button 
+                        type="submit"
+                        class="px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg font-semibold hover:bg-yellow-300 transition text-sm sm:text-base whitespace-nowrap">
+                        Notify Me
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
             
