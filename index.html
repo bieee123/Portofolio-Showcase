@@ -88,6 +88,22 @@
                 right: 1rem; /* 16px on mobile */
             }
         }
+
+        /* Tablet adjustments */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            #chatbot-popup {
+                width: 90%;           
+                max-width: 420px;    
+                right: 2rem;          
+                bottom: 6.5rem;      
+                left: auto;         
+            }
+
+            #chatbot-button {
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
         
         /* Ensure proper viewport handling */
         @media (max-height: 600px) {
